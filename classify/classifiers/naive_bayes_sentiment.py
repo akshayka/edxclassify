@@ -5,10 +5,12 @@ Uses naive Bayes to predict sentiment.
 Training, test data format:
 [ [ TEXT, SENTIMENT_SCORE] ... [TEXT, SENTIMENT_SCORE]
 
-TODO:
+TODO: docs and docs and docs
 
 '''
 
-from ..classify.abstract_classifier import Classifier
+from abstract_classifier import Classifier
 
-print 'hi'
+class NaiveBayesSentiment(Classifier):
+	# TODO: Implement train
+	# TODO: Implement tes
