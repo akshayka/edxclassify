@@ -14,17 +14,18 @@ import pickle
 import random
 
 def main():
-	parser = argparse.ArgumentParser(description='Ingest datasets and dump ' \
+	parser = argparse.ArgumentParser(description='Ingest datasets and dump '
 		'into pickled training, test partitions')
 	parser.add_argument('file', type=str, help='input file -- the dataset')
-	parser.add_argument('-d', '--delim', type=str, dfeault=',',
-		help='the delimiter')
-	parser.add_argument('outfile_prefix', type=str, help='prefix of each ' \
+	parser.add_argument('-d', '--delim', type=str, default=',',
+		help='the delimiter; defaults to ","')
+	parser.add_argument('outfile_prefix', type=str, help='prefix of each '
 		'outfile that will be generated')
 	parser.add_argument('-nf', '--num_folds', type=int, default=10,
-		help='number of train/test partitions to create')
-	parser-add_argument('-tp', '--train_percentage', type=float,
-		default=0.6, help='percent allocation of dataset to each training set.')
+		help='number of train/test partitions to create; defaults to 10')
+	parser.add_argument('-tp', '--train_percentage', type=float,
+		default=0.6, help='percent allocation of dataset to each training set '
+		'defaults to 0.6')
 	args = parser.parse_args()
 
 	dataset = []
