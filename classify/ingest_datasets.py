@@ -48,7 +48,7 @@ def main():
 		try:
 			with open(args.outfile_prefix + 'train_' + str(fold_num),
 				   	'wb') as train_out, \
-				   open(args.outfile_prefix + 'test_' + str(fold_num),
+				 open(args.outfile_prefix + 'test_' + str(fold_num),
 				   	'wb') as test_out:
 				pickle.dump(training_examples, train_out)
 				pickle.dump(test_examples, test_out)
