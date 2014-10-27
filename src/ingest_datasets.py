@@ -16,7 +16,7 @@ import random
 def main():
 	parser = argparse.ArgumentParser(description='Ingest datasets and dump '
 		'into pickled training, test partitions')
-	parser.add_argument('file', type=str, help='input file -- the dataset')
+	parser.add_argument('infile', type=str, help='input file -- the dataset')
 	parser.add_argument('-d', '--delim', type=str, default=',',
 		help='the delimiter; defaults to ","')
 	parser.add_argument('outfile_prefix', type=str, help='prefix of each '
@@ -37,12 +37,14 @@ def main():
 		print 'Problem opening input file %s' % args.infile
 		return
 
+	header = [dataset[0]]
+	dataset = dataset[1:]
 	num_records = len(dataset)
-	training_len = args.train_percentage * num_records
-	for fold_num in range(0, num_folds):
+	training_len = int(args.train_percentage * num_records)
+	for fold_num in range(0, args.num_folds):
 		random.shuffle(dataset)
-		training_examples = dataset[0:training_len]
-		test_examples = dataset[training_len:]
+		training_examples = header + dataset[0:training_len]
+		test_examples = header + dataset[training_len:]
 		try:
 			with open(args.outfile_prefix + 'train_' + str(fold_num),
 				   	'wb') as train_out, \
