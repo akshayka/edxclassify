@@ -9,9 +9,9 @@ class Classifier(object):
 	__metaclass__ = ABCMeta
 
 	@abstractmethod
-	def train(self, raw_training_examples):
+	def train(self, training_examples):
 		pass
 
 	@abstractmethod
-	def test(self, raw_test_examples):
+	def test(self, test_examples):
 		pass
