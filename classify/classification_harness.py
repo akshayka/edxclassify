@@ -30,6 +30,7 @@ def invoke_classifier(classifier, training_files,
      # given that actual label == 1).
      table_header = ['Fold Number', 'Accuracy']
      print tabulate(results, table_header, tablefmt='grid') 
+
              
 def main():
     parser = argparse.ArgumentParser(description='applies a classifier to '
