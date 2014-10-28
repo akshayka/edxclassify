@@ -2,22 +2,22 @@ import argparse
 from classifier_factory import make_classifier
 from data_cleaner_factory import make_data_cleaner
 import pickle
-import tabulate
+from tabulate import tabulate
 
 
 def evaluate_predictions(clf_results, possible_labels):
     predictions = clf_results[0]
-    correct_predictions_per_label = {label: 0 for label in possible_labels}
-    total_examples_per_label = {label: 1 for label in possible_labels}
+    correct_map = {label: 0 for label in possible_labels}
+    ex_per_label = {label: 1 for label in possible_labels}
     for example, prediction, label in predictions:
-        total_examples_per_label[label] = total_examples_per_label + 1
+        ex_per_label[label] = ex_per_label[label] + 1
         if prediction == label:
-            correct_predictions_per_label[label] = \
-                correct_predictions_per_label[label] + 1
+            correct_map[label] = \
+                correct_map[label] + 1
     accuracies = []
     for label in possible_labels:
-        accuracies.append(float(correct_predictions_per_label[label]) /
-                          float(total_examples_per_label[label]))
+        accuracies.append(float(correct_map[label]) /
+                          float(ex_per_label[label]))
     accuracies.append(clf_results[1])
     return accuracies
 
@@ -40,7 +40,8 @@ def invoke_classifier(classifier, training_files,
                     data_cleaner.process_records(test_examples)
             classifier.train(training_examples)
             results.append([str(fold)] +
-                           evaluate_predictions(classifier.test, labels))
+                           evaluate_predictions(classifier.test(
+                                                test_examples), labels))
     header = ['Fold Number'] + ['Label' + str(label) for label in labels] + \
              ['Overall Accuracy']
     print tabulate(results, header, tablefmt='grid')
@@ -51,19 +52,19 @@ def main():
                                      'train, test folds generated using '
                                      'ingest_datasets.py')
     parser.add_argument('-d', '--data_cleaner', type=str,
-                       help='apply a DataCleaner to the data ingested by '
-                       'ingest_datasets.py; see data_cleaner_factory.py for '
-                       'a list of supported cleaners')
+                        help='apply a DataCleaner to the data ingested by '
+                        'ingest_datasets.py; see data_cleaner_factory.py for '
+                        'a list of supported cleaners')
     parser.add_argument('classifier', type=str,
-                       help='apply a particular classifier to the folds; see '
-                       'classifier_factory.py for a list of supported '
-                       'classifiers')
+                        help='apply a particular classifier to the folds; see '
+                        'classifier_factory.py for a list of supported '
+                        'classifiers')
     parser.add_argument('-tr', '--training_files', required=True, type=str,
-                       nargs='+',
-                       help='training files produced by ingest_datasets.py')
+                        nargs='+',
+                        help='training files produced by ingest_datasets.py')
     parser.add_argument('-tst', '--test_files', required=True, type=str,
-                       nargs='+',
-                       help='test files produced by ingest_datasets.py')
+                        nargs='+',
+                        help='test files produced by ingest_datasets.py')
     args = parser.parse_args()
 
     if len(args.training_files) != len(args.test_files):
