@@ -31,6 +31,8 @@ def invoke_classifier(classifier, training_files,
         with open(train_file, 'rb') as train, \
                 open(test_file, 'rb') as test:
             # Slice off headers
+            # TODO: headers aren't getting used anywhere,
+            # perhaps don't take them in ingest_dataset
             training_examples = pickle.load(train)[1:]
             test_examples = pickle.load(test)[1:]
             if data_cleaner is not None:
@@ -42,7 +44,7 @@ def invoke_classifier(classifier, training_files,
             results.append([str(fold)] +
                            evaluate_predictions(classifier.test(
                                                 test_examples), labels))
-    header = ['Fold Number'] + ['Label' + str(label) for label in labels] + \
+    header = ['Fold Number'] + ['Label ' + str(label) for label in labels] + \
              ['Overall Accuracy']
     print tabulate(results, header, tablefmt='grid')
 
