@@ -18,7 +18,7 @@ from sklearn.pipeline import make_pipeline
 class NaiveBayesSentiment(Classifier):
     # Compress a likert scale with 7 values to one with 3.
     @classmethod
-    def compress_likert(score):
+    def compress_likert(cls, score):
         if score <= 3:
             return -1
         elif score == 4:
@@ -27,7 +27,7 @@ class NaiveBayesSentiment(Classifier):
             return 1
 
     @classmethod
-    def unpack_examples(examples):
+    def unpack_examples(cls, examples):
         documents, labels = zip(*examples)
         labels = map(NaiveBayesSentiment.compress_likert, labels)
         return (documents, labels)

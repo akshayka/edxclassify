@@ -13,6 +13,8 @@ import csv
 import pickle
 import random
 
+def to_unicode(row, encoding):
+    return [entry.decode(encoding).encode('utf-8') for entry in row]
 
 def main():
     parser = argparse.ArgumentParser(description='Ingest datasets and dump '
@@ -28,13 +30,15 @@ def main():
     parser.add_argument('-tp', '--train_percentage', type=float,
                         default=0.6, help='percent allocation of dataset '
                         'to each training set defaults to 0.6')
+    parser.add_argument('-c', '--encoding', type=str,
+                        default='utf-8')
     args = parser.parse_args()
 
     dataset = []
     try:
         with open(args.infile, 'rU') as csvfile:
             reader = csv.reader(csvfile, delimiter=args.delim)
-            dataset = [row for row in reader]
+            dataset = [to_unicode(row, args.encoding) for row in reader]
     except IOError:
         print 'Problem opening input file %s' % args.infile
         return
