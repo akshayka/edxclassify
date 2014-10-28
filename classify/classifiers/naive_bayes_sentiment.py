@@ -32,7 +32,7 @@ class NaiveBayesSentiment(Classifier):
         labels = map(NaiveBayesSentiment.compress_likert, labels)
         return (documents, labels)
 
-    def labels():
+    def labels(self):
         return (-1, 0, 1)
 
     def train(self, training_examples):
