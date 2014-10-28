@@ -79,5 +79,5 @@ def main():
     invoke_classifier(classifier, args.training_files,
                       args.test_files, data_cleaner)
 
-if __name__ == 'main':
+if __name__ == '__main__':
     main()
