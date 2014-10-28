@@ -5,33 +5,47 @@ import pickle
 import tabulate
 
 
-def evaluate_predictions(predictions):
-    pass
+def evaluate_predictions(clf_results, possible_labels):
+    predictions = clf_results[0]
+    correct_predictions_per_label = {label: 0 for label in possible_labels}
+    total_examples_per_label = {label: 1 for label in possible_labels}
+    for example, prediction, label in predictions:
+        total_examples_per_label[label] = total_examples_per_label + 1
+        if prediction == label:
+            correct_predictions_per_label[label] = \
+                correct_predictions_per_label[label] + 1
+    accuracies = []
+    for label in possible_labels:
+        accuracies.append(float(correct_predictions_per_label[label]) /
+                          float(total_examples_per_label[label]))
+    accuracies.append(clf_results[1])
+    return accuracies
 
 
 def invoke_classifier(classifier, training_files,
                       test_files, data_cleaner=None):
     results = []
-    for train_file, test_file in zip(training_files, test_files):
-        with open(train_file, 'rb') as train,
-             open(test_file, 'rb') as test:
+    labels = classifier.labels()
+    for fold, train_file, test_file in enumerate(
+            zip(training_files, test_files)):
+        with open(train_file, 'rb') as train, \
+                open(test_file, 'rb') as test:
             # Slice off headers
-            training_examples = pickle.load(train_file)[1:]
-            test_examples = pickle.load(train_file)[1:]
+            training_examples = pickle.load(train)[1:]
+            test_examples = pickle.load(test)[1:]
             if data_cleaner is not None:
                 training_examples = \
                     data_cleaner.process_records(training_examples)
                 test_examples = \
                     data_cleaner.process_records(test_examples)
-             classifier.train(training_examples)
-             results.append(evaluate_predictions(classifier.test))
-     # TODO: Classifier should export all possible labels; that way,
-     # we can print conditional accuracies as well (i.e., accuracy
-     # given that actual label == 1).
-     table_header = ['Fold Number', 'Accuracy']
-     print tabulate(results, table_header, tablefmt='grid') 
+            classifier.train(training_examples)
+            results.append([str(fold)] +
+                           evaluate_predictions(classifier.test, labels))
+    header = ['Fold Number'] + ['Label' + str(label) for label in labels] + \
+             ['Overall Accuracy']
+    print tabulate(results, header, tablefmt='grid')
 
-             
+
 def main():
     parser = argparse.ArgumentParser(description='applies a classifier to '
                                      'train, test folds generated using '
@@ -64,7 +78,6 @@ def main():
         data_cleaner = make_data_cleaner(args.data_cleaner)
     invoke_classifier(classifier, args.training_files,
                       args.test_files, data_cleaner)
-
 
 if __name__ == 'main':
     main()
