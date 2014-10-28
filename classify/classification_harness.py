@@ -26,7 +26,7 @@ def invoke_classifier(classifier, training_files,
                       test_files, data_cleaner=None):
     results = []
     labels = classifier.labels()
-    for fold, train_file, test_file in enumerate(
+    for fold, (train_file, test_file) in enumerate(
             zip(training_files, test_files)):
         with open(train_file, 'rb') as train, \
                 open(test_file, 'rb') as test:

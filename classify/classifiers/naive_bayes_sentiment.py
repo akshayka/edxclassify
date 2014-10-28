@@ -27,7 +27,7 @@ class NaiveBayesSentiment(Classifier):
             return 1
 
     @classmethod
-    def extract_docs_labels(examples):
+    def unpack_examples(examples):
         documents, labels = zip(*examples)
         labels = map(NaiveBayesSentiment.compress_likert, labels)
         return (documents, labels)
@@ -38,7 +38,7 @@ class NaiveBayesSentiment(Classifier):
     def train(self, training_examples):
         # Have: [ [Document, label], ... ]
         # Need: [[Features], ... ], [ label, ... ]
-        documents, labels = NaiveBayesSentiment.get_docs_labels(
+        documents, labels = NaiveBayesSentiment.unpack_examples(
             training_examples)
         self.sentiment_clf = make_pipeline(
             HashingVectorizer(stop_words='english'),
@@ -48,7 +48,7 @@ class NaiveBayesSentiment(Classifier):
         self.sentiment_clf.fit(documents, labels)
 
     def test(self, test_examples):
-        documents, labels = NaiveBayesSentiment.get_docs_labels(test_examples)
+        documents, labels = NaiveBayesSentiment.unpack_examples(test_examples)
         predictions = self.sentiment_clf.predict(documents)
         accuracy = np.mean(predictions == labels)
         return (zip(documents, predictions, labels), accuracy)
