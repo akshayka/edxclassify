@@ -44,6 +44,14 @@ def invoke_classifier(classifier, training_files,
             results.append([str(fold)] +
                            evaluate_predictions(classifier.test(
                                                 test_examples), labels))
+    dcname = ''
+    if data_cleaner is not None:
+        dcname = data_cleaner.name
+    print 'Classification results for files %s ...;\nusing classifier %s and ' \
+          'data_cleaner %s' % (training_files[0], classifier.name, dcname)
+    for i, label in enumerate(labels):
+        print 'Label ' + str(label) + ' had %d occurrences' % \
+              classifier.label_counts[i]
     header = ['Fold Number'] + ['Label ' + str(label) for label in labels] + \
              ['Overall Accuracy']
     print tabulate(results, header, tablefmt='grid')

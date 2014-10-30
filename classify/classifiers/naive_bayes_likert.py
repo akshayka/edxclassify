@@ -21,6 +21,7 @@ from sklearn.pipeline import make_pipeline
 class NaiveBayesLikert(Classifier):
     def __init__(self, tfidf=False):
         self.use_tfidf=tfidf
+        self.name = 'NaiveBayesLikert'
 
     # Compress a likert scale with 7 values to one with 3.
     @classmethod
@@ -46,6 +47,10 @@ class NaiveBayesLikert(Classifier):
         # Need: [[Features], ... ], [ label, ... ]
         documents, labels = NaiveBayesLikert.unpack_examples(
             training_examples)
+        self.label_counts = [0, 0, 0]
+        self.label_counts[0] = labels.count(-1)
+        self.label_counts[1] = labels.count(0)
+        self.label_counts[2] = labels.count(1)
         if self.use_tfidf:
             self.likert_clf = make_pipeline(
                 CountVectorizer(stop_words='english'),
@@ -59,6 +64,9 @@ class NaiveBayesLikert(Classifier):
 
     def test(self, test_examples):
         documents, labels = NaiveBayesLikert.unpack_examples(test_examples)
+        self.label_counts[0] = self.label_counts[0] + labels.count(-1)
+        self.label_counts[1] = self.label_counts[1] + labels.count(0)
+        self.label_counts[2] = self.label_counts[2] + labels.count(1)
         predictions = self.likert_clf.predict(documents)
         accuracy = np.mean(predictions == labels)
         return (zip(documents, predictions, labels), accuracy)
