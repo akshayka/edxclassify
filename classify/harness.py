@@ -5,21 +5,26 @@ import pickle
 from tabulate import tabulate
 
 
+# Return [ precision, recall, ... precision, recall ],
+# with one pair of precision, recall for each label
 def evaluate_predictions(clf_results, possible_labels):
     predictions = clf_results[0]
     correct_map = {label: 0 for label in possible_labels}
+    predict_map = {label: 1 for label in possible_labels}
     ex_per_label = {label: 1 for label in possible_labels}
     for example, prediction, label in predictions:
         ex_per_label[label] = ex_per_label[label] + 1
+        predict_map[prediction] = predict_map[prediction] + 1
         if prediction == label:
-            correct_map[label] = \
-                correct_map[label] + 1
-    accuracies = []
+            correct_map[label] = correct_map[label] + 1
+    evaluation = []
     for label in possible_labels:
-        accuracies.append(float(correct_map[label]) /
-                          float(ex_per_label[label]))
-    accuracies.append(clf_results[1])
-    return accuracies
+        precision = float(correct_map[label]) / float(ex_per_label[label])
+        recall = float(correct_map[label]) / float(predict_map[label])
+        evaluation.append(precision)
+        evaluation.append(recall)
+    evaluation.append(clf_results[1])
+    return evaluation
 
 
 def invoke_classifier(classifier, training_files,
@@ -52,8 +57,13 @@ def invoke_classifier(classifier, training_files,
     for i, label in enumerate(labels):
         print 'Label ' + str(label) + ' had %d occurrences' % \
               classifier.label_counts[i]
-    header = ['Fold Number'] + ['Label ' + str(label) for label in labels] + \
-             ['Overall Accuracy']
+
+    header = ['Fold Number']
+    for label in labels:
+        label_str = str(label)
+        header.append('Label ' + label_str + ' Precision')
+        header.append('Label ' + label_str + ' Recall')
+    header.append('Overall Accuracy')
     print tabulate(results, header, tablefmt='grid')
 
 
