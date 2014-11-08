@@ -5,65 +5,51 @@ import pickle
 from tabulate import tabulate
 
 
-# Return [ precision, recall, ... precision, recall ],
-# with one pair of precision, recall for each label
-def evaluate_predictions(clf_results, possible_labels):
-    predictions = clf_results[0]
-    correct_map = {label: 0 for label in possible_labels}
-    predict_map = {label: 1 for label in possible_labels}
-    ex_per_label = {label: 1 for label in possible_labels}
-    for example, prediction, label in predictions:
-        ex_per_label[label] = ex_per_label[label] + 1
-        predict_map[prediction] = predict_map[prediction] + 1
-        if prediction == label:
-            correct_map[label] = correct_map[label] + 1
-    evaluation = []
-    for label in possible_labels:
-        precision = float(correct_map[label]) / float(ex_per_label[label])
-        recall = float(correct_map[label]) / float(predict_map[label])
-        evaluation.append(precision)
-        evaluation.append(recall)
-    evaluation.append(clf_results[1])
-    return evaluation
-
-
-def invoke_classifier(classifier, training_files,
-                      test_files, data_cleaner=None):
+def invoke_classifier(classifier, data_filename, data_cleaner):
     results = []
-    labels = classifier.labels()
-    for fold, (train_file, test_file) in enumerate(
-            zip(training_files, test_files)):
-        with open(train_file, 'rb') as train, \
-                open(test_file, 'rb') as test:
-            # Slice off headers
-            # TODO: headers aren't getting used anywhere,
-            # perhaps don't take them in ingest_dataset
-            training_examples = pickle.load(train)[1:]
-            test_examples = pickle.load(test)[1:]
-            if data_cleaner is not None:
-                training_examples = \
-                    data_cleaner.process_records(training_examples)
-                test_examples = \
-                    data_cleaner.process_records(test_examples)
-            classifier.train(training_examples)
-            results.append([str(fold)] +
-                           evaluate_predictions(classifier.test(
-                                                test_examples), labels))
+    labels = data_cleaner.labels()
+    with open(data_filename, 'rb') as infile:
+        # Slice off headers
+        # TODO: Headers aren't getting used anywhere,
+        # perhaps don't take them in ingest_dataset
+        dataset = pickle.load(infile)[1:]
+        dataset =  data_cleaner.process_records(dataset)
+        cv_results = classifier.cross_validate(dataset)
+
     dcname = ''
     if data_cleaner is not None:
         dcname = data_cleaner.name
-    print 'Classification results for files %s ...;\nusing classifier %s and ' \
-          'data_cleaner %s' % (training_files[0], classifier.name, dcname)
+    print 'Classification results for file %s ...;\nusing classifier %s and ' \
+          'data_cleaner %s' % (data_filename, classifier.name, dcname)
     for i, label in enumerate(labels):
-        print 'Label ' + str(label) + ' had %d occurrences' % \
+        print str(label) + ' had %d occurrences' % \
               classifier.label_counts[i]
 
-    header = ['Fold Number']
+    header = ['fold']
     for label in labels:
         label_str = str(label)
-        header.append('Label ' + label_str + ' Precision')
-        header.append('Label ' + label_str + ' Recall')
-    header.append('Overall Accuracy')
+        header.append(label_str + ': precision')
+        header.append(label_str + ': recall')
+        header.append(label_str + ': f1')
+    results = []
+    print cv_results
+    avgs = [0] * len(labels) * 3
+    fold = 1
+    for p, r, f in zip(cv_results[0], cv_results[1], cv_results[2]):
+        results.append([str(fold)] +
+                       [p[0], r[0], f[0]] +
+                       [p[1], r[1], f[1]] +
+                       [p[2], r[2], f[2]])
+        for i in range(len(avgs) / 3):
+            a_i = i * 3
+            avgs[a_i] = avgs[a_i] + p[i]
+            avgs[a_i+1] = avgs[a_i+1] + r[i]
+            avgs[a_i+2] = avgs[a_i+2] + f[i]
+        fold = fold + 1
+    avgs = [avg / (fold - 1) for avg in avgs]
+    avgs = ['avg'] + avgs
+    results.append(avgs)
+    print results
     print tabulate(results, header, tablefmt='grid')
 
 
@@ -71,34 +57,22 @@ def main():
     parser = argparse.ArgumentParser(description='applies a classifier to '
                                      'train, test folds generated using '
                                      'ingest_datasets.py')
-    parser.add_argument('-d', '--data_cleaner', type=str,
+    parser.add_argument('data_file', type=str, help='ingested data file')
+    parser.add_argument('data_cleaner', type=str,
                         help='apply a DataCleaner to the data ingested by '
                         'ingest_datasets.py; see data_cleaner_factory.py for '
                         'a list of supported cleaners')
     parser.add_argument('classifier', type=str,
-                        help='apply a particular classifier to the folds; see '
+                        help='apply a particular classifier to the data; see '
                         'classifier_factory.py for a list of supported '
                         'classifiers')
-    parser.add_argument('-tr', '--training_files', required=True, type=str,
-                        nargs='+',
-                        help='training files produced by ingest_datasets.py')
-    parser.add_argument('-tst', '--test_files', required=True, type=str,
-                        nargs='+',
-                        help='test files produced by ingest_datasets.py')
     args = parser.parse_args()
-
-    if len(args.training_files) != len(args.test_files):
-        print 'Error: number of training files (%d) does not match ' \
-              'number of test files (%d).' % \
-              (len(args.training_files), len(args.test_files))
-        return
 
     classifier = make_classifier(args.classifier)
     data_cleaner = None
     if args.data_cleaner is not None:
         data_cleaner = make_data_cleaner(args.data_cleaner)
-    invoke_classifier(classifier, args.training_files,
-                      args.test_files, data_cleaner)
+    invoke_classifier(classifier, args.data_file, data_cleaner)
 
 
 if __name__ == '__main__':

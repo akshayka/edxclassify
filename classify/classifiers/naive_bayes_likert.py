@@ -11,6 +11,7 @@ TODO: docs and docs and docs
 
 '''
 from abstract_classifier import Classifier
+import clf_util
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -22,51 +23,43 @@ class NaiveBayesLikert(Classifier):
     def __init__(self, tfidf=False):
         self.use_tfidf=tfidf
         self.name = 'NaiveBayesLikert'
-
-    # Compress a likert scale with 7 values to one with 3.
-    @classmethod
-    def compress_likert(cls, score):
-        if score <= 3:
-            return -1
-        elif score == 4:
-            return 0
-        else:
-            return 1
-
-    @classmethod
-    def unpack_examples(cls, examples):
-        documents, labels = zip(*examples)
-        labels = map(NaiveBayesLikert.compress_likert, labels)
-        return (documents, labels)
-
-    def labels(self):
-        return (-1, 0, 1)
-
-    def train(self, training_examples):
-        # Have: [ [Document, label], ... ]
-        # Need: [[Features], ... ], [ label, ... ]
-        documents, labels = NaiveBayesLikert.unpack_examples(
-            training_examples)
         self.label_counts = [0, 0, 0]
-        self.label_counts[0] = labels.count(-1)
-        self.label_counts[1] = labels.count(0)
-        self.label_counts[2] = labels.count(1)
+
+
+    def make_clf(self):
         if self.use_tfidf:
-            self.likert_clf = make_pipeline(
+            self.clf = make_pipeline(
                 CountVectorizer(stop_words='english'),
                 TfidfTransformer(),
                 MultinomialNB())
         else:
-            self.likert_clf = make_pipeline(
+            self.clf = make_pipeline(
                 CountVectorizer(stop_words='english'),
                 MultinomialNB())
-        self.likert_clf.fit(documents, labels)
+    
+    def train(self, training_examples):
+        documents, labels = zip(*examples)
+        self.label_counts[0] = labels.count(0)
+        self.label_counts[1] = labels.count(1)
+        self.label_counts[2] = labels.count(2)
+
+        self.make_clf()
+        self.clf.fit(documents, labels)
 
     def test(self, test_examples):
-        documents, labels = NaiveBayesLikert.unpack_examples(test_examples)
-        self.label_counts[0] = self.label_counts[0] + labels.count(-1)
-        self.label_counts[1] = self.label_counts[1] + labels.count(0)
-        self.label_counts[2] = self.label_counts[2] + labels.count(1)
-        predictions = self.likert_clf.predict(documents)
+        documents, labels = zip(*test_examples)
+        self.label_counts[0] = self.label_counts[0] + labels.count(0)
+        self.label_counts[1] = self.label_counts[1] + labels.count(1)
+        self.label_counts[2] = self.label_counts[2] + labels.count(2)
+        predictions = self.clf.predict(documents)
         accuracy = np.mean(predictions == labels)
         return (zip(documents, predictions, labels), accuracy)
+
+    def cross_validate(self, examples):
+        documents, labels = zip(*examples)
+        self.label_counts[0] = labels.count(0)
+        self.label_counts[1] = labels.count(1)
+        self.label_counts[2] = labels.count(2)
+
+        self.make_clf()
+        return clf_util.sklearn_cv(self.clf, documents, labels)
