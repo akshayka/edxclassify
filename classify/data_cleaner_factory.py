@@ -18,7 +18,11 @@ def make_data_cleaner(key):
         return EdxConfusion(binary=True)
     elif key == 'edx_sentiment':
         return EdxSentiment()
+    elif key == 'edx_sentiment_binary':
+        return EdxSentiment(binary=True)
     elif key == 'edx_urgency':
         return EdxUrgency()
+    elif key == 'edx_urgency_binary':
+        return EdxUrgency(binary=True)
     else:
         raise NotImplementedError('DataCleaner %s not supported.' % key)

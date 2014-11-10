@@ -25,7 +25,6 @@ def invoke_classifier(classifier, data_filename, data_cleaner):
     header = ['fold']
     for label in labels:
         label_str = str(label)
-        print label_str
         header.append(label_str + ': precision')
         header.append(label_str + ': recall')
         header.append(label_str + ': f1')
