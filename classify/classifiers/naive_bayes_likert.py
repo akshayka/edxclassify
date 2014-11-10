@@ -23,7 +23,6 @@ class NaiveBayesLikert(Classifier):
     def __init__(self, tfidf=False):
         self.use_tfidf=tfidf
         self.name = 'NaiveBayesLikert'
-        self.label_counts = [0, 0, 0]
 
 
     def make_clf(self):
@@ -39,27 +38,18 @@ class NaiveBayesLikert(Classifier):
     
     def train(self, training_examples):
         documents, labels = zip(*examples)
-        self.label_counts[0] = labels.count(0)
-        self.label_counts[1] = labels.count(1)
-        self.label_counts[2] = labels.count(2)
 
         self.make_clf()
         self.clf.fit(documents, labels)
 
     def test(self, test_examples):
         documents, labels = zip(*test_examples)
-        self.label_counts[0] = self.label_counts[0] + labels.count(0)
-        self.label_counts[1] = self.label_counts[1] + labels.count(1)
-        self.label_counts[2] = self.label_counts[2] + labels.count(2)
         predictions = self.clf.predict(documents)
         accuracy = np.mean(predictions == labels)
         return (zip(documents, predictions, labels), accuracy)
 
     def cross_validate(self, examples):
         documents, labels = zip(*examples)
-        self.label_counts[0] = labels.count(0)
-        self.label_counts[1] = labels.count(1)
-        self.label_counts[2] = labels.count(2)
 
         self.make_clf()
         return clf_util.sklearn_cv(self.clf, documents, labels)

@@ -14,6 +14,8 @@ def make_data_cleaner(key):
     key = key.lower()
     if key == 'edx_confusion':
         return EdxConfusion()
+    if key == 'edx_confusion_binary':
+        return EdxConfusion(binary=True)
     elif key == 'edx_sentiment':
         return EdxSentiment()
     elif key == 'edx_urgency':

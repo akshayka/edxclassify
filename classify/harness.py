@@ -21,25 +21,22 @@ def invoke_classifier(classifier, data_filename, data_cleaner):
         dcname = data_cleaner.name
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
           'data_cleaner %s' % (data_filename, classifier.name, dcname)
-    for i, label in enumerate(labels):
-        print str(label) + ' had %d occurrences' % \
-              classifier.label_counts[i]
 
     header = ['fold']
     for label in labels:
         label_str = str(label)
+        print label_str
         header.append(label_str + ': precision')
         header.append(label_str + ': recall')
         header.append(label_str + ': f1')
     results = []
-    print cv_results
     avgs = [0] * len(labels) * 3
     fold = 1
     for p, r, f in zip(cv_results[0], cv_results[1], cv_results[2]):
-        results.append([str(fold)] +
-                       [p[0], r[0], f[0]] +
-                       [p[1], r[1], f[1]] +
-                       [p[2], r[2], f[2]])
+        entry = [str(fold)]
+        for i in range(len(labels)):
+            entry = entry + [p[i], r[i], f[i]]
+        results.append(entry)
         for i in range(len(avgs) / 3):
             a_i = i * 3
             avgs[a_i] = avgs[a_i] + p[i]
@@ -49,7 +46,6 @@ def invoke_classifier(classifier, data_filename, data_cleaner):
     avgs = [avg / (fold - 1) for avg in avgs]
     avgs = ['avg'] + avgs
     results.append(avgs)
-    print results
     print tabulate(results, header, tablefmt='grid')
 
 
