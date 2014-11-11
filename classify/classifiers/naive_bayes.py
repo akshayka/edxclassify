@@ -19,10 +19,10 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
 
-class NaiveBayesLikert(Classifier):
+class NaiveBayes(Classifier):
     def __init__(self, tfidf=False):
         self.use_tfidf=tfidf
-        self.name = 'NaiveBayesLikert'
+        self.name = 'NaiveBayes'
 
 
     def make_clf(self):
