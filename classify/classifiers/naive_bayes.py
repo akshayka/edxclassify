@@ -20,20 +20,25 @@ from sklearn.pipeline import make_pipeline
 
 
 class NaiveBayes(Classifier):
-    def __init__(self, tfidf=False):
-        self.use_tfidf=tfidf
+    def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
+                 custom_stop_words=False):
+        self.token_pattern = token_pattern
+        self.use_tfidf = tfidf
+        self.custom_stop_words = custom_stop_words
         self.name = 'NaiveBayes'
 
 
     def make_clf(self):
         if self.use_tfidf:
             self.clf = make_pipeline(
-                CountVectorizer(stop_words='english'),
+                CountVectorizer(token_pattern=self.token_pattern,
+                                stop_words='english'),
                 TfidfTransformer(),
                 MultinomialNB())
         else:
             self.clf = make_pipeline(
-                CountVectorizer(stop_words='english'),
+                CountVectorizer(token_pattern=self.token_pattern,
+                                stop_words='english'),
                 MultinomialNB())
     
     def train(self, training_examples):

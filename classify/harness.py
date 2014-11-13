@@ -61,9 +61,17 @@ def main():
                         help='apply a particular classifier to the data; see '
                         'classifier_factory.py for a list of supported '
                         'classifiers')
+    parser.add_argument('-t', '--token_pattern', type=str,
+                        default=r'(?u)(\b\w\w+\b|[.,;?!])',
+                        help='regex that defines a token')
+    parser.add_argument('-tf', '--tfidf', action='store_true',
+                        help='include to use tfidf')
+    parser.add_argument('-c', '--custom_stop_words', action='store_true',
+                        help='include to use the custom stop word list')
     args = parser.parse_args()
 
-    classifier = make_classifier(args.classifier)
+    classifier = make_classifier(args.classifier, args.token_pattern,
+                                 args.tfidf, args.custom_stop_words)
     data_cleaner = None
     if args.data_cleaner is not None:
         data_cleaner = make_data_cleaner(args.data_cleaner)
