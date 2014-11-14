@@ -44,7 +44,6 @@ def tabulate_results(cv_results, average, labels):
             avgs[a_i+1] = avgs[a_i+1] + r[i]
             avgs[a_i+2] = avgs[a_i+2] + f[i]
         fold = fold + 1
-    print avgs
     avgs = [avg / (fold - 1) for avg in avgs]
     avgs = ['avg'] + avgs
     results.append(avgs)
