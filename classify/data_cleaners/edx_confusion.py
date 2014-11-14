@@ -28,7 +28,7 @@ class EdxConfusion(DataCleaner):
 
     # The first entry in each record is the document;
     # the sixth entry in each record is the likert score.
-    def process_records(self, records)
+    def process_records(self, records):
         return [(self.process_doc(record[0]),
                 dc_util.compress_likert(int(float(record[5])), self.binary, 4))
                 for record in records]
