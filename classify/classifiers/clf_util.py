@@ -15,7 +15,6 @@ def sklearn_cv(clf, examples, labels):
     for train_indices, test_indices in skf:
         X_train, X_test  = X[train_indices], X[test_indices]
         y_train, y_test  = y[train_indices], y[test_indices]
-
         # Predict on the test set
         clf.fit(X_train, y_train)
         y_pred = clf.predict(X_test)
@@ -25,7 +24,6 @@ def sklearn_cv(clf, examples, labels):
         f1_test.append(metrics.f1_score(y_test, y_pred, average=None))
 
         # Predict on the training set
-        clf.fit(X_train, y_train)
         y_pred = clf.predict(X_train)
         precision_train.append(metrics.precision_score(y_train, y_pred,
             average=None))

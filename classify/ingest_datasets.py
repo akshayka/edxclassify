@@ -35,7 +35,6 @@ def main():
              open(args.outfile, 'wb') as outfile:
             reader = csv.reader(csvfile, delimiter=args.delim)
             dataset = [to_unicode(row, args.encoding) for row in reader]
-            print dataset
             pickle.dump(dataset, outfile)
     except IOError:
         print 'Problem opening file.'

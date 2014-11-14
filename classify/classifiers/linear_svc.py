@@ -14,17 +14,24 @@ import clf_util
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_selection import RFECV
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
 from sklearn.svm import LinearSVC
 from sklearn.pipeline import make_pipeline
 
 
 class LinSVC(Classifier):
     def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
-                 custom_stop_words=False, C=1.0):
+                 custom_stop_words=False, C=1.0,
+                 reduce_features=False,
+                 k_best_features=0):
         self.token_pattern = token_pattern
         self.use_tfidf = tfidf
         self.custom_stop_words = custom_stop_words
         self.C = C
+        self.reduce_features = reduce_features
+        self.k_best_features = k_best_features
         self.name = 'LinearSVC'
 
 
@@ -32,17 +39,18 @@ class LinSVC(Classifier):
         stop_words='english'
         if self.custom_stop_words:
            stop_words=CUSTOM_STOP_WORDS 
+
+        pipeline = [CountVectorizer(token_pattern=self.token_pattern,
+                                    stop_words=stop_words)]
         if self.use_tfidf:
-            self.clf = make_pipeline(
-                CountVectorizer(token_pattern=self.token_pattern,
-                                stop_words=stop_words),
-                TfidfTransformer(),
-                LinearSVC())
+            pipeline = pipeline + [TfidfTransformer()]
+        if self.k_best_features > 0:
+            pipeline = pipeline + [SelectKBest(chi2, k=self.k_best_features)]
+        if self.reduce_features:
+            pipeline = pipeline + [RFECV(LinearSVC(C=self.C, step=1, cv=2))]
         else:
-            self.clf = make_pipeline(
-                CountVectorizer(token_pattern=self.token_pattern,
-                                stop_words=stop_words),
-                LinearSVC(C=self.C))
+            pipeline = pipeline + [LinearSVC(C=self.C)]
+        self.clf = make_pipeline(*pipeline)
     
     def train(self, training_examples):
         documents, labels = zip(*examples)

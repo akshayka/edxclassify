@@ -14,16 +14,23 @@ import clf_util
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_selection import RFECV
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 
 
 class LogRegression(Classifier):
     def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
-                 custom_stop_words=False):
+                 custom_stop_words=False,
+                 reduce_features=False,
+                 k_best_features=0):
         self.token_pattern = token_pattern
         self.use_tfidf = tfidf
         self.custom_stop_words = custom_stop_words
+        self.reduce_features = reduce_features
+        self.k_best_features = k_best_features
         self.name = 'LogisticRegression'
 
 
@@ -31,17 +38,18 @@ class LogRegression(Classifier):
         stop_words='english'
         if self.custom_stop_words:
            stop_words=CUSTOM_STOP_WORDS 
+
+        pipeline = [CountVectorizer(token_pattern=self.token_pattern,
+                                    stop_words=stop_words)]
         if self.use_tfidf:
-            self.clf = make_pipeline(
-                CountVectorizer(token_pattern=self.token_pattern,
-                                stop_words=stop_words),
-                TfidfTransformer(),
-                LogisticRegression())
+            pipeline = pipeline + [TfidfTransformer()]
+        if self.k_best_features > 0:
+            pipeline = pipeline + [SelectKBest(chi2, k=self.k_best_features)]
+        if self.reduce_features:
+            pipeline = pipeline + [RFECV(LogisticRegression(), step=1, cv=2)]
         else:
-            self.clf = make_pipeline(
-                CountVectorizer(token_pattern=self.token_pattern,
-                                stop_words=stop_words),
-                LogisticRegression())
+            pipeline = pipeline + [LogisticRegression()]
+        self.clf = make_pipeline(*pipeline)
     
     def train(self, training_examples):
         documents, labels = zip(*examples)

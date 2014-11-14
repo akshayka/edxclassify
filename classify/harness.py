@@ -76,6 +76,10 @@ def main():
                         help='apply a particular classifier to the data; see '
                         'classifier_factory.py for a list of supported '
                         'classifiers')
+    parser.add_argument('-rf', '--reduce_features', action='store_true',
+                        help='run RFECV to reduce features (backwards search)')
+    parser.add_argument('-kb', '--k_best', type=int, default=0,
+                        help='k best features to use (chi2 elimination)')
     parser.add_argument('-t', '--token_pattern_idx', type=int,
                         default=0,
                         help='index corresponding to token_pattern in '
@@ -88,7 +92,9 @@ def main():
                         help='penalty (C term) for linear svm')
     args = parser.parse_args()
 
-    classifier = make_classifier(args.classifier, args.token_pattern_idx,
+    classifier = make_classifier(args.classifier, args.reduce_features,
+                                 args.k_best,
+                                 args.token_pattern_idx,
                                  args.tfidf, args.custom_stop_words,
                                  args.penalty)
     data_cleaner = make_data_cleaner(args.data_cleaner, args.binary,
