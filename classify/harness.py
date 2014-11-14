@@ -5,6 +5,23 @@ import pickle
 from tabulate import tabulate
 
 
+def tabulate_f1_summary(cv_results_tr, cv_results_tst, labels):
+    headers = ['Label', 'Train: F1', 'Test: F1']
+    avgs = []
+    for label in labels:
+        avgs = avgs + [[0, 0]]
+    fold = 1
+    for f_tr, f_tst in zip(cv_results_tr[2], cv_results_tst[2]):
+        for i in range(len(labels)):
+            avgs[i][0] = avgs[i][0] + f_tr[i]
+            avgs[i][1] = avgs[i][1] + f_tst[i]
+        fold = fold + 1
+    avgs = [[avg[0] / (fold - 1), avg[1] / (fold - 1)] for avg in avgs]
+    for i, label in enumerate(labels):
+        avgs[i] = [label] + avgs[i]
+    print tabulate(avgs, headers, tablefmt='grid')
+
+
 def tabulate_results(cv_results, average, labels):
     header = ['fold']
     for label in labels:
@@ -27,13 +44,15 @@ def tabulate_results(cv_results, average, labels):
             avgs[a_i+1] = avgs[a_i+1] + r[i]
             avgs[a_i+2] = avgs[a_i+2] + f[i]
         fold = fold + 1
+    print avgs
     avgs = [avg / (fold - 1) for avg in avgs]
     avgs = ['avg'] + avgs
     results.append(avgs)
     print tabulate(results, header, tablefmt='grid')
 
 
-def invoke_classifier(classifier, data_filename, average, data_cleaner):
+def invoke_classifier(classifier, data_filename,
+                      average, train_test_only, data_cleaner):
     results = []
     labels = data_cleaner.labels()
     with open(data_filename, 'rb') as infile:
@@ -47,10 +66,13 @@ def invoke_classifier(classifier, data_filename, average, data_cleaner):
     dcname = data_cleaner.name
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
           'data_cleaner %s' % (data_filename, classifier.name, dcname)
-    print 'Results: Making predictions on the training set.'
-    tabulate_results(cv_results_train, average, labels)
-    print 'Results: Making predictions on the test set.'
-    tabulate_results(cv_results_test, average, labels)
+    if train_test_only:
+        tabulate_f1_summary(cv_results_train, cv_results_test, labels)
+    else:
+        print 'Results: Making predictions on the training set.'
+        tabulate_results(cv_results_train, average, labels)
+        print 'Results: Making predictions on the test set.'
+        tabulate_results(cv_results_test, average, labels)
 
 
 def main():
@@ -60,6 +82,8 @@ def main():
     parser.add_argument('data_file', type=str, help='ingested data file')
     parser.add_argument('-avg', '--average', action='store_true',
                         help='only print out average row')
+    parser.add_argument('-tr_tst', '--train_test_f1', action='store_true',
+                        help='only print out average train, test f_1')
     parser.add_argument('data_cleaner', type=str,
                         help='apply a DataCleaner to the data ingested by '
                         'ingest_datasets.py; see data_cleaner_factory.py for '
@@ -100,7 +124,8 @@ def main():
     data_cleaner = make_data_cleaner(args.data_cleaner, args.binary,
                                      args.collapse_numbers, args.noun_phrases,
                                      args.first_sentence)
-    invoke_classifier(classifier, args.data_file, args.average, data_cleaner)
+    invoke_classifier(classifier, args.data_file, args.average,
+                      args.train_test_f1, data_cleaner)
 
 
 if __name__ == '__main__':
