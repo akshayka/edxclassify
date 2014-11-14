@@ -22,8 +22,12 @@ class EdxConfusion(DataCleaner):
 
     def process_doc(self, document):
         document = document.lower()
-        # document = dc_util.extract_noun_phrases(document)
-        # document = dc_util.upweight_first_sentence(document)
+        if self.collapse_numbers:
+            document = dc_util.collapse_numbers(document)
+        if self.extract_noun_phrases:
+            document = dc_util.extract_noun_phrases(document)
+        if self.upweight_first_sentence:
+            document = dc_util.upweight_first_sentence(document)
         return document
 
     # The first entry in each record is the document;
