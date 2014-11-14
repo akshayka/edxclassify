@@ -5,23 +5,7 @@ import pickle
 from tabulate import tabulate
 
 
-def invoke_classifier(classifier, data_filename, data_cleaner):
-    results = []
-    labels = data_cleaner.labels()
-    with open(data_filename, 'rb') as infile:
-        # Slice off headers
-        # TODO: Headers aren't getting used anywhere,
-        # perhaps don't take them in ingest_dataset
-        dataset = pickle.load(infile)[1:]
-        dataset =  data_cleaner.process_records(dataset)
-        cv_results = classifier.cross_validate(dataset)
-
-    dcname = ''
-    if data_cleaner is not None:
-        dcname = data_cleaner.name
-    print 'Classification results for file %s ...;\nusing classifier %s and ' \
-          'data_cleaner %s' % (data_filename, classifier.name, dcname)
-
+def tabulate_results(cv_results, labels):
     header = ['fold']
     for label in labels:
         label_str = str(label)
@@ -46,6 +30,28 @@ def invoke_classifier(classifier, data_filename, data_cleaner):
     avgs = ['avg'] + avgs
     results.append(avgs)
     print tabulate(results, header, tablefmt='grid')
+
+
+def invoke_classifier(classifier, data_filename, data_cleaner):
+    results = []
+    labels = data_cleaner.labels()
+    with open(data_filename, 'rb') as infile:
+        # Slice off headers
+        # TODO: Headers aren't getting used anywhere,
+        # perhaps don't take them in ingest_dataset
+        dataset = pickle.load(infile)[1:]
+        dataset =  data_cleaner.process_records(dataset)
+        cv_results_train, cv_results_test = classifier.cross_validate(dataset)
+
+    dcname = ''
+    if data_cleaner is not None:
+        dcname = data_cleaner.name
+    print 'Classification results for file %s ...;\nusing classifier %s and ' \
+          'data_cleaner %s' % (data_filename, classifier.name, dcname)
+    print 'Results: Making predictions on the training set.'
+    tabulate_results(cv_results_train, labels)
+    print 'Results: Making predictions on the test set.'
+    tabulate_results(cv_results_test, labels)
 
 
 def main():

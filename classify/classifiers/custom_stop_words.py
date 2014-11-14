@@ -4,7 +4,8 @@
 #
 # Words removed from original ENGLISH_STOP_WORDS list:
 #   'i'
-#
+#   can, cant, cannot
+#   could, couldnt
 CUSTOM_STOP_WORDS = frozenset([
     "a", "about", "above", "across", "after", "afterwards", "again", "against",
     "all", "almost", "alone", "along", "already", "also", "although", "always",
@@ -13,8 +14,8 @@ CUSTOM_STOP_WORDS = frozenset([
     "around", "as", "at", "back", "be", "became", "because", "become",
     "becomes", "becoming", "been", "before", "beforehand", "behind", "being",
     "below", "beside", "besides", "between", "beyond", "bill", "both",
-    "bottom", "but", "by", "call", "can", "cannot", "cant", "co", "con",
-    "could", "couldnt", "cry", "de", "describe", "detail", "do", "done",
+    "bottom", "but", "by", "call", "co", "con",
+    "cry", "de", "describe", "detail", "do", "done",
     "down", "due", "during", "each", "eg", "eight", "either", "eleven", "else",
     "elsewhere", "empty", "enough", "etc", "even", "ever", "every", "everyone",
     "everything", "everywhere", "except", "few", "fifteen", "fify", "fill",

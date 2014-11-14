@@ -44,3 +44,7 @@ def extract_noun_phrases(document):
     # For now, just upweight the noun phrases
     document = ' '.join([document] + result)
     return document
+
+
+def collapse_numbers(document):
+    return re.sub(r'\b[0-9]+\b', '1', document)
