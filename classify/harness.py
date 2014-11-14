@@ -5,7 +5,7 @@ import pickle
 from tabulate import tabulate
 
 
-def tabulate_results(cv_results, labels):
+def tabulate_results(cv_results, average, labels):
     header = ['fold']
     for label in labels:
         label_str = str(label)
@@ -19,7 +19,8 @@ def tabulate_results(cv_results, labels):
         entry = [str(fold)]
         for i in range(len(labels)):
             entry = entry + [p[i], r[i], f[i]]
-        results.append(entry)
+        if not average:
+            results.append(entry)
         for i in range(len(avgs) / 3):
             a_i = i * 3
             avgs[a_i] = avgs[a_i] + p[i]
@@ -32,7 +33,7 @@ def tabulate_results(cv_results, labels):
     print tabulate(results, header, tablefmt='grid')
 
 
-def invoke_classifier(classifier, data_filename, data_cleaner):
+def invoke_classifier(classifier, data_filename, average, data_cleaner):
     results = []
     labels = data_cleaner.labels()
     with open(data_filename, 'rb') as infile:
@@ -47,9 +48,9 @@ def invoke_classifier(classifier, data_filename, data_cleaner):
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
           'data_cleaner %s' % (data_filename, classifier.name, dcname)
     print 'Results: Making predictions on the training set.'
-    tabulate_results(cv_results_train, labels)
+    tabulate_results(cv_results_train, average, labels)
     print 'Results: Making predictions on the test set.'
-    tabulate_results(cv_results_test, labels)
+    tabulate_results(cv_results_test, average, labels)
 
 
 def main():
@@ -57,6 +58,8 @@ def main():
                                      'train, test folds generated using '
                                      'ingest_datasets.py')
     parser.add_argument('data_file', type=str, help='ingested data file')
+    parser.add_argument('-avg', '--average', action='store_true',
+                        help='only print out average row')
     parser.add_argument('data_cleaner', type=str,
                         help='apply a DataCleaner to the data ingested by '
                         'ingest_datasets.py; see data_cleaner_factory.py for '
@@ -91,7 +94,7 @@ def main():
     data_cleaner = make_data_cleaner(args.data_cleaner, args.binary,
                                      args.collapse_numbers, args.noun_phrases,
                                      args.first_sentence)
-    invoke_classifier(classifier, args.data_file, data_cleaner)
+    invoke_classifier(classifier, args.data_file, args.average, data_cleaner)
 
 
 if __name__ == '__main__':
