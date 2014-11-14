@@ -43,9 +43,7 @@ def invoke_classifier(classifier, data_filename, data_cleaner):
         dataset =  data_cleaner.process_records(dataset)
         cv_results_train, cv_results_test = classifier.cross_validate(dataset)
 
-    dcname = ''
-    if data_cleaner is not None:
-        dcname = data_cleaner.name
+    dcname = data_cleaner.name
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
           'data_cleaner %s' % (data_filename, classifier.name, dcname)
     print 'Results: Making predictions on the training set.'
@@ -63,6 +61,14 @@ def main():
                         help='apply a DataCleaner to the data ingested by '
                         'ingest_datasets.py; see data_cleaner_factory.py for '
                         'a list of supported cleaners')
+    parser.add_argument('-b', '--binary', action='store_true',
+                        help='use binary labels')
+    parser.add_argument('-n', '--compress_numbers', action='store_true',
+                        help='compress all numbers to single token')
+    parser.add_argument('-np', '--noun_phrases', action='store_true',
+                        help='extract noun phrases')
+    parser.add_argument('-fs', '--first_sentence', action='store_true',
+                        help='upweight first sentence')
     parser.add_argument('classifier', type=str,
                         help='apply a particular classifier to the data; see '
                         'classifier_factory.py for a list of supported '
@@ -82,9 +88,9 @@ def main():
     classifier = make_classifier(args.classifier, args.token_pattern_idx,
                                  args.tfidf, args.custom_stop_words,
                                  args.penalty)
-    data_cleaner = None
-    if args.data_cleaner is not None:
-        data_cleaner = make_data_cleaner(args.data_cleaner)
+    data_cleaner = make_data_cleaner(args.data_cleaner, args.binary,
+                                     args.compress_numbers, args.noun_phrases,
+                                     args.first_sentence)
     invoke_classifier(classifier, args.data_file, data_cleaner)
 
 
