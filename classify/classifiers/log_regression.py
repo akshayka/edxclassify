@@ -1,6 +1,6 @@
 '''
 
-Multinomial Naive Bayes
+Logistic Regression
 
 Training, test data format:
 [ [ TEXT, LIKERT_SCORE] ... [TEXT, LIKERT_SCORE]
@@ -14,17 +14,17 @@ import clf_util
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 
 
-class NaiveBayes(Classifier):
+class LogRegression(Classifier):
     def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
                  custom_stop_words=False):
         self.token_pattern = token_pattern
         self.use_tfidf = tfidf
         self.custom_stop_words = custom_stop_words
-        self.name = 'NaiveBayes'
+        self.name = 'LogisticRegression'
 
 
     def make_clf(self):
@@ -36,12 +36,12 @@ class NaiveBayes(Classifier):
                 CountVectorizer(token_pattern=self.token_pattern,
                                 stop_words=stop_words),
                 TfidfTransformer(),
-                MultinomialNB())
+                LogisticRegression())
         else:
             self.clf = make_pipeline(
                 CountVectorizer(token_pattern=self.token_pattern,
                                 stop_words=stop_words),
-                MultinomialNB())
+                LogisticRegression())
     
     def train(self, training_examples):
         documents, labels = zip(*examples)

@@ -75,10 +75,13 @@ def main():
                         help='include to use tfidf')
     parser.add_argument('-c', '--custom_stop_words', action='store_true',
                         help='include to use the custom stop word list')
+    parser.add_argument('-p', '--penalty', type=float, default=1.0,
+                        help='penalty (C term) for linear svm')
     args = parser.parse_args()
 
     classifier = make_classifier(args.classifier, args.token_pattern_idx,
-                                 args.tfidf, args.custom_stop_words)
+                                 args.tfidf, args.custom_stop_words,
+                                 args.penalty)
     data_cleaner = None
     if args.data_cleaner is not None:
         data_cleaner = make_data_cleaner(args.data_cleaner)

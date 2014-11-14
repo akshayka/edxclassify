@@ -1,6 +1,6 @@
 '''
 
-Multinomial Naive Bayes
+Linear SVC
 
 Training, test data format:
 [ [ TEXT, LIKERT_SCORE] ... [TEXT, LIKERT_SCORE]
@@ -14,17 +14,18 @@ import clf_util
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import LinearSVC
 from sklearn.pipeline import make_pipeline
 
 
-class NaiveBayes(Classifier):
+class LinSVC(Classifier):
     def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
-                 custom_stop_words=False):
+                 custom_stop_words=False, C=1.0):
         self.token_pattern = token_pattern
         self.use_tfidf = tfidf
         self.custom_stop_words = custom_stop_words
-        self.name = 'NaiveBayes'
+        self.C = C
+        self.name = 'LinearSVC'
 
 
     def make_clf(self):
@@ -36,12 +37,12 @@ class NaiveBayes(Classifier):
                 CountVectorizer(token_pattern=self.token_pattern,
                                 stop_words=stop_words),
                 TfidfTransformer(),
-                MultinomialNB())
+                LinearSVC())
         else:
             self.clf = make_pipeline(
                 CountVectorizer(token_pattern=self.token_pattern,
                                 stop_words=stop_words),
-                MultinomialNB())
+                LinearSVC(C=self.C))
     
     def train(self, training_examples):
         documents, labels = zip(*examples)
