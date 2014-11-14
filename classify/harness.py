@@ -63,8 +63,8 @@ def main():
                         'a list of supported cleaners')
     parser.add_argument('-b', '--binary', action='store_true',
                         help='use binary labels')
-    parser.add_argument('-n', '--compress_numbers', action='store_true',
-                        help='compress all numbers to single token')
+    parser.add_argument('-n', '--collapse_numbers', action='store_true',
+                        help='collapse all numbers to single token')
     parser.add_argument('-np', '--noun_phrases', action='store_true',
                         help='extract noun phrases')
     parser.add_argument('-fs', '--first_sentence', action='store_true',
@@ -89,7 +89,7 @@ def main():
                                  args.tfidf, args.custom_stop_words,
                                  args.penalty)
     data_cleaner = make_data_cleaner(args.data_cleaner, args.binary,
-                                     args.compress_numbers, args.noun_phrases,
+                                     args.collapse_numbers, args.noun_phrases,
                                      args.first_sentence)
     invoke_classifier(classifier, args.data_file, data_cleaner)
 
