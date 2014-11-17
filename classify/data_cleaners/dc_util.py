@@ -1,6 +1,5 @@
 import nltk
-from nltk.corpus import conll2000
-from chunk_parser import ChunkParser
+import re
 
 
 def compress_likert(score, binary=False, bin_threshold=4):
@@ -18,20 +17,17 @@ def compress_likert(score, binary=False, bin_threshold=4):
         return 2
 
 def upweight_first_sentence(document):
-    sentences = nltk.sent_tokenize(document)
+    sentences = nltk.sent_tokenize(document.decode("utf8"))
     document = ' '.join(sentences + [sentences[0]])
-    return document
+    return document.encode("utf8")
 
 
-def extract_noun_phrases(document):
+def extract_noun_phrases(document, cp):
     # Process the document into pos-tagged sentences
+    document = document.decode("utf8")
     sentences = nltk.sent_tokenize(document)
     sentences = [nltk.word_tokenize(sent) for sent in sentences]
     sentences = [nltk.pos_tag(sent) for sent in sentences]
-
-    # Build an 'NP' chunk parser
-    train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP'])
-    cp = ChunkParser(train_sents)
 
     # Parse the document
     parsed_doc = [cp.parse(sentence) for sentence in sentences]
@@ -43,7 +39,7 @@ def extract_noun_phrases(document):
 
     # For now, just upweight the noun phrases
     document = ' '.join([document] + result)
-    return document
+    return document.encode("utf8")
 
 
 def collapse_numbers(document):
