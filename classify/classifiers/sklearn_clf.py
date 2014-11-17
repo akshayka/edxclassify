@@ -32,7 +32,7 @@ class SklearnCLF(Classifier):
         self.reduce_features = reduce_features
         self.k_best_features = k_best_features
 
-        opts = ''
+        opts = 'token:' + token_pattern + ' '
         if tfidf:
             opts = opts + 'tfidf '
         if custom_stop_words:

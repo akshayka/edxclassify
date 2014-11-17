@@ -74,7 +74,7 @@ def invoke_classifier(classifier, data_filename,
         tabulate_results(cv_results_test, average, labels)
 
 
-def main():
+def main(args=None):
     parser = argparse.ArgumentParser(description='applies a classifier to '
                                      'train, test folds generated using '
                                      'ingest_datasets.py')
@@ -115,7 +115,7 @@ def main():
                         help='include to use the custom stop word list')
     parser.add_argument('-p', '--penalty', type=float, default=1.0,
                         help='penalty (C term) for linear svm')
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     classifier = make_classifier(args.classifier, args.reduce_features,
                                  args.k_best,
