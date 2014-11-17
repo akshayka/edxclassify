@@ -16,6 +16,7 @@ def main():
                         'classifier_factory.py for a list of supported '
                         'classifiers')
     parser.add_argument('output_prefix', type=str, help='output file prefix')
+    parser.add_argument('-v', '--verbose', action='store_true', help='verbose')
     args = parser.parse_args()
     prefix =  [args.data_file, args.data_cleaner, args.classifier, \
                '-t', '5', '-c', '-n', '-p', '0.4']
@@ -30,7 +31,8 @@ def main():
 
     for argsuffix in argsuffixes:
         harness_args = prefix + argsuffix
-        print 'executing ' + ' '.join(harness_args)
+        if args.verbose:
+            print 'executing ' + ' '.join(harness_args)
 
         stdout_save = sys.stdout
         sys.stdout = open(args.output_prefix + '-'.join(argsuffix) + '.txt',
