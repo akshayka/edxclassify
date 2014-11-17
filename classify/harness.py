@@ -95,7 +95,7 @@ def main():
                         help='collapse all numbers to single token')
     parser.add_argument('-np', '--noun_phrases', action='store_true',
                         help='engineer features from noun phrases')
-    parser.add_argument('-fs', '--first_sentence', action='store_true',
+    parser.add_argument('-fs', '--first_sentence', type=int, default=1,
                         help='upweight first sentence')
     parser.add_argument('classifier', type=str,
                         help='apply a particular classifier to the data; see '
@@ -122,9 +122,11 @@ def main():
                                  args.token_pattern_idx,
                                  args.tfidf, args.custom_stop_words,
                                  args.penalty)
-    data_cleaner = make_data_cleaner(args.data_cleaner, args.binary,
-                                     args.collapse_numbers, args.noun_phrases,
-                                     args.first_sentence)
+    data_cleaner = make_data_cleaner(dc=args.data_cleaner,
+                                     binary=args.binary,
+                                     collapse_numbers=args.collapse_numbers,
+                                     extract_noun_phrases=args.noun_phrases,
+                                     first_sentence_weight=args.first_sentence)
     invoke_classifier(classifier, args.data_file, args.average,
                       args.train_test_f1, data_cleaner)
 

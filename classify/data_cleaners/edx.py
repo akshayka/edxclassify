@@ -10,11 +10,11 @@ class Edx(DataCleaner):
                  binary=False,
                  collapse_numbers=False,
                  extract_noun_phrases=False,
-                 upweight_first_sentence=False):
+                 first_sentence_weight=1):
         self.binary = binary
         self.collapse_numbers = collapse_numbers
         self.extract_noun_phrases = extract_noun_phrases
-        self.upweight_first_sentence = upweight_first_sentence
+        self.first_sentence_weight = first_sentence_weight
         train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP'])
         self.chunker = ChunkParser(train_sents)
 
@@ -28,8 +28,9 @@ class Edx(DataCleaner):
             document = dc_util.collapse_numbers(document)
         if self.extract_noun_phrases:
             document = dc_util.extract_noun_phrases(document, self.chunker)
-        if self.upweight_first_sentence:
-            document = dc_util.upweight_first_sentence(document)
+        if self.first_sentence_weight > 1:
+            document = dc_util.upweight_first_sentence(document,
+                self.first_sentence_weight)
         return document
 
 	@abstractmethod

@@ -16,9 +16,9 @@ def compress_likert(score, binary=False, bin_threshold=4):
     else:
         return 2
 
-def upweight_first_sentence(document):
+def upweight_first_sentence(document, weight):
     sentences = nltk.sent_tokenize(document.decode("utf8"))
-    document = ' '.join(sentences + [sentences[0]])
+    document = ' '.join([sentences[0]] * weight + sentences[1:])
     return document.encode("utf8")
 
 

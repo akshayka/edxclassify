@@ -21,7 +21,7 @@ class EdxSentiment(Edx):
             return ['negative', 'neutral', 'positive']
 
     def process_doc(self, document):
-        return super(EdxSentiment, self).process_document(document)
+        return super(EdxSentiment, self).process_doc(document)
 
     # The first entry in each record is the document;
     # the fifth entry in each record is the sentiment likert score.

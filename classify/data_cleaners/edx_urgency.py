@@ -21,7 +21,7 @@ class EdxUrgency(Edx):
             return ['non-urgent', 'neutral', 'urgent']
 
     def process_doc(self, document):
-        return super(EdxSentiment, self).process_document(document)
+        return super(EdxSentiment, self).process_doc(document)
 
     # The first entry in each record is the document;
     # the seventh entry in each record is the urgency likert score.
