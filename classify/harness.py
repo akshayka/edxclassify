@@ -80,9 +80,11 @@ def main():
                                      'ingest_datasets.py')
     parser.add_argument('data_file', type=str, help='ingested data file')
     parser.add_argument('-avg', '--average', action='store_true',
-                        help='only print out average row')
+                        help='only output the average of the metrics computed '
+                        'during cross validation.')
     parser.add_argument('-tr_tst', '--train_test_f1', action='store_true',
-                        help='only print out average train, test f_1')
+                        help='print a consolidated table of labels versus '
+                        'training and test error, as measured by f1 scores.')
     parser.add_argument('data_cleaner', type=str,
                         help='apply a DataCleaner to the data ingested by '
                         'ingest_datasets.py; see data_cleaner_factory.py for '
@@ -92,7 +94,7 @@ def main():
     parser.add_argument('-n', '--collapse_numbers', action='store_true',
                         help='collapse all numbers to single token')
     parser.add_argument('-np', '--noun_phrases', action='store_true',
-                        help='extract noun phrases')
+                        help='engineer features from noun phrases')
     parser.add_argument('-fs', '--first_sentence', action='store_true',
                         help='upweight first sentence')
     parser.add_argument('classifier', type=str,
