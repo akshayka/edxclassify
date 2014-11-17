@@ -17,6 +17,17 @@ class Edx(DataCleaner):
         self.first_sentence_weight = first_sentence_weight
         train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP'])
         self.chunker = ChunkParser(train_sents)
+        opts = ''
+        if binary:
+            opts = opts + 'binary '
+        if collapse_numbers:
+            opts = opts + 'collapse_numbers '
+        if extract_noun_phrases:
+            opts = opts + 'extract_noun_phrases '
+        if first_sentence_weight > 1:
+            opts = opts + 'upweight_first_sentence '
+        self.name = opts
+          
 
     @abstractmethod
     def labels(self):

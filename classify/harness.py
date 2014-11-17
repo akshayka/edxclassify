@@ -59,8 +59,8 @@ def invoke_classifier(classifier, data_filename,
         # TODO: Headers aren't getting used anywhere,
         # perhaps don't take them in ingest_dataset
         dataset = pickle.load(infile)[1:]
-        dataset =  data_cleaner.process_records(dataset)
-        cv_results_train, cv_results_test = classifier.cross_validate(dataset)
+        X, y =  zip(*data_cleaner.process_records(dataset))
+        cv_results_train, cv_results_test = classifier.cross_validate(X, y)
 
     dcname = data_cleaner.name
     print 'Classification results for file %s ...;\nusing classifier %s and ' \

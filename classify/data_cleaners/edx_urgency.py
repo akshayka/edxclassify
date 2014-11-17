@@ -8,11 +8,11 @@ class EdxUrgency(Edx):
                  binary=False,
                  collapse_numbers=False,
                  extract_noun_phrases=False,
-                 upweight_first_sentence=False):
+                 first_sentence_weight=1):
         super(EdxUrgency, self).__init__(binary, collapse_numbers,
                                          extract_noun_phrases,
-                                         upweight_first_sentence)
-        self.name = 'EdxUrgency'
+                                         first_sentence_weight)
+        self.name = 'EdxUrgency ' + self.name
 
     def labels(self):
         if self.binary:
