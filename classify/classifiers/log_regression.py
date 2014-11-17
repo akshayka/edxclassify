@@ -31,6 +31,7 @@ class LogRegression(SklearnCLF):
         self.make_clf(LogisticRegression())
         self.clf.fit(X, y)
 
+
     def cross_validate(self, X, y):
         self.make_clf(LogisticRegression())
         return clf_util.sklearn_cv(self.clf, X, y)

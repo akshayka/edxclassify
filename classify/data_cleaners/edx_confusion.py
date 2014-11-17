@@ -14,14 +14,17 @@ class EdxConfusion(Edx):
                                            first_sentence_weight)
         self.name = 'EdxConfusion ' + self.name
 
+
     def labels(self):
         if self.binary:
             return ['not-confused', 'confused']
         else:
             return ['knowledgeable', 'neutral', 'confused']
 
+
     def process_doc(self, document):
         return super(EdxConfusion, self).process_doc(document)
+
 
     # The first entry in each record is the document;
     # the sixth entry in each record is the confusion likert score.

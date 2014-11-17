@@ -9,13 +9,16 @@ from abc import ABCMeta, abstractmethod
 class Classifier(object):
     __metaclass__ = ABCMeta
 
+
     @abstractmethod
     def train(self, X, y):
         pass
 
+
     @abstractmethod
     def test(self, X, y):
         pass
+
 
     # Return [PRECISION, RECALL, F1]_train, [PRECISION, RECALL, F1]_test
     #
