@@ -93,7 +93,7 @@ def main(args=None):
                         help='use binary labels')
     parser.add_argument('-n', '--collapse_numbers', action='store_true',
                         help='collapse all numbers to single token')
-    parser.add_argument('-l', '--latex', action='store_true', default=True,
+    parser.add_argument('-l', '--latex', action='store_true',
                         help='collapse all latex equations to a special token')
     parser.add_argument('-np', '--noun_phrases', action='store_true',
                         help='engineer features from noun phrases')

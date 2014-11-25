@@ -24,6 +24,7 @@ class LogRegression(SklearnCLF):
                                             custom_stop_words,
                                             reduce_features,
                                             k_best_features)
+        self.binary_counts = True
         self.name = 'LogisticRegression ' + self.name
 
 

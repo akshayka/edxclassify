@@ -31,6 +31,7 @@ class SklearnCLF(Classifier):
         self.custom_stop_words = custom_stop_words
         self.reduce_features = reduce_features
         self.k_best_features = k_best_features
+        self.binary_counts = False
 
         opts = 'token:' + token_pattern + ' '
         if tfidf:
@@ -49,8 +50,13 @@ class SklearnCLF(Classifier):
         if self.custom_stop_words:
            stop_words=CUSTOM_STOP_WORDS 
 
-        pipeline = [CountVectorizer(token_pattern=self.token_pattern,
-                                    stop_words=stop_words)]
+        if self.binary_counts:
+            pipeline = [CountVectorizer(token_pattern=self.token_pattern,
+                                        stop_words=stop_words, binary=True)]
+        else:
+            pipeline = [CountVectorizer(token_pattern=self.token_pattern,
+                                        stop_words=stop_words)]
+
         if self.tfidf:
             pipeline = pipeline + [TfidfTransformer()]
         if self.k_best_features > 0:

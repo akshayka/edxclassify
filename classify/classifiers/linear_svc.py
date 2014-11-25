@@ -24,6 +24,7 @@ class LinSVC(SklearnCLF):
                                      custom_stop_words,
                                      reduce_features,
                                      k_best_features)
+        self.binary_counts = True
         self.C = C
         self.name = 'LinearSVC ' + self.name
 
