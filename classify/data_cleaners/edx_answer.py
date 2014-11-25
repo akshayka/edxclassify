@@ -6,9 +6,10 @@ from edx import Edx
 class EdxAnswer(Edx):
     def __init__(self,
                  collapse_numbers=False,
+                 latex=True,
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
-        super(EdxAnswer, self).__init__(True, collapse_numbers,
+        super(EdxAnswer, self).__init__(True, collapse_numbers, latex,
                                            extract_noun_phrases,
                                            first_sentence_weight)
         self.name = 'EdxAnswer ' + self.name

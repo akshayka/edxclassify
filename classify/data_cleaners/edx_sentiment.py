@@ -7,9 +7,10 @@ class EdxSentiment(Edx):
     def __init__(self,
                  binary=False,
                  collapse_numbers=False,
+                 latex=True,
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
-        super(EdxSentiment, self).__init__(binary, collapse_numbers,
+        super(EdxSentiment, self).__init__(binary, collapse_numbers, latex,
                                            extract_noun_phrases,
                                            first_sentence_weight)
         self.name = 'EdxSentiment ' + self.name

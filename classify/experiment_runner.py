@@ -22,12 +22,12 @@ def main():
                '-t', '5', '-c', '-n', '-p', '0.4']
     argsuffixes = [
                 [],
+                ['-l'],
                 ['-fs', '2'],
-                ['-tf'],
-                ['-fs', '2', '-tf'] ] 
+                ['-tf']]
     for i in range (200, 1200, 200):
-        argsuffixes = argsuffixes + [['-kb', str(i)]]
-        argsuffixes = argsuffixes + [['-tf', '-kb', str(i)]]
+        argsuffixes = argsuffixes + [['-kb', str(i), '-l']]
+        argsuffixes = argsuffixes + [['-tf', '-kb', str(i), '-l']]
 
     for argsuffix in argsuffixes:
         harness_args = prefix + argsuffix

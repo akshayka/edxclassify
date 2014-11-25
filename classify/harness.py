@@ -93,6 +93,8 @@ def main(args=None):
                         help='use binary labels')
     parser.add_argument('-n', '--collapse_numbers', action='store_true',
                         help='collapse all numbers to single token')
+    parser.add_argument('-l', '--latex', action='store_true', default=True,
+                        help='collapse all latex equations to a special token')
     parser.add_argument('-np', '--noun_phrases', action='store_true',
                         help='engineer features from noun phrases')
     parser.add_argument('-fs', '--first_sentence', type=int, default=1,
@@ -125,6 +127,7 @@ def main(args=None):
     data_cleaner = make_data_cleaner(dc=args.data_cleaner,
                                      binary=args.binary,
                                      collapse_numbers=args.collapse_numbers,
+                                     latex=args.latex,
                                      extract_noun_phrases=args.noun_phrases,
                                      first_sentence_weight=args.first_sentence)
     invoke_classifier(classifier, args.data_file, args.average,

@@ -44,3 +44,7 @@ def extract_noun_phrases(document, cp):
 
 def collapse_numbers(document):
     return re.sub(r'\b[0-9]+\b', '1', document)
+
+
+def replace_latex(document):
+    return re.sub(r'\${1,2}[^\$]*\${1,2}', 'clf_latex_eqn_tok', document)

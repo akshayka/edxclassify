@@ -11,9 +11,8 @@ from classifiers.naive_bayes import NaiveBayes
 from classifiers.custom_token_patterns import CUSTOM_TOKEN_PATTERNS
 
 
-#
-#
-#
+supported_classifiers = 'naive_bayes\nlogistic\nlin_svc'
+
 def make_classifier(clf, reduce_features=False, k_best=0, token_pattern_idx=0,
     tfidf=False, custom_stop_words=False, penalty=1.0):
 
@@ -45,4 +44,5 @@ def make_classifier(clf, reduce_features=False, k_best=0, token_pattern_idx=0,
                 reduce_features=reduce_features,
                 k_best_features=k_best)
     else:
-        raise NotImplementedError('Classifier %s not supported.' % clf)
+        raise NotImplementedError('Classifier %s not supported; choose from:\n'
+                                  '%s' % (clf, supported_classifiers))
