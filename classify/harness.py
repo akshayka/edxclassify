@@ -115,6 +115,7 @@ def main(args=None):
                         help='include to use tfidf')
     parser.add_argument('-c', '--custom_stop_words', action='store_true',
                         help='include to use the custom stop word list')
+    # TODO: Scaling option?
     parser.add_argument('-p', '--penalty', type=float, default=1.0,
                         help='penalty (C term) for linear svm')
     args = parser.parse_args(args)

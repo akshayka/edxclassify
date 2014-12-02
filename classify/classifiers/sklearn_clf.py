@@ -19,6 +19,7 @@ from sklearn.feature_selection import RFECV
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 
 
 class SklearnCLF(Classifier):
@@ -59,6 +60,8 @@ class SklearnCLF(Classifier):
 
         if self.tfidf:
             pipeline = pipeline + [TfidfTransformer()]
+        if self.scale:
+            pipeline = pipeline + [StandardScaler(with_mean=False)]
         if self.k_best_features > 0:
             pipeline = pipeline + [SelectKBest(chi2, k=self.k_best_features)]
         if self.reduce_features:
