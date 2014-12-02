@@ -24,9 +24,8 @@ class EdxSentiment(Edx):
     def process_doc(self, document):
         return super(EdxSentiment, self).process_doc(document)
 
-    # The first entry in each record is the document;
-    # the fifth entry in each record is the sentiment likert score.
     def process_records(self, records):
-        return [(self.process_doc(record[0]),
-                dc_util.compress_likert(int(float(record[4])), self.binary, 3))
+        return [(self.process_doc(record[self.columns['text']),
+                dc_util.compress_likert(record[self.columns['sentiment']],
+                                        self.binary, 3))
                 for record in records]

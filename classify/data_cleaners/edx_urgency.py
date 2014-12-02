@@ -24,8 +24,8 @@ class EdxUrgency(Edx):
     def process_doc(self, document):
         return super(EdxSentiment, self).process_doc(document)
 
-    # The first entry in each record is the document;
-    # the seventh entry in each record is the urgency likert score.
     def process_records(self, records):
-        return [(record[0], dc_util.compress_likert(int(float(record[6])),
-                self.binary, 4)) for record in records]
+        return [(self.process_doc(record[self.columns['text']),
+                dc_util.compress_likert(record[self.columns['urgency']],
+                                        self.binary, 4))
+                for record in records]
