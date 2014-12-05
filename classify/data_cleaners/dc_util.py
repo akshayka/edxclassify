@@ -3,6 +3,7 @@ import re
 
 
 def compress_likert(score, binary=False, bin_threshold=4):
+    score = int(float(score))
     if binary:
         if score <= bin_threshold:
             return 0
@@ -16,9 +17,9 @@ def compress_likert(score, binary=False, bin_threshold=4):
     else:
         return 2
 
-def upweight_first_sentence(document):
+def upweight_first_sentence(document, weight):
     sentences = nltk.sent_tokenize(document.decode("utf8"))
-    document = ' '.join(sentences + [sentences[0]])
+    document = ' '.join([sentences[0]] * weight + sentences[1:])
     return document.encode("utf8")
 
 
@@ -44,3 +45,7 @@ def extract_noun_phrases(document, cp):
 
 def collapse_numbers(document):
     return re.sub(r'\b[0-9]+\b', '1', document)
+
+
+def replace_latex(document):
+    return re.sub(r'\${1,2}[^\$]*\${1,2}', 'clf_latex_eqn_tok', document)

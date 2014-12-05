@@ -2,9 +2,9 @@ TARGETS=original tfidf first_sentence number custom_token1 custom_token5 custom_
 PRG=python harness.py
 GOLD_DIR=../../Confusion\ Datasets
 CLASS=medicine
-CLASSIFIER=lin_svc
+CLASSIFIER=logistic
 LOGFILE=$(CLASSIFIER)_$(CLASS)_log.mkd
-ARGS=$(GOLD_DIR)/$(CLASS)_gold edx_confusion $(CLASSIFIER) -avg
+ARGS=$(GOLD_DIR)/$(CLASS)_gold edx_confusion $(CLASSIFIER) -avg -tr_tst
 
 define newline
 
@@ -89,13 +89,17 @@ words.
 endef
 
 define log_recipe
-echo -e '$(subst $(newline),\n,${DESC})' >> $(LOGFILE)
+echo -e '$(subst $(newline),\n,${DESC})' >> $(LOGFILE) 
 $(PRG) $(ARGS) $(OPTS) >> $(LOGFILE)
 echo "" >> $(LOGFILE)
 endef
 
-all: $(TARGETS)
+all: init $(TARGETS)
 
+compact: init original full full2
+
+init:
+	echo -e '$(subst $(newline),\n,${OVERVIEW})' > $(LOGFILE)
 
 original: DESC=$(original_DESC)
 original: OPTS=
@@ -106,10 +110,7 @@ tfidf: OPTS=-tf
 first_sentence: DESC=$(first_sentence_DESC)
 first_sentence: OPTS=-fs
 
-noun_phrase: DESC=$(noun_phrase_DESC)
-noun_phrase: OPTS=-np
-
-number: DESC=$(number_DESC)
+number: DESC=$(numbers_DESC)
 number: OPTS=-n
 
 custom_token1: DESC=$(custom_token1_DESC)
@@ -120,6 +121,15 @@ custom_token5: OPTS=-t 5
 
 custom_stopwords: DESC=$(custom_stopwords_DESC)
 custom_stopwords: OPTS=-c
+
+noun_phrase: DESC=$(noun_phrase_DESC)
+noun_phrase: OPTS=-np
+
+full: OPTS=-kb 700 -t 5 -c -n -p 0.5 
+full: DESC=Full
+
+full2: OPTS=-kb 700 -t 5 -c -n -p 0.5 -fs 
+full2: DESC=Full2
 
 %:
 	$(log_recipe)

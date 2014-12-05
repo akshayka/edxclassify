@@ -59,8 +59,8 @@ def invoke_classifier(classifier, data_filename,
         # TODO: Headers aren't getting used anywhere,
         # perhaps don't take them in ingest_dataset
         dataset = pickle.load(infile)[1:]
-        dataset =  data_cleaner.process_records(dataset)
-        cv_results_train, cv_results_test = classifier.cross_validate(dataset)
+        X, y =  zip(*data_cleaner.process_records(dataset))
+        cv_results_train, cv_results_test = classifier.cross_validate(X, y)
 
     dcname = data_cleaner.name
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
@@ -74,15 +74,17 @@ def invoke_classifier(classifier, data_filename,
         tabulate_results(cv_results_test, average, labels)
 
 
-def main():
+def main(args=None):
     parser = argparse.ArgumentParser(description='applies a classifier to '
                                      'train, test folds generated using '
                                      'ingest_datasets.py')
     parser.add_argument('data_file', type=str, help='ingested data file')
     parser.add_argument('-avg', '--average', action='store_true',
-                        help='only print out average row')
+                        help='only output the average of the metrics computed '
+                        'during cross validation.')
     parser.add_argument('-tr_tst', '--train_test_f1', action='store_true',
-                        help='only print out average train, test f_1')
+                        help='print a consolidated table of labels versus '
+                        'training and test error, as measured by f1 scores.')
     parser.add_argument('data_cleaner', type=str,
                         help='apply a DataCleaner to the data ingested by '
                         'ingest_datasets.py; see data_cleaner_factory.py for '
@@ -91,9 +93,11 @@ def main():
                         help='use binary labels')
     parser.add_argument('-n', '--collapse_numbers', action='store_true',
                         help='collapse all numbers to single token')
+    parser.add_argument('-l', '--latex', action='store_true',
+                        help='collapse all latex equations to a special token')
     parser.add_argument('-np', '--noun_phrases', action='store_true',
-                        help='extract noun phrases')
-    parser.add_argument('-fs', '--first_sentence', action='store_true',
+                        help='engineer features from noun phrases')
+    parser.add_argument('-fs', '--first_sentence', type=int, default=1,
                         help='upweight first sentence')
     parser.add_argument('classifier', type=str,
                         help='apply a particular classifier to the data; see '
@@ -111,18 +115,22 @@ def main():
                         help='include to use tfidf')
     parser.add_argument('-c', '--custom_stop_words', action='store_true',
                         help='include to use the custom stop word list')
+    # TODO: Scaling option?
     parser.add_argument('-p', '--penalty', type=float, default=1.0,
                         help='penalty (C term) for linear svm')
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     classifier = make_classifier(args.classifier, args.reduce_features,
                                  args.k_best,
                                  args.token_pattern_idx,
                                  args.tfidf, args.custom_stop_words,
                                  args.penalty)
-    data_cleaner = make_data_cleaner(args.data_cleaner, args.binary,
-                                     args.collapse_numbers, args.noun_phrases,
-                                     args.first_sentence)
+    data_cleaner = make_data_cleaner(dc=args.data_cleaner,
+                                     binary=args.binary,
+                                     collapse_numbers=args.collapse_numbers,
+                                     latex=args.latex,
+                                     extract_noun_phrases=args.noun_phrases,
+                                     first_sentence_weight=args.first_sentence)
     invoke_classifier(classifier, args.data_file, args.average,
                       args.train_test_f1, data_cleaner)
 

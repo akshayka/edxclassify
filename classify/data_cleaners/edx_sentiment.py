@@ -1,20 +1,31 @@
 from abstract_data_cleaner import DataCleaner
 import dc_util
+from edx import Edx
 
 
-class EdxSentiment(DataCleaner):
-    def __init__(self, binary=False):
-        self.name = 'EdxSentiment'
-        self.binary = binary
-        
+class EdxSentiment(Edx):
+    def __init__(self,
+                 binary=False,
+                 collapse_numbers=False,
+                 latex=True,
+                 extract_noun_phrases=False,
+                 first_sentence_weight=1):
+        super(EdxSentiment, self).__init__(binary, collapse_numbers, latex,
+                                           extract_noun_phrases,
+                                           first_sentence_weight)
+        self.name = 'EdxSentiment ' + self.name
+
     def labels(self):
         if self.binary:
-            return ['negative', 'non-negative']
+            return ['negative', 'positive']
         else:
             return ['negative', 'neutral', 'positive']
 
-    # The first entry in each record is the document;
-    # the fifth entry in each record is the likert score.
+    def process_doc(self, document):
+        return super(EdxSentiment, self).process_doc(document)
+
     def process_records(self, records):
-        return [(record[0], dc_util.compress_likert(int(float(record[4])),
-                 self.binary, 3)) for record in records]
+        return [(self.process_doc(record[self.columns['text']),
+                dc_util.compress_likert(record[self.columns['sentiment']],
+                                        self.binary, 3))
+                for record in records]
