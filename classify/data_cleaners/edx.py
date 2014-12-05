@@ -29,7 +29,9 @@ class Edx(DataCleaner):
                          'post_type': 13,
                          'anonymous': 14,
                          'anonymous_to_peers': 15,
-                         'up_count': 16 }
+                         'up_count': 16,
+                         'comment_thread_id': 17,
+                         'reads': 18 }
 
         self.binary = binary
         self.collapse_numbers = collapse_numbers
