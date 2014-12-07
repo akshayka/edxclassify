@@ -30,3 +30,12 @@ def sklearn_cv(clf, examples, labels):
         recall_train.append(metrics.recall_score(y_train, y_pred, average=None))
         f1_train.append(metrics.f1_score(y_train, y_pred, average=None))
     return [precision_train, recall_train, f1_train], [precision_test, recall_test, f1_test]
+
+def is_anonymous(value):
+    return 1 if value.lower() == 'true' else 0
+
+def is_comment_thread(value):
+    return 1 if value.lower() == 'commentthread' else 0
+
+# TODO: We might want to discretize the grades and number of attempts
+

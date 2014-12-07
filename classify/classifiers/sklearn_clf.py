@@ -11,7 +11,8 @@ TODO: docs and docs and docs
 from abc import ABCMeta, abstractmethod
 from abstract_classifier import Classifier
 from custom_stop_words import CUSTOM_STOP_WORDS
-import classify.classifiers.clf_util
+import classify.classifiers.clf_util as *
+from classify.classifiers.feature_aggregator import *
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -20,10 +21,7 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
-from classify.classifiers.feature_aggregator import *
 
-def _isCommentThread(value):
-    return 1 if value == 'CommentThread' else 0
 
 class SklearnCLF(Classifier):
     def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
@@ -62,8 +60,13 @@ class SklearnCLF(Classifier):
                                     stop_words=stop_words,
                                     binary_counts=self.binary_counts),
                 'up_count': FeatureCurator('up_count', int),
-                'anonymous-to-peers': FeatureCurator('anonymous-to-peers', int),
-                'type': FeatureCurator('type', _isCommentThread)
+                'anonymous': FeatureCurator('anonymous', clt_util.is_anonymous),
+                'anonymous_to_peers': FeatureCurator('anonymous_to_peers',
+                                      clt_util.is_anonymous),
+                'type': FeatureCurator('type', clf_util.is_comment_thread),
+                'reads': FeatureCurator('reads', int),
+                'cum_attempts': FeatureCurator('cum_attempts', int),
+                'cum_grade': FeatureCurator('cum_grade', float)
             }
             pipeline = [FeatureAggregator(features), DictVectorizer()]
         else:

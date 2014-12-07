@@ -15,5 +15,9 @@ FEATURE_COLUMNS = {
     'post_type': 13,
     'anonymous': 14,
     'anonymous_to_peers': 15,
-    'up_count': 16
+    'up_count': 16,
+    'comment_thread_id': 17,
+    'reads': 18,
+    'cum_attempts': 19,
+    'cum_grade': 20
 }
