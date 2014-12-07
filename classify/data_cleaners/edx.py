@@ -3,6 +3,7 @@ from abstract_data_cleaner import DataCleaner
 from chunk_parser import ChunkParser
 import dc_util
 from nltk.corpus import conll2000
+from ..feature_spec import FEATURE_COLUMNS
 
 
 class Edx(DataCleaner):
@@ -13,24 +14,7 @@ class Edx(DataCleaner):
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
 
-        self.columns = { 'text': 0,
-                         'opinion': 1,
-                         'question': 2,
-                         'answer': 3,
-                         'sentiment': 4,
-                         'confusion': 5,
-                         'urgency': 6,
-                         'poster_identifiable': 7,
-                         'course_type': 8,
-                         'forum_pid': 9,
-                         'course_name': 10,
-                         'forum_uid': 11,
-                         'date': 12,
-                         'post_type': 13,
-                         'anonymous': 14,
-                         'anonymous_to_peers': 15,
-                         'up_count': 16 }
-
+        self.columns = FEATURE_COLUMNS
         self.binary = binary
         self.collapse_numbers = collapse_numbers
         self.latex = latex
@@ -48,7 +32,7 @@ class Edx(DataCleaner):
         if first_sentence_weight > 1:
             opts = opts + 'upweight_first_sentence '
         self.name = opts
-          
+
 
     @abstractmethod
     def labels(self):
@@ -68,5 +52,5 @@ class Edx(DataCleaner):
         return document
 
 	@abstractmethod
-	def process_records(self, records):	
+	def process_records(self, records):
 		pass
