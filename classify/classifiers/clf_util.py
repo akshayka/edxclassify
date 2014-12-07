@@ -13,8 +13,8 @@ def sklearn_cv(clf, examples, labels):
     recall_test = []
     f1_test = []
     for train_indices, test_indices in skf:
-        X_train, X_test  = X[train_indices], X[test_indices]
-        y_train, y_test  = y[train_indices], y[test_indices]
+        X_train, X_test = X[train_indices], X[test_indices]
+        y_train, y_test = y[train_indices], y[test_indices]
         # Predict on the test set
         clf.fit(X_train, y_train)
         y_pred = clf.predict(X_test)

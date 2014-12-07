@@ -11,7 +11,7 @@ TODO: docs and docs and docs
 from abc import ABCMeta, abstractmethod
 from abstract_classifier import Classifier
 from custom_stop_words import CUSTOM_STOP_WORDS
-import clf_util
+import classify.classifiers.clf_util
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -20,19 +20,24 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from classify.classifiers.feature_aggregator import *
 
+def _isCommentThread(value):
+    return 1 if value == 'CommentThread' else 0
 
 class SklearnCLF(Classifier):
     def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
                  custom_stop_words=False,
                  reduce_features=False,
-                 k_best_features=0):
+                 k_best_features=0,
+                 use_dict_vectorizer=True):
         self.token_pattern = token_pattern
         self.tfidf = tfidf
         self.custom_stop_words = custom_stop_words
         self.reduce_features = reduce_features
         self.k_best_features = k_best_features
         self.binary_counts = False
+        self.use_dict_vectorizer = use_dict_vectorizer
 
         opts = 'token:' + token_pattern + ' '
         if tfidf:
@@ -49,14 +54,22 @@ class SklearnCLF(Classifier):
     def make_clf(self, clf):
         stop_words='english'
         if self.custom_stop_words:
-           stop_words=CUSTOM_STOP_WORDS 
+           stop_words=CUSTOM_STOP_WORDS
 
-        if self.binary_counts:
-            pipeline = [CountVectorizer(token_pattern=self.token_pattern,
-                                        stop_words=stop_words, binary=True)]
+        if self.use_dict_vectorizer:
+            features = {
+                'text': TextCurator(token_pattern=self.token_pattern,
+                                    stop_words=stop_words,
+                                    binary_counts=self.binary_counts),
+                'up_count': FeatureCurator('up_count', int),
+                'anonymous-to-peers': FeatureCurator('anonymous-to-peers', int),
+                'type': FeatureCurator('type', _isCommentThread)
+            }
+            pipeline = [FeatureAggregator(features), DictVectorizer()]
         else:
             pipeline = [CountVectorizer(token_pattern=self.token_pattern,
-                                        stop_words=stop_words)]
+                                        stop_words=stop_words,
+                                        binary=self.binary_counts)]
 
         if self.tfidf:
             pipeline = pipeline + [TfidfTransformer()]
@@ -69,8 +82,8 @@ class SklearnCLF(Classifier):
         else:
             pipeline = pipeline + [clf]
         self.clf = make_pipeline(*pipeline)
-    
-    
+
+
     @abstractmethod
     def train(self, X, y):
         pass
