@@ -11,7 +11,7 @@ TODO: docs and docs and docs
 from abc import ABCMeta, abstractmethod
 from abstract_classifier import Classifier
 from custom_stop_words import CUSTOM_STOP_WORDS
-import clf_util
+import classify.classifiers.clf_util
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
@@ -20,7 +20,10 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from classify.classifiers.feature_aggregator import *
 
+def _isCommentThread(value):
+    return 1 if value == 'CommentThread' else 0
 
 class SklearnCLF(Classifier):
     def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
@@ -54,10 +57,15 @@ class SklearnCLF(Classifier):
            stop_words=CUSTOM_STOP_WORDS
 
         if self.use_dict_vectorizer:
-            pipeline = [clf_util.TextToDictTransformer(token_pattern=self.token_pattern,
-                                                       stop_words=stop_words,
-                                                       binary_counts=self.binary_counts),
-                        DictVectorizer()]
+            features = {
+                'text': TextCurator(token_pattern=self.token_pattern,
+                                    stop_words=stop_words,
+                                    binary_counts=self.binary_counts),
+                'up_count': FeatureCurator('up_count', int),
+                'anonymous-to-peers': FeatureCurator('anonymous-to-peers', int),
+                'type': FeatureCurator('type', _isCommentThread)
+            }
+            pipeline = [FeatureAggregator(features), DictVectorizer()]
         else:
             pipeline = [CountVectorizer(token_pattern=self.token_pattern,
                                         stop_words=stop_words,
