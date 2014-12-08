@@ -1,6 +1,7 @@
 import classify.harness as harness
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 CONFIGURATIONS = [("best-logistic", "logistic -t 5 -c -n -p 0.4")]
 
@@ -47,12 +48,13 @@ def make_score_graph(results_dictionary):
     f1_scores = []
     precision_scores = []
     recall_scores = []
-    for name, entry in results_dictionary:
+    for name in results_dictionary:
         labels.append(name)
+        entry = results_dictionary[name]
         f1_scores.append(extract_f1_test_score(entry))
         precision_scores.append(extract_precision_test_score(entry))
         recall_scores.append(extract_recall_test_score(entry))
-    x = xrange(len(labels))
+    x = np.array(xrange(len(labels)))
     bar_width = 0.25
     fig, ax = plt.subplots()
     plt.bar(x, f1_scores, bar_width, color='g', label='f1 score')
@@ -62,15 +64,16 @@ def make_score_graph(results_dictionary):
     plt.ylabel('Performance')
     plt.xticks(x + bar_width, labels, rotation=40, ha='right')
     plt.show()
+    plt.savefig('test.png')
 
 
 def main(args=None):
     data_path = "../Confusion\ Datasets/medicine_gold_v8"
-    if args is not None:
-        data_path = args[0]
+    if len(args) > 0:
+        data_path = args[1]
     results_dictionary = evaluate_configurations(data_path)
     make_score_graph(results_dictionary)
 
 
-if __name__ == 'main':
-    main()
+if __name__ == '__main__':
+    main(sys.argv)
