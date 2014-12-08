@@ -15,15 +15,20 @@ from sklearn.naive_bayes import MultinomialNB
 
 
 class NaiveBayes(SklearnCLF):
-    def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
+    def __init__(self, token_pattern=r'(?u)\b\w\w+\b',
+                 text_only=False,
+                 no_text=False,
+                 tfidf=False,
                  custom_stop_words=False,
                  reduce_features=False,
                  k_best_features=0):
-        super(NaiveBayes, self).__init__(token_pattern,
-                                         tfidf,
-                                         custom_stop_words,
-                                         reduce_features,
-                                         k_best_features)
+        super(NaiveBayes, self).__init__(token_pattern=token_pattern,
+                                         text_only=text_only,
+                                         no_text=no_text,
+                                         tfidf=tfidf,
+                                         custom_stop_words=custom_stop_words,
+                                         reduce_features=reduce_features,
+                                         k_best_features=k_best_features)
         self.name = 'NaiveBayes ' + self.name
 
     
@@ -33,5 +38,7 @@ class NaiveBayes(SklearnCLF):
 
 
     def cross_validate(self, X, y):
+        print 'making clf'
         self.make_clf(MultinomialNB())
+        print 'cross validating'
         return clf_util.sklearn_cv(self.clf, X, y)

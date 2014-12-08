@@ -24,8 +24,10 @@ class EdxConfusion(Edx):
     def process_doc(self, document):
         return super(EdxConfusion, self).process_doc(document)
 
+    # TUPLE(LIST<features>, label)
     def process_records(self, records):
-        return [(self.process_doc(record[self.columns['text']),
+        return [([self.process_doc(record[self.columns['text']])] +\
+                record[1:],
                 dc_util.compress_likert(record[self.columns['confusion']],
                                         self.binary, 4))
                 for record in records]

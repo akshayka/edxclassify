@@ -15,15 +15,21 @@ from sklearn.linear_model import LogisticRegression
 
 
 class LogRegression(SklearnCLF):
-    def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
+    def __init__(self, token_pattern=r'(?u)\b\w\w+\b',
+                 text_only=False,
+                 no_text=False,
+                 tfidf=False,
                  custom_stop_words=False,
+                 C=1.0,
                  reduce_features=False,
                  k_best_features=0):
-        super(LogRegression, self).__init__(token_pattern,
-                                            tfidf,
-                                            custom_stop_words,
-                                            reduce_features,
-                                            k_best_features)
+        super(LogRegression, self).__init__(token_pattern=token_pattern,
+                                            text_only=text_only,
+                                            no_text=no_text ,
+                                            tfidf=tfidf,
+                                            custom_stop_words=custom_stop_words,
+                                            reduce_features=reduce_features,
+                                            k_best_features=k_best_features)
         self.binary_counts = True
         self.name = 'LogisticRegression ' + self.name
 
@@ -34,5 +40,5 @@ class LogRegression(SklearnCLF):
 
 
     def cross_validate(self, X, y):
-        self.make_clf(LogisticRegression())
+        self.make_clf(LogisticRegression(C=self.C))
         return clf_util.sklearn_cv(self.clf, X, y)

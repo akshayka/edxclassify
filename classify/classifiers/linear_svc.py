@@ -15,17 +15,24 @@ from sklearn.svm import LinearSVC
 
 
 class LinSVC(SklearnCLF):
-    def __init__(self, token_pattern=r'(?u)\b\w\w+\b', tfidf=False,
-                 custom_stop_words=False, C=1.0,
+    def __init__(self, token_pattern=r'(?u)\b\w\w+\b',
+                 text_only=False,
+                 no_text=False,
+                 tfidf=False,
+                 custom_stop_words=False,
+                 C=1.0,
                  reduce_features=False,
                  k_best_features=0):
-        super(LinSVC, self).__init__(token_pattern,
-                                     tfidf,
-                                     custom_stop_words,
-                                     reduce_features,
-                                     k_best_features)
+        super(LinSVC, self).__init__(token_pattern=token_pattern,
+                                     text_only=text_only,
+                                     no_text=no_text,
+                                     tfidf=tfidf,
+                                     custom_stop_words=custom_stop_words,
+                                     reduce_features=reduce_features,
+                                     k_best_features=k_best_features)
         self.binary_counts = True
         self.C = C
+        self.normalize = True
         self.name = 'LinearSVC ' + self.name
 
 

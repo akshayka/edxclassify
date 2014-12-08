@@ -38,14 +38,32 @@ class TextCurator:
         return self.transform(documents)
 
 
+class FeatureExtractor:
+    def __init__(self, feature_name):
+        self.feature_name = feature_name
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        idx = FEATURE_COLUMNS[self.feature_name]
+        return [row[idx] for row in X]
+
+
 class FeatureCurator:
     def __init__(self, feature_name, curate_function):
         self.feature_name = feature_name
         self.curate = curate_function
 
-    def fit_transform(self, X, y=None):
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
         return [{self.feature_name + ' feature': self.curate(value)}
                 for value in X]
+
+    def fit_transform(self, X, y=None):
+        return self.transform(X)
 
 
 class FeatureAggregator:

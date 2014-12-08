@@ -25,7 +25,7 @@ class EdxUrgency(Edx):
         return super(EdxSentiment, self).process_doc(document)
 
     def process_records(self, records):
-        return [(self.process_doc(record[self.columns['text']),
+        return [(self.process_doc(record[self.columns['text']]),
                 dc_util.compress_likert(record[self.columns['urgency']],
                                         self.binary, 4))
                 for record in records]

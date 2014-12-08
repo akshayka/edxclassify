@@ -31,6 +31,16 @@ def sklearn_cv(clf, examples, labels):
         f1_train.append(metrics.f1_score(y_train, y_pred, average=None))
     return [precision_train, recall_train, f1_train], [precision_test, recall_test, f1_test]
 
+def to_int(value):
+    if value == '':
+        return 0
+    return int(value)
+
+def to_float(value):
+    if value == '':
+        return 0
+    return float(value)
+
 def is_anonymous(value):
     return 1 if value.lower() == 'true' else 0
 

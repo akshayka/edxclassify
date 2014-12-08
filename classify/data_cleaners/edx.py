@@ -3,7 +3,7 @@ from abstract_data_cleaner import DataCleaner
 from chunk_parser import ChunkParser
 import dc_util
 from nltk.corpus import conll2000
-from ..feature_spec import FEATURE_COLUMNS
+from classify.feature_spec import FEATURE_COLUMNS
 
 
 class Edx(DataCleaner):

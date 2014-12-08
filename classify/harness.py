@@ -91,6 +91,10 @@ def main(args=None):
                         'a list of supported cleaners')
     parser.add_argument('-b', '--binary', action='store_true',
                         help='use binary labels')
+    parser.add_argument('-txt', '--text_only', action='store_true',
+                        help='only use body text as features')
+    parser.add_argument('-no_txt', '--no_text', action='store_true',
+                        help='don\'t use body text as features')
     parser.add_argument('-n', '--collapse_numbers', action='store_true',
                         help='collapse all numbers to single token')
     parser.add_argument('-l', '--latex', action='store_true',
@@ -120,11 +124,19 @@ def main(args=None):
                         help='penalty (C term) for linear svm')
     args = parser.parse_args(args)
 
-    classifier = make_classifier(args.classifier, args.reduce_features,
-                                 args.k_best,
-                                 args.token_pattern_idx,
-                                 args.tfidf, args.custom_stop_words,
-                                 args.penalty)
+    if args.no_text and args.text_only:
+        print 'no text and text only cannot both be set'
+        return
+
+    classifier = make_classifier(clf=args.classifier,
+                                 reduce_features=args.reduce_features,
+                                 k_best=args.k_best,
+                                 token_pattern_idx=args.token_pattern_idx,
+                                 text_only=args.text_only,
+                                 no_text=args.no_text,
+                                 tfidf=args.tfidf,
+                                 custom_stop_words=args.custom_stop_words,
+                                 penalty=args.penalty)
     data_cleaner = make_data_cleaner(dc=args.data_cleaner,
                                      binary=args.binary,
                                      collapse_numbers=args.collapse_numbers,
