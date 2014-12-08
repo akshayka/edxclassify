@@ -74,6 +74,7 @@ def invoke_classifier(classifier, data_filename,
         tabulate_results(cv_results_test, average, labels)
 
     print relevant_features
+    return cv_results_train, cv_results_test, relevant_features
 
 
 def main(args=None):
@@ -145,7 +146,7 @@ def main(args=None):
                                      latex=args.latex,
                                      extract_noun_phrases=args.noun_phrases,
                                      first_sentence_weight=args.first_sentence)
-    invoke_classifier(classifier, args.data_file, args.average,
+    return invoke_classifier(classifier, args.data_file, args.average,
                       args.train_test_f1, data_cleaner)
 
 

@@ -39,9 +39,6 @@ def sklearn_cv(clf, examples, labels):
         if feature_names is not None and hasattr(classifier, 'coef_'):
             for i, label in enumerate(['knowledgeable', 'neutral', 'confused']):
                 top10 = np.argsort(classifier.coef_[i])[-10:]
-                print label
-                print top10
-                print feature_names[top10]
                 relevant_features[label].append([feature_names[top10]])
 
         precision_test.append(metrics.precision_score(y_test, y_pred,
