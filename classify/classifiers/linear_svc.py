@@ -11,7 +11,7 @@ TODO: docs and docs and docs
 import clf_util
 import numpy as np
 from sklearn_clf import SklearnCLF
-from sklearn.svm import LinearSVC
+from sklearn.svm import SVC, LinearSVC
 
 
 class LinSVC(SklearnCLF):

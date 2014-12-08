@@ -21,7 +21,7 @@ from sklearn.feature_selection import RFECV
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.pipeline import FeatureUnion, Pipeline, make_union, make_pipeline
-from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import Normalizer, StandardScaler
 
 
 class SklearnCLF(Classifier):
@@ -74,7 +74,7 @@ class SklearnCLF(Classifier):
         features = []
         if not self.no_text:
             features = [
-                ('document', Pipeline([
+                ('text_document', Pipeline([
                     ('selector', FeatureExtractor('text')),
                     ('count', counter),
                 ])),
@@ -124,7 +124,7 @@ class SklearnCLF(Classifier):
                 ]
         pipeline = [FeatureUnion(features)]
         if self.normalize:
-            pipeline = pipeline + [Normalizer()]
+            pipeline = pipeline + [StandardScaler(with_mean=False)]
         if self.k_best_features > 0:
             pipeline = pipeline + [SelectKBest(chi2, k=self.k_best_features)]
         if self.reduce_features:
