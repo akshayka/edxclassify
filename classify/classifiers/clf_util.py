@@ -7,13 +7,13 @@ def extract_feature_names(feature_union):
     pipelines = feature_union.transformer_list
     feature_names = []
     for name, pipeline in pipelines:
-        dv = pipeline[-1][-1]
+        dv = pipeline.steps[-1][-1]
         if not hasattr(dv, 'get_feature_names'):
             raise AttributeError("Dictionary %s does not provide "
                                  "get_feature_names." % str(name))
         feature_names.extend([name + "__" + f for f in
                                         dv.get_feature_names()])
-        return feature_names
+    return np.asarray(feature_names)
 
 
 def sklearn_cv(clf, examples, labels):
@@ -34,11 +34,14 @@ def sklearn_cv(clf, examples, labels):
         y_pred = clf.predict(X_test)
 
         # Extract information about the most relevant features
-        feature_names = extract_feature_names(clf.steps[1][-1])
+        feature_names = extract_feature_names(clf.steps[0][-1])
         classifier = clf.steps[-1][-1]
-        if feature_names and hasattr(classifier, 'coef_'):
+        if feature_names is not None and hasattr(classifier, 'coef_'):
             for i, label in enumerate(['knowledgeable', 'neutral', 'confused']):
                 top10 = np.argsort(classifier.coef_[i])[-10:]
+                print label
+                print top10
+                print feature_names[top10]
                 relevant_features[label].append([feature_names[top10]])
 
         precision_test.append(metrics.precision_score(y_test, y_pred,
