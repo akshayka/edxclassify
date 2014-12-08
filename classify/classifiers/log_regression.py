@@ -31,6 +31,7 @@ class LogRegression(SklearnCLF):
                                             reduce_features=reduce_features,
                                             k_best_features=k_best_features)
         self.binary_counts = True
+        self.C = C
         self.name = 'LogisticRegression ' + self.name
 
 
