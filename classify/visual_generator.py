@@ -2,11 +2,9 @@ import classify.harness as harness
 import numpy as np
 import matplotlib.pyplot as plt
 
-data_path = "data/gold_sets/medicine_gold_v8"
-
 CONFIGURATIONS = [("best-logistic", "logistic -t 5 -c -n -p 0.4")]
 
-def evaluate_configurations():
+def evaluate_configurations(data_path):
     result = {}
     for name, config in CONFIGURATIONS:
         harness_args = [data_path, "edx_confusion"]
@@ -54,7 +52,7 @@ def make_score_graph(results_dictionary):
         f1_scores.append(extract_f1_test_score(entry))
         precision_scores.append(extract_precision_test_score(entry))
         recall_scores.append(extract_recall_test_score(entry))
-    x = xrange(len(scores))
+    x = xrange(len(labels))
     bar_width = 0.25
     fig, ax = plt.subplots()
     plt.bar(x, f1_scores, bar_width, color='g', label='f1 score')
@@ -67,8 +65,11 @@ def make_score_graph(results_dictionary):
 
 
 def main(args=None):
-    results_dictionary = evaluate_configurations()
-    make_f1_score_graph(results_dictionary)
+    data_path = "../Confusion\ Datasets/medicine_gold_v8"
+    if args is not None:
+        data_path = args[0]
+    results_dictionary = evaluate_configurations(data_path)
+    make_score_graph(results_dictionary)
 
 
 if __name__ == 'main':
