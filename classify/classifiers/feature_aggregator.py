@@ -13,6 +13,7 @@ class TextCurator:
         if stop_words == 'english':
             stop_words = ENGLISH_STOP_WORDS
         self.stop_words = stop_words
+        self.keyset = None
 
     def fit(self, documents, y=None):
         self.keyset = set(

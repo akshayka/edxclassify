@@ -3,6 +3,19 @@ from sklearn.cross_validation import StratifiedKFold
 from sklearn import metrics
 
 
+def extract_feature_names(feature_union):
+    pipelines = feature_union.transformer_list
+    feature_names = []
+    for name, pipeline in pipelines:
+        dv = pipeline[-1][-1]
+        if not hasattr(dv, 'get_feature_names'):
+            raise AttributeError("Dictionary %s does not provide "
+                                 "get_feature_names." % str(name))
+        feature_names.extend([name + "__" + f for f in
+                                        dv.get_feature_names()])
+        return feature_names
+
+
 def sklearn_cv(clf, examples, labels):
     X, y = np.array(examples), np.array(labels)
     skf = StratifiedKFold(labels, n_folds=10)
@@ -21,7 +34,7 @@ def sklearn_cv(clf, examples, labels):
         y_pred = clf.predict(X_test)
 
         # Extract information about the most relevant features
-        feature_names = clf.steps[1][-1].get_feature_names()
+        feature_names = extract_feature_names(clf.steps[1][-1])
         classifier = clf.steps[-1][-1]
         if feature_names and hasattr(classifier, 'coef_'):
             for i, label in enumerate(['knowledgeable', 'neutral', 'confused']):
