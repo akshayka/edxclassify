@@ -58,7 +58,7 @@ def invoke_classifier(classifier, data_filename,
         # Slice off headers
         # TODO: Headers aren't getting used anywhere,
         # perhaps don't take them in ingest_dataset
-        dataset = pickle.load(infile)[1:]
+        dataset = pickle.load(infile)
         X, y =  zip(*data_cleaner.process_records(dataset))
         cv_results_train, cv_results_test, relevant_features = classifier.cross_validate(X, y)
 
@@ -76,6 +76,23 @@ def invoke_classifier(classifier, data_filename,
     print relevant_features
     return cv_results_train, cv_results_test, relevant_features
 
+
+def train_and_test(clf, data_file, test_file, data_cleaner):
+    # Train on the data_file
+    train_metrics = []
+    test_metrics = []
+    with open(data_file, 'rb') as infile:
+        training_data = pickle.load(infile)
+        X, y =  zip(*data_cleaner.process_records(training_data))
+        clf.train(X, y)
+        train_metrics.extend(clf.test(X, y)[1])
+    with open(test_file, 'rb') as testfile:
+        test_data = pickle.load(testfile)
+        X, y =  zip(*data_cleaner.process_records(test_data))
+        test_metrics.extend(clf.test(X, y)[1])
+    print 'training error: ' + str(train_metrics)
+    print 'test error: ' + str(test_metrics)
+    return train_metrics, test_metrics, None
 
 def main(args=None):
     parser = argparse.ArgumentParser(description='applies a classifier to '
@@ -102,6 +119,8 @@ def main(args=None):
                         help='collapse all numbers to single token')
     parser.add_argument('-l', '--latex', action='store_true',
                         help='collapse all latex equations to a special token')
+    parser.add_argument('-url', '--url', action='store_true',
+                        help='collapse all urls to a special token')
     parser.add_argument('-np', '--noun_phrases', action='store_true',
                         help='engineer features from noun phrases')
     parser.add_argument('-fs', '--first_sentence', type=int, default=1,
@@ -122,6 +141,8 @@ def main(args=None):
                         help='include to use tfidf')
     parser.add_argument('-c', '--custom_stop_words', action='store_true',
                         help='include to use the custom stop word list')
+    parser.add_argument('-tst_file', '--test_file', type=str,
+                        help='test on this file, train on the data file')
     # TODO: Scaling option?
     parser.add_argument('-p', '--penalty', type=float, default=1.0,
                         help='penalty (C term) for linear svm')
@@ -144,10 +165,15 @@ def main(args=None):
                                      binary=args.binary,
                                      collapse_numbers=args.collapse_numbers,
                                      latex=args.latex,
+                                     url=args.url,
                                      extract_noun_phrases=args.noun_phrases,
                                      first_sentence_weight=args.first_sentence)
-    return invoke_classifier(classifier, args.data_file, args.average,
-                      args.train_test_f1, data_cleaner)
+
+    if args.test_file is not None:
+        return train_and_test(classifier, args.data_file, args.test_file, data_cleaner)
+    else: 
+        return invoke_classifier(classifier, args.data_file, args.average,
+                          args.train_test_f1, data_cleaner)
 
 
 if __name__ == '__main__':

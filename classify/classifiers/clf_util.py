@@ -30,7 +30,9 @@ def sklearn_cv(clf, examples, labels):
         X_train, X_test = X[train_indices], X[test_indices]
         y_train, y_test = y[train_indices], y[test_indices]
         # Predict on the test set
+        print 'fitting ...'
         clf.fit(X_train, y_train)
+        print 'predicting ...'
         y_pred = clf.predict(X_test)
 
         # Extract information about the most relevant features
@@ -62,7 +64,7 @@ def to_int(value):
 def to_float(value):
     if value == '':
         return 0
-    return float(value)
+    return 1 if float(value) > 0.94 else 0
 
 def is_anonymous(value):
     return 1 if value.lower() == 'true' else 0

@@ -17,7 +17,8 @@ supported_data_cleaners='edx_confusion\nedx_sentiment\nedx_urgency\n' \
                         'edx_opinion\nedx_question\nedx_answer'
 def make_data_cleaner(dc, binary=False,
                           collapse_numbers=False,
-                          latex=True,
+                          latex=False,
+                          url=False,
                           extract_noun_phrases=False,
                           first_sentence_weight=1):
     dc = dc.lower()
@@ -25,6 +26,7 @@ def make_data_cleaner(dc, binary=False,
         return EdxConfusion(binary=binary,
                             collapse_numbers=collapse_numbers,
                             latex=latex,
+                            url=url,
                             extract_noun_phrases=extract_noun_phrases,
                             first_sentence_weight=first_sentence_weight)
     elif dc == 'edx_sentiment':

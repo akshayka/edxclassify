@@ -36,7 +36,7 @@ class LogRegression(SklearnCLF):
 
 
     def train(self, X, y):
-        self.make_clf(LogisticRegression())
+        self.make_clf(LogisticRegression(C=self.C))
         self.clf.fit(X, y)
 
 

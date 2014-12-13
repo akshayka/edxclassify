@@ -7,10 +7,12 @@ class EdxConfusion(Edx):
     def __init__(self,
                  binary=False,
                  collapse_numbers=False,
-                 latex=True,
+                 latex=False,
+                 url=False,
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
         super(EdxConfusion, self).__init__(binary, collapse_numbers, latex,
+                                           url,
                                            extract_noun_phrases,
                                            first_sentence_weight)
         self.name = 'EdxConfusion ' + self.name

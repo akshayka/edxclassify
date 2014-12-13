@@ -7,10 +7,12 @@ class EdxSentiment(Edx):
     def __init__(self,
                  binary=False,
                  collapse_numbers=False,
-                 latex=True,
+                 latex=False,
+                 url=False,
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
         super(EdxSentiment, self).__init__(binary, collapse_numbers, latex,
+                                           url,
                                            extract_noun_phrases,
                                            first_sentence_weight)
         self.name = 'EdxSentiment ' + self.name
@@ -24,8 +26,10 @@ class EdxSentiment(Edx):
     def process_doc(self, document):
         return super(EdxSentiment, self).process_doc(document)
 
+    # TUPLE(LIST<features>, label)
     def process_records(self, records):
-        return [(self.process_doc(record[self.columns['text']]),
+        return [([self.process_doc(record[self.columns['text']])] +\
+                record[1:],
                 dc_util.compress_likert(record[self.columns['sentiment']],
-                                        self.binary, 3))
+                                        self.binary, 4))
                 for record in records]

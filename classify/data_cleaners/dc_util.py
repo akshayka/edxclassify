@@ -49,3 +49,8 @@ def collapse_numbers(document):
 
 def replace_latex(document):
     return re.sub(r'\${1,2}[^\$]*\${1,2}', 'clf_latex_eqn_tok', document)
+
+def replace_url(document):
+    return re.sub(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+        'clf_url_tok', document)
+

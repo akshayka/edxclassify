@@ -14,6 +14,7 @@ from custom_stop_words import CUSTOM_STOP_WORDS
 import classify.classifiers.clf_util as clf_util
 from classify.classifiers.feature_aggregator import *
 import numpy as np
+from sklearn import metrics
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -123,8 +124,8 @@ class SklearnCLF(Classifier):
                     ])),
                 ]
         pipeline = [FeatureUnion(features)]
-        if self.normalize:
-            pipeline = pipeline + [StandardScaler(with_mean=False)]
+        #if self.normalize:
+        #    pipeline = pipeline + [StandardScaler(with_mean=False)]
         if self.k_best_features > 0:
             pipeline = pipeline + [SelectKBest(chi2, k=self.k_best_features)]
         if self.reduce_features:
@@ -141,8 +142,10 @@ class SklearnCLF(Classifier):
 
     def test(self, X, y):
         predictions = self.clf.predict(X)
-        accuracy = np.mean(predictions == y)
-        return (zip(X, predictions, y), accuracy)
+        p = metrics.precision_score(y, predictions, average=None)
+        r = metrics.recall_score(y, predictions, average=None)
+        f = metrics.f1_score(y, predictions, average=None)
+        return (predictions, [p, r, f])
 
 
     @abstractmethod

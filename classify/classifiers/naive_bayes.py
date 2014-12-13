@@ -34,7 +34,7 @@ class NaiveBayes(SklearnCLF):
     
     def train(self, X, y):
         self.make_clf(MultinomialNB())
-        self.clf.fit(documents, labels)
+        self.clf.fit(X, y)
 
 
     def cross_validate(self, X, y):
