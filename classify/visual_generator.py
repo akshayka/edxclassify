@@ -24,13 +24,13 @@ def make_f1_table(results, output_file):
 
 
 def make_word_cloud(command, data_path, output_file):
-    harness_args = [data_path, "edx_confusion"]
+    harness_args = [data_path, "edx_urgency"]
     harness_args = harness_args + command.split(' ')
 
     x, y, words = harness.main(harness_args)
     stdout_save = sys.stdout
     sys.stdout = open(output_file, 'wb')
-    for w in words['confused']:
+    for w in words['knowledgeable']:
         for a in w:
             for b in a:
                 print b.replace("text_document__", "")
@@ -148,21 +148,21 @@ def make_class_graph():
 
 
 def main(args=None):
-    data_path = "../gold_sets/humanities_gold_v8"
+    data_path = "data/gold_sets/humanities_gold_v8"
     if len(args) > 1:
         data_path = args[1]
-    # make_word_cloud("logistic -t 5 -c -n -p 0.4 -txt", data_path, "visual/word_cloud.txt")
-    all_results = evaluate_configurations(data_path, ALL_CONFIGURATIONS)
-    # default_results = evaluate_configurations(data_path, DEFAULT_CONFIGURATIONS)
-    # tfidf_results = evaluate_configurations(data_path, TFIDF_CONFIGURATIONS)
-    # kbest_results = evaluate_configurations(data_path, KBEST_CONFIGURATIONS)
+    make_word_cloud("logistic -t 5 -c -n -p 0.4 -l -url -txt", data_path, "visual/word_cloud.txt")
+    #all_results = evaluate_configurations(data_path, ALL_CONFIGURATIONS)
+    #default_results = evaluate_configurations(data_path, DEFAULT_CONFIGURATIONS)
+    #tfidf_results = evaluate_configurations(data_path, TFIDF_CONFIGURATIONS)
+    #kbest_results = evaluate_configurations(data_path, KBEST_CONFIGURATIONS)
 
-    # make_score_graph(default_results, 'default-results-bar.png', 'Classification without Feature Reduction')
-    # make_score_graph(tfidf_results, 'tfidf-results-bar.png', 'Classification with TF-IDF')
-    # make_score_graph(kbest_results, 'kbest-results-bar.png', 'Classification with K-Best Features')
+    #make_score_graph(default_results, 'default-results-bar.png', 'Classification without Feature Reduction')
+    #make_score_graph(tfidf_results, 'tfidf-results-bar.png', 'Classification with TF-IDF')
+    #make_score_graph(kbest_results, 'kbest-results-bar.png', 'Classification with K-Best Features')
     # make_class_graph()
 
-    make_f1_table(all_results, "visual/classifier_results.csv")
+    #make_f1_table(all_results, "visual/classifier_results.csv")
 
 if __name__ == '__main__':
     main(sys.argv)
