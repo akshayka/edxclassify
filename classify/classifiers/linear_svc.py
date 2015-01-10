@@ -40,6 +40,6 @@ class LinSVC(SklearnCLF):
         self.make_clf(LinearSVC(C=self.C))
         self.clf.fit(X, y)
 
-    def cross_validate(self, X, y):
+    def cross_validate(self, X, y, labels):
         self.make_clf(LinearSVC(C=self.C))
-        return clf_util.sklearn_cv(self.clf, X, y)
+        return clf_util.sklearn_cv(self.clf, X, y, labels)

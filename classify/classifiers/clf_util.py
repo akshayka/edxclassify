@@ -11,21 +11,23 @@ def extract_feature_names(feature_union):
         if not hasattr(dv, 'get_feature_names'):
             raise AttributeError("Dictionary %s does not provide "
                                  "get_feature_names." % str(name))
-        feature_names.extend([name + "__" + f for f in
+        feature_names.extend([name + ' ' + f for f in
                                         dv.get_feature_names()])
     return np.asarray(feature_names)
 
 
-def sklearn_cv(clf, examples, labels):
-    X, y = np.array(examples), np.array(labels)
-    skf = StratifiedKFold(labels, n_folds=10)
+def sklearn_cv(clf, X, y, labels):
+    X, y = np.array(X), np.array(y)
+    skf = StratifiedKFold(y, n_folds=10)
     precision_train = []
     recall_train = []
     f1_train = []
     precision_test = []
     recall_test = []
     f1_test = []
-    relevant_features = {'knowledgeable': [], 'neutral': [], 'confused': []}
+    relevant_features = {}
+    for label in labels:
+        relevant_features[label] = []
     for train_indices, test_indices in skf:
         X_train, X_test = X[train_indices], X[test_indices]
         y_train, y_test = y[train_indices], y[test_indices]
@@ -39,9 +41,9 @@ def sklearn_cv(clf, examples, labels):
         feature_names = extract_feature_names(clf.steps[0][-1])
         classifier = clf.steps[-1][-1]
         if feature_names is not None and hasattr(classifier, 'coef_'):
-            for i, label in enumerate(['knowledgeable', 'neutral', 'confused']):
-                top10 = np.argsort(classifier.coef_[i])[-50:]
-                relevant_features[label].append([feature_names[top10]])
+            for i, label in enumerate(labels):
+                top20 = np.argsort(classifier.coef_[i])[-20:]
+                relevant_features[label].append([feature_names[top20]])
 
         precision_test.append(metrics.precision_score(y_test, y_pred,
             average=None))

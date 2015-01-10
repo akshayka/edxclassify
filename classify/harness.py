@@ -60,7 +60,9 @@ def invoke_classifier(classifier, data_filename,
         # perhaps don't take them in ingest_dataset
         dataset = pickle.load(infile)
         X, y =  zip(*data_cleaner.process_records(dataset))
-        cv_results_train, cv_results_test, relevant_features = classifier.cross_validate(X, y)
+        # TODO: Nothing done with relevant feautres here
+        cv_results_train, cv_results_test, relevant_features = \
+            classifier.cross_validate(X, y, labels)
 
     dcname = data_cleaner.name
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
@@ -72,9 +74,7 @@ def invoke_classifier(classifier, data_filename,
         tabulate_results(cv_results_train, average, labels)
         print 'Results: Making predictions on the test set.'
         tabulate_results(cv_results_test, average, labels)
-
     print relevant_features
-    return cv_results_train, cv_results_test, relevant_features
 
 
 def train_and_test(clf, data_file, test_file, data_cleaner):
@@ -170,11 +170,11 @@ def main(args=None):
                                      first_sentence_weight=args.first_sentence)
 
     if args.test_file is not None:
-        return train_and_test(classifier, args.data_file, args.test_file, data_cleaner)
+        train_and_test(classifier, args.data_file, args.test_file, data_cleaner)
     else: 
-        return invoke_classifier(classifier, args.data_file, args.average,
+        invoke_classifier(classifier, args.data_file, args.average,
                           args.train_test_f1, data_cleaner)
-
+    # TODO: Option to generate visuals
 
 if __name__ == '__main__':
     main()

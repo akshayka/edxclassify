@@ -149,5 +149,5 @@ class SklearnCLF(Classifier):
 
 
     @abstractmethod
-    def cross_validate(self, X, y):
+    def cross_validate(self, X, y, labels):
         pass
