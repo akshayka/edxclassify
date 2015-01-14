@@ -1,54 +1,346 @@
-Classification results for file ../data/gold_sets/humanities_gold ...;
+Classification results for file data/gold_sets/humanities_gold_v8 ...;
 using classifier LogisticRegression token:(?u)(\b\w+\b|[.!?]) tfidf custom_stop_words  and data_cleaner EdxConfusion collapse_numbers 
 Results: Making predictions on the training set.
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
 | fold   |   knowledgeable: precision |   knowledgeable: recall |   knowledgeable: f1 |   neutral: precision |   neutral: recall |   neutral: f1 |   confused: precision |   confused: recall |   confused: f1 |
 +========+============================+=========================+=====================+======================+===================+===============+=======================+====================+================+
-| 1      |                   0.862613 |                0.313421 |            0.459784 |             0.804264 |          0.971747 |      0.880108 |              0.863768 |           0.592053 |       0.702554 |
+| 1      |                   0.847926 |               0.150573  |            0.255733 |             0.771718 |          0.975902 |      0.861882 |              0.86039  |           0.526142 |       0.652977 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 2      |                   0.866972 |                0.309329 |            0.455971 |             0.810608 |          0.970251 |      0.883274 |              0.862286 |           0.634437 |       0.731019 |
+| 2      |                   0.852632 |               0.13257   |            0.229462 |             0.773756 |          0.977065 |      0.863606 |              0.863825 |           0.549967 |       0.672058 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 3      |                   0.858124 |                0.306874 |            0.45208  |             0.803294 |          0.972578 |      0.879868 |              0.865628 |           0.588742 |       0.700828 |
+| 3      |                   0.848214 |               0.155483  |            0.262794 |             0.771571 |          0.977896 |      0.862567 |              0.871111 |           0.518862 |       0.650353 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 4      |                   0.864865 |                0.288052 |            0.432167 |             0.800849 |          0.971747 |      0.87806  |              0.856868 |           0.590728 |       0.699334 |
+| 4      |                   0.849057 |               0.1473    |            0.251046 |             0.771748 |          0.976068 |      0.861965 |              0.858836 |           0.527465 |       0.653547 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 5      |                   0.850602 |                0.288871 |            0.431277 |             0.798606 |          0.971414 |      0.876575 |              0.862069 |           0.57947  |       0.693069 |
+| 5      |                   0.837963 |               0.148118  |            0.251739 |             0.768628 |          0.978893 |      0.861111 |              0.876005 |           0.504964 |       0.640638 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 6      |                   0.866029 |                0.296236 |            0.441463 |             0.799426 |          0.972412 |      0.877475 |              0.860672 |           0.576821 |       0.690722 |
+| 6      |                   0.836283 |               0.154664  |            0.26105  |             0.767703 |          0.976566 |      0.85963  |              0.863218 |           0.497022 |       0.630827 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 7      |                   0.876289 |                0.278232 |            0.42236  |             0.799209 |          0.973579 |      0.877819 |              0.8613   |           0.588079 |       0.698937 |
+| 7      |                   0.887006 |               0.128478  |            0.224446 |             0.766732 |          0.980392 |      0.860497 |              0.866894 |           0.504302 |       0.637657 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 8      |                   0.87234  |                0.268412 |            0.410513 |             0.801749 |          0.975075 |      0.879958 |              0.864455 |           0.603974 |       0.711111 |
+| 8      |                   0.919355 |               0.0932897 |            0.169391 |             0.766883 |          0.981223 |      0.860913 |              0.866235 |           0.531436 |       0.658737 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 9      |                   0.862245 |                0.27637  |            0.418576 |             0.798174 |          0.973247 |      0.877059 |              0.850294 |           0.575116 |       0.686143 |
+| 9      |                   0.885906 |               0.107931  |            0.19242  |             0.765347 |          0.979894 |      0.859433 |              0.863029 |           0.512905 |       0.643421 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 10     |                   0.913607 |                0.345871 |            0.501779 |             0.808221 |          0.976903 |      0.884592 |              0.864039 |           0.58041  |       0.694378 |
+| 10     |                   0.927273 |               0.208504  |            0.340454 |             0.780713 |          0.982054 |      0.869885 |              0.878855 |           0.527778 |       0.659504 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| avg    |                   0.869369 |                0.297167 |            0.442597 |             0.80244  |          0.972895 |      0.879479 |              0.861138 |           0.590983 |       0.700809 |
+| avg    |                   0.869161 |               0.142691  |            0.243853 |             0.77048  |          0.978595 |      0.862149 |              0.86684  |           0.520084 |       0.649972 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
 Results: Making predictions on the test set.
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
 | fold   |   knowledgeable: precision |   knowledgeable: recall |   knowledgeable: f1 |   neutral: precision |   neutral: recall |   neutral: f1 |   confused: precision |   confused: recall |   confused: f1 |
 +========+============================+=========================+=====================+======================+===================+===============+=======================+====================+================+
-| 1      |                   0        |               0         |           0         |             0.721491 |          0.983558 |      0.832385 |              0.819672 |           0.297619 |       0.436681 |
+| 1      |                   0        |              0          |           0         |             0.713508 |          0.979073 |      0.825457 |              0.759259 |           0.244048 |       0.369369 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 2      |                   0.461538 |               0.0441176 |           0.0805369 |             0.732852 |          0.910314 |      0.812    |              0.527132 |           0.404762 |       0.457912 |
+| 2      |                   0.75     |              0.0220588  |           0.0428571 |             0.73208  |          0.931241 |      0.819737 |              0.618644 |           0.434524 |       0.51049  |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 3      |                   0.727273 |               0.0588235 |           0.108844  |             0.74156  |          0.952167 |      0.83377  |              0.660194 |           0.404762 |       0.501845 |
+| 3      |                   1        |              0.00735294 |           0.0145985 |             0.740614 |          0.973094 |      0.841085 |              0.784946 |           0.434524 |       0.559387 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 4      |                   0.916667 |               0.0808824 |           0.148649  |             0.758907 |          0.955157 |      0.845797 |              0.680672 |           0.482143 |       0.56446  |
+| 4      |                   0.833333 |              0.0367647  |           0.0704225 |             0.744755 |          0.955157 |      0.836935 |              0.715596 |           0.464286 |       0.563177 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 5      |                   0.64     |               0.117647  |           0.198758  |             0.764775 |          0.967115 |      0.854125 |              0.754902 |           0.458333 |       0.57037  |
+| 5      |                   0.555556 |              0.0367647  |           0.0689655 |             0.75286  |          0.983558 |      0.852884 |              0.822222 |           0.440476 |       0.573643 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 6      |                   0.8      |               0.0882353 |           0.15894   |             0.773653 |          0.96562  |      0.859043 |              0.731707 |           0.535714 |       0.618557 |
+| 6      |                   1        |              0.0294118  |           0.0571429 |             0.766279 |          0.985052 |      0.862001 |              0.889908 |           0.577381 |       0.700361 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 7      |                   0.806452 |               0.183824  |           0.299401  |             0.768675 |          0.95509  |      0.851802 |              0.702703 |           0.464286 |       0.55914  |
+| 7      |                   0.916667 |              0.0808824  |           0.148649  |             0.764085 |          0.974551 |      0.856579 |              0.842593 |           0.541667 |       0.65942  |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 8      |                   0.705882 |               0.352941  |           0.470588  |             0.786736 |          0.905689 |      0.842032 |              0.614815 |           0.494048 |       0.547855 |
+| 8      |                   0.705882 |              0.0882353  |           0.156863  |             0.755716 |          0.94012  |      0.837892 |              0.685484 |           0.505952 |       0.582192 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 9      |                   0.549296 |               0.288889  |           0.378641  |             0.772229 |          0.949102 |      0.851578 |              0.794872 |           0.371257 |       0.506122 |
+| 9      |                   0.46875  |              0.111111   |           0.179641  |             0.743119 |          0.97006  |      0.841558 |              0.820896 |           0.327381 |       0.468085 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 10     |                   0.261062 |               0.437037  |           0.32687   |             0.753383 |          0.75     |      0.751688 |              0.797468 |           0.377246 |       0.512195 |
+| 10     |                   0.264706 |              0.266667   |           0.265683  |             0.749664 |          0.833832 |      0.789511 |              0.791209 |           0.431138 |       0.55814  |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| avg    |                   0.586817 |               0.16524   |           0.217123  |             0.757426 |          0.929381 |      0.833422 |              0.708414 |           0.429017 |       0.527514 |
+| avg    |                   0.649489 |              0.0679248  |           0.100482  |             0.746268 |          0.952574 |      0.836364 |              0.773076 |           0.440138 |       0.554426 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
+{'knowledgeable': [[array([u'text_document surplus', u'text_document google',
+       u'text_document using', u'text_document log',
+       u'text_document efficient', u'text_document set',
+       u'text_document marginal', u'text_document cost',
+       u'text_document increase', u'text_document x',
+       u'text_document variable', u'text_document firms',
+       u'text_document helps', u'text_document learned',
+       u'text_document government', u'text_document demand',
+       u'text_document price', u'text_document market',
+       u'text_document prices', u'text_document explanation'], 
+      dtype='<U65')], [array([u'text_document makes', u'text_document set',
+       u'text_document staff', u'text_document cost',
+       u'text_document clf_latex_eqn_tok', u'text_document marginal',
+       u'text_document x', u'text_document log', u'text_document increase',
+       u'text_document loss', u'text_document firms',
+       u'text_document government', u'text_document helps',
+       u'text_document demand', u'text_document variable',
+       u'text_document price', u'text_document market',
+       u'text_document learned', u'text_document prices',
+       u'text_document explanation'], 
+      dtype='<U65')], [array([u'text_document surplus', u'text_document marginal',
+       u'text_document cost', u'text_document efficient',
+       u'text_document using', u'text_document set', u'text_document loss',
+       u'text_document increase', u'text_document firms',
+       u'text_document helps', u'text_document variable',
+       u'text_document x', u'text_document explanation',
+       u'text_document government', u'text_document demand',
+       u'text_document price', u'text_document market',
+       u'text_document staff', u'text_document learned',
+       u'text_document prices'], 
+      dtype='<U65')], [array([u'text_document surplus', u'text_document marginal',
+       u'text_document google', u'text_document efficient',
+       u'text_document using', u'text_document log', u'text_document loss',
+       u'text_document x', u'text_document variable',
+       u'text_document helps', u'text_document firms',
+       u'text_document increase', u'text_document demand',
+       u'text_document learned', u'text_document market',
+       u'text_document staff', u'text_document price',
+       u'text_document government', u'text_document prices',
+       u'text_document explanation'], 
+      dtype='<U63')], [array([u'text_document set', u'text_document model',
+       u'text_document efficient', u'text_document loss',
+       u'text_document helps', u'text_document google',
+       u'text_document curve', u'text_document supply',
+       u'text_document cost', u'text_document firms',
+       u'text_document marginal', u'text_document learned',
+       u'text_document government', u'text_document increase',
+       u'text_document explanation', u'text_document staff',
+       u'text_document demand', u'text_document market',
+       u'text_document price', u'text_document prices'], 
+      dtype='<U65')], [array([u'text_document variable', u'text_document surplus',
+       u'text_document google', u'text_document supply',
+       u'text_document high', u'text_document model',
+       u'text_document cost', u'text_document efficient',
+       u'text_document loss', u'text_document helps',
+       u'text_document marginal', u'text_document firms',
+       u'text_document increase', u'text_document government',
+       u'text_document demand', u'text_document price',
+       u'text_document staff', u'text_document market',
+       u'text_document explanation', u'text_document prices'], 
+      dtype='<U65')], [array([u'text_document costs', u'text_document google',
+       u'text_document high', u'text_document x',
+       u'text_document efficient', u'text_document demand',
+       u'text_document loss', u'text_document increase',
+       u'text_document government', u'text_document helps',
+       u'text_document cost', u'text_document firms',
+       u'text_document marginal', u'text_document price',
+       u'text_document variable', u'text_document market',
+       u'text_document learned', u'text_document staff',
+       u'text_document prices', u'text_document explanation'], 
+      dtype='<U65')], [array([u'text_document costs', u'text_document log', u'text_document loss',
+       u'text_document clf_latex_eqn_tok', u'text_document firms',
+       u'text_document price', u'text_document demand',
+       u'text_document data', u'text_document model', u'text_document x',
+       u'text_document variable', u'text_document increase',
+       u'text_document set', u'text_document government',
+       u'text_document helps', u'text_document market',
+       u'text_document learned', u'text_document prices',
+       u'text_document staff', u'text_document explanation'], 
+      dtype='<U65')], [array([u'text_document example', u'text_document production',
+       u'text_document government', u'text_document data',
+       u'text_document set', u'text_document model',
+       u'text_document variable', u'text_document helps',
+       u'text_document learned', u'text_document cost',
+       u'text_document curve', u'text_document x', u'text_document prices',
+       u'text_document increase', u'text_document staff',
+       u'text_document market', u'text_document supply',
+       u'text_document explanation', u'text_document demand',
+       u'text_document price'], 
+      dtype='<U65')], [array([u'text_document google', u'text_document efficient',
+       u'text_document x', u'text_document government',
+       u'text_document firms', u'text_document equilibrium',
+       u'text_document variable', u'text_document curve',
+       u'text_document helps', u'text_document learned',
+       u'text_document increase', u'text_document supply',
+       u'text_document marginal', u'text_document staff',
+       u'text_document cost', u'text_document prices',
+       u'text_document demand', u'text_document explanation',
+       u'text_document market', u'text_document price'], 
+      dtype='<U65')]], 'neutral': [[array([u'text_document children', u'text_document gender',
+       u'text_document cedaw', u'text_document people',
+       u'text_document live', u'text_document learn',
+       u'text_document world', u'text_document course',
+       u'text_document hello', u'text_document human',
+       u'text_document interesting', u'text_document health',
+       u'text_document girls', u'text_document rights',
+       u'text_document agree', u'text_document education',
+       u'text_document great', u'text_document clf_url_tok',
+       u'text_document !', u'text_document women'], 
+      dtype='<U65')], [array([u'text_document think', u'text_document people',
+       u'text_document countries', u'text_document world',
+       u'text_document gender', u'text_document live',
+       u'text_document cedaw', u'text_document !', u'text_document health',
+       u'text_document hello', u'text_document girls',
+       u'text_document interesting', u'text_document agree',
+       u'text_document learn', u'text_document human',
+       u'text_document education', u'text_document great',
+       u'text_document rights', u'text_document clf_url_tok',
+       u'text_document women'], 
+      dtype='<U65')], [array([u'text_document cedaw', u'text_document children',
+       u'text_document think', u'text_document students',
+       u'text_document .', u'text_document interested',
+       u'text_document learn', u'text_document people',
+       u'text_document live', u'text_document school',
+       u'text_document agree', u'text_document human',
+       u'text_document interesting', u'text_document rights',
+       u'text_document great', u'text_document girls', u'text_document !',
+       u'text_document education', u'text_document clf_url_tok',
+       u'text_document women'], 
+      dtype='<U65')], [array([u'text_document children', u'text_document gender',
+       u'text_document .', u'text_document world', u'text_document school',
+       u'text_document interesting', u'text_document people',
+       u'text_document human', u'text_document hello',
+       u'text_document health', u'text_document learn',
+       u'text_document live', u'text_document rights',
+       u'text_document agree', u'text_document girls',
+       u'text_document great', u'text_document education',
+       u'text_document !', u'text_document clf_url_tok',
+       u'text_document women'], 
+      dtype='<U63')], [array([u'text_document believe', u'text_document cedaw',
+       u'text_document gender', u'text_document people',
+       u'text_document students', u'text_document hello',
+       u'text_document health', u'text_document girls',
+       u'text_document interesting', u'text_document human',
+       u'text_document .', u'text_document agree', u'text_document live',
+       u'text_document learn', u'text_document rights',
+       u'text_document education', u'text_document !',
+       u'text_document great', u'text_document clf_url_tok',
+       u'text_document women'], 
+      dtype='<U65')], [array([u'text_document world', u'text_document school',
+       u'text_document cedaw', u'text_document hello',
+       u'text_document girls', u'text_document course',
+       u'text_document live', u'text_document health',
+       u'text_document human', u'text_document interesting',
+       u'text_document agree', u'text_document nameredac_',
+       u'text_document anon_screen_name_redacted', u'text_document rights',
+       u'text_document learn', u'text_document education',
+       u'text_document great', u'text_document clf_url_tok',
+       u'text_document !', u'text_document women'], 
+      dtype='<U65')], [array([u'text_document school', u'text_document cedaw',
+       u'text_document anon_screen_name_redacted',
+       u'text_document nameredac_', u'text_document girls',
+       u'text_document health', u'text_document world',
+       u'text_document people', u'text_document interesting',
+       u'text_document human', u'text_document agree',
+       u'text_document hello', u'text_document learn',
+       u'text_document rights', u'text_document live',
+       u'text_document education', u'text_document great',
+       u'text_document !', u'text_document clf_url_tok',
+       u'text_document women'], 
+      dtype='<U65')], [array([u'text_document students', u'text_document school',
+       u'text_document interesting', u'text_document health',
+       u'text_document interested', u'text_document cedaw',
+       u'text_document girls', u'text_document agree',
+       u'text_document people', u'text_document .', u'text_document learn',
+       u'text_document human', u'text_document hello',
+       u'text_document rights', u'text_document live',
+       u'text_document great', u'text_document !',
+       u'text_document education', u'text_document clf_url_tok',
+       u'text_document women'], 
+      dtype='<U65')], [array([u'text_document hello', u'text_document gender', u'text_document .',
+       u'text_document interested', u'text_document health',
+       u'text_document cedaw', u'text_document human',
+       u'text_document people', u'text_document girls',
+       u'text_document rights', u'text_document live',
+       u'text_document think', u'text_document learn',
+       u'text_document education', u'text_document great',
+       u'text_document interesting', u'text_document agree',
+       u'text_document !', u'text_document clf_url_tok',
+       u'text_document women'], 
+      dtype='<U65')], [array([u'text_document interested', u'text_document .',
+       u'text_document children', u'text_document gender',
+       u'text_document think', u'text_document hello',
+       u'text_document agree', u'text_document cedaw',
+       u'text_document health', u'text_document interesting',
+       u'text_document live', u'text_document human',
+       u'text_document learn', u'text_document rights',
+       u'text_document girls', u'text_document great',
+       u'text_document education', u'text_document !',
+       u'text_document clf_url_tok', u'text_document women'], 
+      dtype='<U65')]], 'confused': [[array([u'text_document mean', u'text_document statement',
+       u'text_document wondering', u'text_document questions',
+       u'text_document 1', u'text_document answers',
+       u'text_document understand', u'text_document explain',
+       u'text_document issue', u'text_document t',
+       u'text_document confused', u'text_document answer',
+       u'text_document problem', u'text_document does',
+       u'text_document piazza', u'text_document question',
+       u'text_document wrong', u'text_document i', u'text_document quiz',
+       u'text_document ?'], 
+      dtype='<U65')], [array([u'text_document wondering', u'text_document correct',
+       u'text_document statement', u'text_document understand',
+       u'text_document questions', u'text_document issue',
+       u'text_document 1', u'text_document t', u'text_document explain',
+       u'text_document confused', u'text_document answers',
+       u'text_document answer', u'text_document problem',
+       u'text_document does', u'text_document piazza',
+       u'text_document wrong', u'text_document i',
+       u'text_document question', u'text_document quiz', u'text_document ?'], 
+      dtype='<U65')], [array([u'text_document correct', u'text_document statement',
+       u'text_document lecture', u'text_document example',
+       u'text_document understand', u'text_document confused',
+       u'text_document 1', u'text_document explain',
+       u'text_document answers', u'text_document piazza',
+       u'text_document t', u'text_document questions',
+       u'text_document answer', u'text_document problem',
+       u'text_document wrong', u'text_document does', u'text_document i',
+       u'text_document question', u'text_document quiz', u'text_document ?'], 
+      dtype='<U65')], [array([u'text_document statement', u'text_document correct',
+       u'text_document example', u'text_document lecture',
+       u'text_document questions', u'text_document t',
+       u'text_document explain', u'text_document issue',
+       u'text_document answers', u'text_document understand',
+       u'text_document 1', u'text_document answer',
+       u'text_document confused', u'text_document problem',
+       u'text_document wrong', u'text_document does', u'text_document i',
+       u'text_document question', u'text_document quiz', u'text_document ?'], 
+      dtype='<U63')], [array([u'text_document statement', u'text_document example',
+       u'text_document wondering', u'text_document 1',
+       u'text_document explain', u'text_document t',
+       u'text_document issue', u'text_document answer',
+       u'text_document understand', u'text_document questions',
+       u'text_document answers', u'text_document confused',
+       u'text_document problem', u'text_document does',
+       u'text_document piazza', u'text_document wrong', u'text_document i',
+       u'text_document question', u'text_document quiz', u'text_document ?'], 
+      dtype='<U65')], [array([u'text_document 1', u'text_document lecture',
+       u'text_document wondering', u'text_document mean',
+       u'text_document issue', u'text_document explain',
+       u'text_document understand', u'text_document answers',
+       u'text_document t', u'text_document questions',
+       u'text_document problem', u'text_document confused',
+       u'text_document answer', u'text_document piazza',
+       u'text_document does', u'text_document i', u'text_document wrong',
+       u'text_document quiz', u'text_document question', u'text_document ?'], 
+      dtype='<U65')], [array([u'text_document correct', u'text_document statement',
+       u'text_document example', u'text_document 1',
+       u'text_document lecture', u'text_document understand',
+       u'text_document questions', u'text_document explain',
+       u'text_document problem', u'text_document answers',
+       u'text_document confused', u'text_document answer',
+       u'text_document piazza', u'text_document t', u'text_document wrong',
+       u'text_document does', u'text_document i', u'text_document quiz',
+       u'text_document question', u'text_document ?'], 
+      dtype='<U65')], [array([u'text_document correct', u'text_document example',
+       u'text_document issue', u'text_document lecture',
+       u'text_document t', u'text_document 1', u'text_document explain',
+       u'text_document answers', u'text_document questions',
+       u'text_document understand', u'text_document problem',
+       u'text_document confused', u'text_document answer',
+       u'text_document piazza', u'text_document wrong', u'text_document i',
+       u'text_document does', u'text_document question',
+       u'text_document quiz', u'text_document ?'], 
+      dtype='<U65')], [array([u'text_document questions', u'text_document example',
+       u'text_document lecture', u'text_document statement',
+       u'text_document wondering', u'text_document explain',
+       u'text_document understand', u'text_document issue',
+       u'text_document answer', u'text_document t', u'text_document 1',
+       u'text_document wrong', u'text_document confused',
+       u'text_document problem', u'text_document piazza',
+       u'text_document does', u'text_document i',
+       u'text_document question', u'text_document quiz', u'text_document ?'], 
+      dtype='<U65')], [array([u'post_type post_type feature', u'text_document problem',
+       u'text_document wondering', u'text_document 1',
+       u'text_document understand', u'text_document lecture',
+       u'text_document statement', u'text_document explain',
+       u'text_document questions', u'text_document t',
+       u'text_document answer', u'text_document answers',
+       u'text_document confused', u'text_document piazza',
+       u'text_document does', u'text_document i', u'text_document wrong',
+       u'text_document quiz', u'text_document question', u'text_document ?'], 
+      dtype='<U65')]]}

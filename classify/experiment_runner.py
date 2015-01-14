@@ -19,15 +19,13 @@ def main():
     parser.add_argument('-v', '--verbose', action='store_true', help='verbose')
     args = parser.parse_args()
     prefix =  [args.data_file, args.data_cleaner, args.classifier, \
-               '-t', '5', '-c', '-n', '-p', '0.4']
+               '-t', '5', '-c', '-n', '-l', '-url', '-p', '0.4']
     argsuffixes = [
                 [],
-                ['-l'],
-                ['-fs', '2'],
                 ['-tf']]
     for i in range (200, 1200, 200):
-        argsuffixes = argsuffixes + [['-kb', str(i), '-l']]
-        argsuffixes = argsuffixes + [['-tf', '-kb', str(i), '-l']]
+        argsuffixes = argsuffixes + [['-kb', str(i)]]
+        argsuffixes = argsuffixes + [['-tf', '-kb', str(i),]]
 
     for argsuffix in argsuffixes:
         harness_args = prefix + argsuffix

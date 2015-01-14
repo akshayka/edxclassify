@@ -26,7 +26,7 @@ class EdxConfusion(Edx):
     def process_doc(self, document):
         return super(EdxConfusion, self).process_doc(document)
 
-    # TUPLE(LIST<features>, label)
+    # LIST(TUPLE(LIST(features), label))
     def process_records(self, records):
         return [([self.process_doc(record[self.columns['text']])] +\
                 record[1:],

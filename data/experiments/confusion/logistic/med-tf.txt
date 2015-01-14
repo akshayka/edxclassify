@@ -1,54 +1,347 @@
-Classification results for file ../data/gold_sets/medicine_gold ...;
+Classification results for file data/gold_sets/medicine_gold_v8 ...;
 using classifier LogisticRegression token:(?u)(\b\w+\b|[.!?]) tfidf custom_stop_words  and data_cleaner EdxConfusion collapse_numbers 
 Results: Making predictions on the training set.
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
 | fold   |   knowledgeable: precision |   knowledgeable: recall |   knowledgeable: f1 |   neutral: precision |   neutral: recall |   neutral: f1 |   confused: precision |   confused: recall |   confused: f1 |
 +========+============================+=========================+=====================+======================+===================+===============+=======================+====================+================+
-| 1      |                   0.850477 |                0.563994 |            0.678224 |             0.863839 |          0.979018 |      0.917829 |              0.85941  |           0.441725 |       0.583526 |
+| 1      |                   0.871022 |                0.365682 |            0.515106 |             0.826228 |          0.98631  |      0.8992   |              0.839895 |           0.37296  |       0.516546 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 2      |                   0.860825 |                0.587201 |            0.698161 |             0.870207 |          0.982738 |      0.923055 |              0.891156 |           0.458042 |       0.605081 |
+| 2      |                   0.872408 |                0.384399 |            0.533659 |             0.831433 |          0.987202 |      0.902646 |              0.84557  |           0.389277 |       0.533121 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 3      |                   0.850377 |                0.555556 |            0.672054 |             0.861875 |          0.979613 |      0.91698  |              0.849885 |           0.428904 |       0.570101 |
+| 3      |                   0.878472 |                0.355587 |            0.506253 |             0.824487 |          0.987054 |      0.898476 |              0.839474 |           0.371795 |       0.515347 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 4      |                   0.850361 |                0.579466 |            0.689251 |             0.864758 |          0.98006  |      0.918806 |              0.860241 |           0.416084 |       0.56088  |
+| 4      |                   0.860993 |                0.426564 |            0.570489 |             0.836285 |          0.983631 |      0.903993 |              0.808673 |           0.369464 |       0.5072   |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 5      |                   0.838454 |                0.594937 |            0.69601  |             0.867001 |          0.977827 |      0.919085 |              0.869249 |           0.417928 |       0.564465 |
+| 5      |                   0.860499 |                0.411806 |            0.557034 |             0.835208 |          0.983482 |      0.903301 |              0.823529 |           0.391153 |       0.530387 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 6      |                   0.838095 |                0.556962 |            0.669202 |             0.861766 |          0.97872  |      0.916527 |              0.875    |           0.431898 |       0.578332 |
+| 6      |                   0.859706 |                0.370344 |            0.517682 |             0.826851 |          0.987054 |      0.899878 |              0.841962 |           0.359721 |       0.504078 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 7      |                   0.841302 |                0.581575 |            0.687734 |             0.867564 |          0.97872  |      0.919796 |              0.881007 |           0.448196 |       0.594136 |
+| 7      |                   0.857143 |                0.383696 |            0.530097 |             0.830572 |          0.984821 |      0.901144 |              0.838791 |           0.38766  |       0.530255 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 8      |                   0.830052 |                0.563291 |            0.671135 |             0.859927 |          0.978277 |      0.915292 |              0.86445  |           0.393481 |       0.5408   |
+| 8      |                   0.846395 |                0.37948  |            0.524017 |             0.825984 |          0.983782 |      0.898004 |              0.830556 |           0.348079 |       0.490566 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 9      |                   0.84153  |                0.541491 |            0.658964 |             0.858595 |          0.980211 |      0.915381 |              0.874396 |           0.42142  |       0.568735 |
+| 9      |                   0.84507  |                0.337316 |            0.48217  |             0.819891 |          0.986163 |      0.895373 |              0.846154 |           0.345751 |       0.490909 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 10     |                   0.86196  |                0.575246 |            0.690004 |             0.86602  |          0.982889 |      0.920761 |              0.882353 |           0.436554 |       0.584112 |
+| 10     |                   0.875415 |                0.370344 |            0.520494 |             0.829418 |          0.987502 |      0.901583 |              0.83208  |           0.386496 |       0.527822 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| avg    |                   0.846343 |                0.569972 |            0.681074 |             0.864155 |          0.979807 |      0.918351 |              0.870715 |           0.429423 |       0.575017 |
+| avg    |                   0.862712 |                0.378522 |            0.5257   |             0.828636 |          0.9857   |      0.90036  |              0.834668 |           0.372236 |       0.514623 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
 Results: Making predictions on the test set.
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
 | fold   |   knowledgeable: precision |   knowledgeable: recall |   knowledgeable: f1 |   neutral: precision |   neutral: recall |   neutral: f1 |   confused: precision |   confused: recall |   confused: f1 |
 +========+============================+=========================+=====================+======================+===================+===============+=======================+====================+================+
-| 1      |                   0.681034 |               0.5       |           0.576642  |             0.848739 |          0.946452 |      0.894937 |              0.576923 |          0.3125    |      0.405405  |
+| 1      |                   0.765306 |               0.471698  |            0.583658 |             0.844048 |          0.94913  |      0.89351  |              0.609375 |          0.40625   |       0.4875   |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 2      |                   0.509091 |               0.531646  |           0.520124  |             0.845254 |          0.870147 |      0.85752  |              0.41791  |          0.291667  |      0.343558  |
+| 2      |                   0.611111 |               0.348101  |            0.443548 |             0.816351 |          0.922356 |      0.866122 |              0.522388 |          0.364583  |       0.429448 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 3      |                   0.752212 |               0.537975  |           0.627306  |             0.866343 |          0.954485 |      0.90828  |              0.6      |          0.40625   |      0.484472  |
+| 3      |                   0.78125  |               0.316456  |            0.45045  |             0.824263 |          0.973226 |      0.892572 |              0.636364 |          0.364583  |       0.463576 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 4      |                   0.622449 |               0.386076  |           0.476562  |             0.817031 |          0.950469 |      0.878713 |              0.735294 |          0.260417  |      0.384615  |
+| 4      |                   0.545455 |               0.227848  |            0.321429 |             0.786268 |          0.950469 |      0.860606 |              0.6875   |          0.229167  |       0.34375  |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 5      |                   0.47191  |               0.265823  |           0.340081  |             0.8009   |          0.953146 |      0.870416 |              0.681818 |          0.157895  |      0.25641   |
+| 5      |                   0.644444 |               0.183544  |            0.285714 |             0.782093 |          0.970549 |      0.866189 |              0.607143 |          0.178947  |       0.276423 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 6      |                   0.777778 |               0.0886076 |           0.159091  |             0.761759 |          0.997323 |      0.863768 |              0.75     |          0.0315789 |      0.0606061 |
+| 6      |                   0.866667 |               0.0822785 |            0.150289 |             0.762538 |          0.997323 |      0.864269 |              1        |          0.0842105 |       0.15534  |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 7      |                   0.636364 |               0.0443038 |           0.0828402 |             0.75736  |          0.998661 |      0.861432 |              0.75     |          0.0315789 |      0.0606061 |
+| 7      |                   0.75     |               0.0189873 |            0.037037 |             0.752775 |          0.998661 |      0.858458 |              0.6      |          0.0315789 |       0.06     |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 8      |                   0.40625  |               0.0822785 |           0.136842  |             0.783527 |          0.994638 |      0.876551 |              1        |          0.210526  |      0.347826  |
+| 8      |                   0.5      |               0.0506329 |            0.091954 |             0.776275 |          1        |      0.874048 |              1        |          0.231579  |       0.376068 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 9      |                   0.865169 |               0.487342  |           0.623482  |             0.84447  |          0.982574 |      0.908302 |              0.761905 |          0.336842  |      0.467153  |
+| 9      |                   0.921875 |               0.373418  |            0.531532 |             0.828125 |          0.994638 |      0.903776 |              0.897436 |          0.368421  |       0.522388 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| 10     |                   0.635593 |               0.474684  |           0.543478  |             0.86087  |          0.928954 |      0.893617 |              0.513158 |          0.410526  |      0.45614   |
+| 10     |                   0.716667 |               0.544304  |            0.618705 |             0.851762 |          0.939678 |      0.893563 |              0.660714 |          0.389474  |       0.490066 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
-| avg    |                   0.635785 |               0.339873  |           0.408645  |             0.818625 |          0.957685 |      0.881354 |              0.678701 |          0.244978  |      0.326679  |
+| avg    |                   0.710277 |               0.261727  |            0.351432 |             0.80245  |          0.969603 |      0.877311 |              0.722092 |          0.264879  |       0.360456 |
 +--------+----------------------------+-------------------------+---------------------+----------------------+-------------------+---------------+-----------------------+--------------------+----------------+
+{'knowledgeable': [[array([u'text_document values', u'text_document statistical',
+       u'text_document appropriate', u'text_document treat',
+       u'text_document test', u'text_document confidence',
+       u'text_document e', u'text_document clf_latex_eqn_tok',
+       u'text_document say', u'text_document point',
+       u'text_document calculate', u'text_document s',
+       u'text_document example', u'text_document probability',
+       u'text_document different', u'text_document raj',
+       u'text_document patient', u'text_document patients',
+       u'text_document think', u'text_document use'], 
+      dtype='<U69')], [array([u'text_document e', u'text_document ratio', u'text_document sample',
+       u'text_document need', u'text_document clf_latex_eqn_tok',
+       u'text_document formula', u'text_document standard',
+       u'text_document statistical', u'text_document calculate',
+       u'text_document treat', u'text_document example',
+       u'text_document point', u'text_document patients',
+       u'text_document different', u'text_document values',
+       u'text_document s', u'text_document difference',
+       u'text_document patient', u'text_document think',
+       u'text_document use'], 
+      dtype='<U69')], [array([u'text_document helps', u'text_document values',
+       u'text_document table', u'text_document difference',
+       u'text_document treat', u'text_document standard',
+       u'text_document words', u'text_document s',
+       u'text_document variable', u'text_document probability',
+       u'text_document say', u'text_document point',
+       u'text_document formula', u'text_document example',
+       u'text_document patient', u'text_document raj',
+       u'text_document calculate', u'text_document patients',
+       u'text_document use', u'text_document think'], 
+      dtype='<U45')], [array([u'text_document audience', u'text_document given',
+       u'text_document e', u'text_document look', u'text_document say',
+       u'text_document p', u'text_document standard',
+       u'text_document confidence', u'text_document treat',
+       u'text_document sentence', u'text_document raj',
+       u'text_document different', u'text_document means',
+       u'text_document patient', u'text_document probability',
+       u'text_document example', u'text_document point',
+       u'text_document patients', u'text_document use',
+       u'text_document think'], 
+      dtype='<U69')], [array([u'text_document helps', u'text_document beta',
+       u'text_document variable', u'text_document standard',
+       u'text_document e', u'text_document formula',
+       u'text_document clf_latex_eqn_tok', u'text_document words',
+       u'text_document point', u'text_document difference',
+       u'text_document example', u'text_document values',
+       u'text_document calculate', u'text_document different',
+       u'text_document probability', u'text_document patient',
+       u'text_document patients', u'text_document raj',
+       u'text_document think', u'text_document use'], 
+      dtype='<U69')], [array([u'text_document statistical', u'text_document clf_latex_eqn_tok',
+       u'text_document variable', u'text_document e',
+       u'text_document mean', u'text_document formula',
+       u'text_document need', u'text_document standard',
+       u'text_document difference', u'text_document look',
+       u'text_document values', u'text_document point',
+       u'text_document calculate', u'text_document probability',
+       u'text_document example', u'text_document patient',
+       u'text_document patients', u'text_document think',
+       u'text_document raj', u'text_document use'], 
+      dtype='<U69')], [array([u'text_document clf_latex_eqn_tok', u'text_document formula',
+       u'text_document means', u'text_document given',
+       u'text_document variable', u'text_document need',
+       u'text_document treat', u'text_document mean',
+       u'text_document standard', u'text_document difference',
+       u'text_document example', u'text_document values',
+       u'text_document raj', u'text_document calculate',
+       u'text_document s', u'text_document probability',
+       u'text_document patient', u'text_document patients',
+       u'text_document use', u'text_document think'], 
+      dtype='<U69')], [array([u'text_document helps', u'text_document say',
+       u'text_document point', u'text_document formula',
+       u'text_document look', u'text_document treat',
+       u'text_document mean', u'text_document standard',
+       u'text_document e', u'text_document variable',
+       u'text_document different', u'text_document values',
+       u'text_document difference', u'text_document probability',
+       u'text_document s', u'text_document example',
+       u'text_document calculate', u'text_document raj',
+       u'text_document think', u'text_document use'], 
+      dtype='<U69')], [array([u'text_document table', u'text_document formula',
+       u'text_document variable', u'text_document meaning',
+       u'text_document look', u'text_document difference',
+       u'text_document say', u'text_document e', u'text_document words',
+       u'text_document point', u'text_document different',
+       u'text_document patients', u'text_document probability',
+       u'text_document calculate', u'text_document example',
+       u'text_document s', u'text_document patient', u'text_document raj',
+       u'text_document think', u'text_document use'], 
+      dtype='<U69')], [array([u'text_document say', u'text_document appropriate',
+       u'text_document standard', u'text_document s',
+       u'text_document clf_latex_eqn_tok', u'text_document treat',
+       u'text_document example', u'text_document e',
+       u'text_document statistical', u'text_document different',
+       u'text_document josh', u'text_document values',
+       u'text_document point', u'text_document mean',
+       u'text_document difference', u'text_document patients',
+       u'text_document patient', u'text_document raj',
+       u'text_document think', u'text_document use'], 
+      dtype='<U69')]], 'neutral': [[array([u'text_document anon_screen_name_redacted',
+       u'text_document download', u'text_document grading',
+       u'text_document submission', u'text_document .',
+       u'text_document submitted', u'text_document assignment',
+       u'text_document review', u'text_document final',
+       u'text_document grade', u'text_document clf_url_tok',
+       u'text_document thank', u'text_document problem',
+       u'text_document !', u'text_document essay', u'text_document thanks',
+       u'text_document submit', u'text_document peer',
+       u'text_document course', u'text_document i'], 
+      dtype='<U69')], [array([u'text_document submission', u'text_document grading',
+       u'text_document score', u'text_document submitted',
+       u'text_document click', u'text_document assignment',
+       u'text_document review', u'text_document download',
+       u'text_document final', u'text_document grade',
+       u'text_document clf_url_tok', u'text_document problem',
+       u'text_document thank', u'text_document essay',
+       u'text_document submit', u'text_document thanks',
+       u'text_document peer', u'text_document !', u'text_document i',
+       u'text_document course'], 
+      dtype='<U69')], [array([u'text_document homework', u'text_document grading',
+       u'text_document submitted', u'text_document video',
+       u'text_document assignment', u'text_document review',
+       u'text_document download', u'text_document final',
+       u'text_document click', u'text_document grade',
+       u'text_document clf_url_tok', u'text_document thank',
+       u'text_document problem', u'text_document essay',
+       u'text_document !', u'text_document thanks',
+       u'text_document submit', u'text_document peer',
+       u'text_document course', u'text_document i'], 
+      dtype='<U45')], [array([u'text_document score', u'text_document submitted',
+       u'text_document video', u'text_document review',
+       u'text_document assignment', u'text_document download',
+       u'text_document homework', u'text_document click',
+       u'text_document final', u'text_document grade',
+       u'text_document problem', u'text_document thank',
+       u'text_document essay', u'text_document clf_url_tok',
+       u'text_document peer', u'text_document submit', u'text_document !',
+       u'text_document thanks', u'text_document i', u'text_document course'], 
+      dtype='<U69')], [array([u'text_document anon_screen_name_redacted',
+       u'text_document nameredac_', u'text_document submission',
+       u'text_document submitted', u'text_document score',
+       u'text_document review', u'text_document click',
+       u'text_document download', u'text_document grade',
+       u'text_document problem', u'text_document clf_url_tok',
+       u'text_document final', u'text_document thank',
+       u'text_document essay', u'text_document !', u'text_document submit',
+       u'text_document peer', u'text_document thanks',
+       u'text_document course', u'text_document i'], 
+      dtype='<U69')], [array([u'text_document assignment', u'text_document nameredac_',
+       u'text_document anon_screen_name_redacted',
+       u'text_document submitted', u'text_document deadline',
+       u'text_document submission', u'text_document essay',
+       u'text_document grade', u'text_document click',
+       u'text_document download', u'text_document problem',
+       u'text_document final', u'text_document peer',
+       u'text_document thank', u'text_document clf_url_tok',
+       u'text_document !', u'text_document thanks',
+       u'text_document submit', u'text_document course', u'text_document i'], 
+      dtype='<U69')], [array([u'text_document submission', u'text_document nameredac_',
+       u'text_document anon_screen_name_redacted',
+       u'text_document submitted', u'text_document grading',
+       u'text_document assignment', u'text_document click',
+       u'text_document download', u'text_document grade',
+       u'text_document final', u'text_document problem',
+       u'text_document thank', u'text_document clf_url_tok',
+       u'text_document peer', u'text_document submit', u'text_document !',
+       u'text_document essay', u'text_document thanks', u'text_document i',
+       u'text_document course'], 
+      dtype='<U69')], [array([u'text_document score', u'text_document video',
+       u'text_document assignment', u'text_document deadline',
+       u'text_document homework', u'text_document final',
+       u'text_document review', u'text_document click',
+       u'text_document download', u'text_document grade',
+       u'text_document problem', u'text_document clf_url_tok',
+       u'text_document essay', u'text_document peer',
+       u'text_document thank', u'text_document !', u'text_document submit',
+       u'text_document thanks', u'text_document i', u'text_document course'], 
+      dtype='<U69')], [array([u'text_document deadline', u'text_document video',
+       u'text_document submission', u'text_document submitted',
+       u'text_document review', u'text_document assignment',
+       u'text_document download', u'text_document click',
+       u'text_document final', u'text_document grade',
+       u'text_document clf_url_tok', u'text_document problem',
+       u'text_document essay', u'text_document thank',
+       u'text_document peer', u'text_document !', u'text_document submit',
+       u'text_document thanks', u'text_document course', u'text_document i'], 
+      dtype='<U69')], [array([u'text_document assignment',
+       u'text_document anon_screen_name_redacted',
+       u'text_document nameredac_', u'text_document .',
+       u'text_document review', u'text_document submitted',
+       u'text_document download', u'text_document click',
+       u'text_document final', u'text_document thank',
+       u'text_document grade', u'text_document thanks',
+       u'text_document problem', u'text_document clf_url_tok',
+       u'text_document !', u'text_document essay', u'text_document peer',
+       u'text_document submit', u'text_document course', u'text_document i'], 
+      dtype='<U69')]], 'confused': [[array([u'text_document probability', u'text_document group',
+       u'text_document z', u'text_document sentence', u'text_document n',
+       u'text_document standard', u'text_document use',
+       u'text_document correct', u'text_document 1',
+       u'text_document instead', u'text_document calculate',
+       u'text_document p', u'text_document question',
+       u'text_document explain', u'post_type post_type feature',
+       u'text_document confused', u'text_document example',
+       u'text_document understand', u'text_document value',
+       u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document sample', u'text_document standard',
+       u'text_document instead', u'text_document n', u'text_document z',
+       u'text_document x', u'text_document number',
+       u'text_document probability', u'text_document use',
+       u'text_document 1', u'text_document calculate',
+       u'text_document explain', u'text_document question',
+       u'text_document confused', u'text_document p',
+       u'post_type post_type feature', u'text_document understand',
+       u'text_document example', u'text_document value', u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document data', u'text_document sample',
+       u'text_document study', u'text_document use',
+       u'text_document explanation', u'text_document sentence',
+       u'text_document number', u'text_document 1', u'text_document p',
+       u'text_document group', u'text_document clarify',
+       u'text_document calculate', u'text_document explain',
+       u'text_document example', u'text_document question',
+       u'text_document confused', u'post_type post_type feature',
+       u'text_document value', u'text_document understand',
+       u'text_document ?'], 
+      dtype='<U45')], [array([u'text_document z', u'text_document clarify',
+       u'text_document group', u'text_document number',
+       u'text_document use', u'text_document x',
+       u'text_document probability', u'text_document sentence',
+       u'text_document correct', u'text_document calculate',
+       u'text_document confused', u'text_document 1', u'text_document p',
+       u'text_document question', u'text_document explain',
+       u'text_document example', u'post_type post_type feature',
+       u'text_document understand', u'text_document value',
+       u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document standard', u'text_document say', u'text_document z',
+       u'text_document clarify', u'text_document sentence',
+       u'text_document instead', u'text_document group',
+       u'text_document use', u'text_document number', u'text_document p',
+       u'text_document calculate', u'text_document 1',
+       u'text_document explain', u'text_document question',
+       u'text_document example', u'post_type post_type feature',
+       u'text_document confused', u'text_document value',
+       u'text_document understand', u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document clarify', u'text_document z',
+       u'text_document standard', u'text_document n',
+       u'text_document explanation', u'text_document x',
+       u'text_document probability', u'text_document group',
+       u'text_document number', u'text_document p',
+       u'text_document example', u'text_document calculate',
+       u'text_document 1', u'text_document question',
+       u'text_document explain', u'post_type post_type feature',
+       u'text_document confused', u'text_document understand',
+       u'text_document value', u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document standard', u'text_document difference',
+       u'text_document z', u'text_document n', u'text_document x',
+       u'text_document probability', u'text_document group',
+       u'text_document number', u'text_document clarify',
+       u'text_document calculate', u'text_document question',
+       u'text_document example', u'text_document p', u'text_document 1',
+       u'text_document explain', u'post_type post_type feature',
+       u'text_document confused', u'text_document value',
+       u'text_document understand', u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document z', u'text_document correct', u'text_document x',
+       u'text_document probability', u'text_document clarify',
+       u'text_document instead', u'text_document number',
+       u'text_document calculate', u'text_document use',
+       u'text_document group', u'text_document 1',
+       u'text_document explain', u'text_document p',
+       u'text_document question', u'text_document example',
+       u'text_document confused', u'post_type post_type feature',
+       u'text_document understand', u'text_document value',
+       u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document say', u'text_document standard',
+       u'text_document mean', u'text_document explanation',
+       u'text_document correct', u'text_document sentence',
+       u'text_document instead', u'text_document group',
+       u'text_document p', u'text_document 1', u'text_document calculate',
+       u'text_document clarify', u'text_document explain',
+       u'text_document question', u'text_document example',
+       u'text_document confused', u'post_type post_type feature',
+       u'text_document value', u'text_document understand',
+       u'text_document ?'], 
+      dtype='<U69')], [array([u'text_document say', u'text_document number', u'text_document z',
+       u'text_document difference', u'text_document group',
+       u'text_document x', u'text_document p', u'text_document use',
+       u'text_document probability', u'text_document clarify',
+       u'text_document 1', u'text_document question',
+       u'text_document calculate', u'text_document explain',
+       u'post_type post_type feature', u'text_document example',
+       u'text_document confused', u'text_document understand',
+       u'text_document value', u'text_document ?'], 
+      dtype='<U69')]]}

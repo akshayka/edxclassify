@@ -67,6 +67,18 @@ def invoke_classifier(classifier, data_filename,
     dcname = data_cleaner.name
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
           'data_cleaner %s' % (data_filename, classifier.name, dcname)
+    
+    for key in relevant_features:
+        feature_lists = relevant_features[key]
+        num_folds = len(feature_lists)
+        feature_map = {}
+        for l in feature_lists:
+            for f in l:
+                feature_map[f] = feature_map.get(f, 0) + 1
+        relevant_features[key] = [f for f in feature_map\
+                                      if feature_map[f] >= num_folds / 2]
+    print relevant_features
+
     if train_test_only:
         tabulate_f1_summary(cv_results_train, cv_results_test, labels)
     else:
@@ -74,7 +86,8 @@ def invoke_classifier(classifier, data_filename,
         tabulate_results(cv_results_train, average, labels)
         print 'Results: Making predictions on the test set.'
         tabulate_results(cv_results_test, average, labels)
-    print relevant_features
+
+    # TODO: Capture this information in a meaningful way
 
 
 def train_and_test(clf, data_file, test_file, data_cleaner):
@@ -90,9 +103,26 @@ def train_and_test(clf, data_file, test_file, data_cleaner):
         test_data = pickle.load(testfile)
         X, y =  zip(*data_cleaner.process_records(test_data))
         test_metrics.extend(clf.test(X, y)[1])
+
+    header = []
+    for label in data_cleaner.labels():
+        label_str = str(label)
+        header.append(label_str + ': precision')
+        header.append(label_str + ': recall')
+        header.append(label_str + ': f1')
+
+    train_record = []
+    test_record = []
     print 'training error: ' + str(train_metrics)
+    for i in range(len(data_cleaner.labels())):
+        for j in range(3):
+            # The first index is over precision, recall, f1; the second is over labels
+            train_record.append(train_metrics[j][i])
+            test_record.append(test_metrics[j][i])
+    print tabulate([train_record], header, tablefmt='grid')
+
     print 'test error: ' + str(test_metrics)
-    return train_metrics, test_metrics, None
+    print tabulate([test_record], header, tablefmt='grid')
 
 def main(args=None):
     parser = argparse.ArgumentParser(description='applies a classifier to '

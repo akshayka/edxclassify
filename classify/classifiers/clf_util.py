@@ -26,24 +26,31 @@ def sklearn_cv(clf, X, y, labels):
     recall_test = []
     f1_test = []
     relevant_features = {}
-    for label in labels:
-        relevant_features[label] = []
+    
+    if len(labels) > 2:
+        for label in labels:
+            relevant_features[label] = []
+    else:
+        relevant_features['informative'] = []
+
     for train_indices, test_indices in skf:
         X_train, X_test = X[train_indices], X[test_indices]
         y_train, y_test = y[train_indices], y[test_indices]
         # Predict on the test set
-        print 'fitting ...'
         clf.fit(X_train, y_train)
-        print 'predicting ...'
         y_pred = clf.predict(X_test)
 
         # Extract information about the most relevant features
         feature_names = extract_feature_names(clf.steps[0][-1])
         classifier = clf.steps[-1][-1]
         if feature_names is not None and hasattr(classifier, 'coef_'):
-            for i, label in enumerate(labels):
-                top20 = np.argsort(classifier.coef_[i])[-20:]
-                relevant_features[label].append([feature_names[top20]])
+            if len(labels) == 2:
+                relevant_features['informative'] =\
+                    np.argsort(classifier.coef_[0])[-20:]
+            else:
+                for i, label in enumerate(labels):
+                    top20 = np.argsort(classifier.coef_[i])[-20:]
+                    relevant_features[label].append(feature_names[top20])
 
         precision_test.append(metrics.precision_score(y_test, y_pred,
             average=None))
