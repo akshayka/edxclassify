@@ -4,6 +4,12 @@ from data_cleaner_factory import make_data_cleaner
 import pickle
 from tabulate import tabulate
 
+"""
+Classification harness, designed for running experiments on the MOOCPosts
+dataset.
+
+TODO Finish documentation.
+"""
 
 def tabulate_f1_cv_summary(cv_results_tr, cv_results_tst, labels):
     headers = ['Label', 'Train: F1', 'Test: F1']
@@ -87,6 +93,7 @@ def cross_validation(classifier, data_filename,
                 csvfile.write(','.join([f.encode('utf-8') for f in feature_map
                                            if feature_map[f] >= num_folds / 2]))
 
+
 def test_specified_partition(clf, data_file, test_file, data_cleaner):
     train_metrics = []
     with open(data_file, 'rb') as infile:
@@ -122,6 +129,7 @@ def test_specified_partition(clf, data_file, test_file, data_cleaner):
     print tabulate([train_record], header, tablefmt='grid')
     print 'test error: ' + str(test_metrics)
     print tabulate([test_record], header, tablefmt='grid')
+
 
 def main(args=None):
     parser = argparse.ArgumentParser(description='applies a classifier to '
@@ -189,7 +197,7 @@ def main(args=None):
     args = parser.parse_args(args)
 
     if args.no_text and args.text_only:
-        print 'no text and text only cannot both be set'
+        print 'no_text and text_only cannot both be set!'
         return
 
     classifier = make_classifier(clf=args.classifier,
