@@ -26,6 +26,7 @@ def sklearn_cv(clf, X, y, labels):
     recall_test = []
     f1_test = []
     relevant_features = {}
+    num_top = 600
     
     if len(labels) > 2:
         for label in labels:
@@ -46,11 +47,11 @@ def sklearn_cv(clf, X, y, labels):
         if feature_names is not None and hasattr(classifier, 'coef_'):
             if len(labels) == 2:
                 relevant_features['informative'] =\
-                    np.argsort(classifier.coef_[0])[-20:]
+                    np.argsort(classifier.coef_[0])[-num_top:]
             else:
                 for i, label in enumerate(labels):
-                    top20 = np.argsort(classifier.coef_[i])[-20:]
-                    relevant_features[label].append(feature_names[top20])
+                    top = np.argsort(classifier.coef_[i])[-num_top:]
+                    relevant_features[label].append(feature_names[top])
 
         precision_test.append(metrics.precision_score(y_test, y_pred,
             average=None))

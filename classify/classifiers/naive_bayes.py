@@ -38,7 +38,5 @@ class NaiveBayes(SklearnCLF):
 
 
     def cross_validate(self, X, y, labels):
-        print 'making clf'
         self.make_clf(MultinomialNB())
-        print 'cross validating'
         return clf_util.sklearn_cv(self.clf, X, y, labels)

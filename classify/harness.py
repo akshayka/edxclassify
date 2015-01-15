@@ -51,7 +51,7 @@ def tabulate_results(cv_results, average, labels):
 
 
 def invoke_classifier(classifier, data_filename,
-                      average, train_test_only, data_cleaner):
+                      average, train_test_only, data_cleaner, wordlist):
     results = []
     labels = data_cleaner.labels()
     with open(data_filename, 'rb') as infile:
@@ -68,17 +68,6 @@ def invoke_classifier(classifier, data_filename,
     print 'Classification results for file %s ...;\nusing classifier %s and ' \
           'data_cleaner %s' % (data_filename, classifier.name, dcname)
     
-    for key in relevant_features:
-        feature_lists = relevant_features[key]
-        num_folds = len(feature_lists)
-        feature_map = {}
-        for l in feature_lists:
-            for f in l:
-                feature_map[f] = feature_map.get(f, 0) + 1
-        relevant_features[key] = [f for f in feature_map\
-                                      if feature_map[f] >= num_folds / 2]
-    print relevant_features
-
     if train_test_only:
         tabulate_f1_summary(cv_results_train, cv_results_test, labels)
     else:
@@ -88,7 +77,17 @@ def invoke_classifier(classifier, data_filename,
         tabulate_results(cv_results_test, average, labels)
 
     # TODO: Capture this information in a meaningful way
-
+    if wordlist is not None:
+        for key in relevant_features:
+            with open(wordlist + key + '.txt', 'wb') as csvfile:
+                feature_lists = relevant_features[key]
+                num_folds = len(feature_lists)
+                feature_map = {}
+                for l in feature_lists:
+                    for f in l:
+                        feature_map[f] = feature_map.get(f, 0) + 1
+                csvfile.write(','.join([f.encode('utf-8') for f in feature_map
+                                           if feature_map[f] >= num_folds / 2]))
 
 def train_and_test(clf, data_file, test_file, data_cleaner):
     # Train on the data_file
@@ -176,6 +175,9 @@ def main(args=None):
     # TODO: Scaling option?
     parser.add_argument('-p', '--penalty', type=float, default=1.0,
                         help='penalty (C term) for linear svm')
+    parser.add_argument('-wl', '--wordlist', type=str,
+                        help='prefix of files into which word lists should be '\
+                             'dumped.')
     args = parser.parse_args(args)
 
     if args.no_text and args.text_only:
@@ -203,7 +205,7 @@ def main(args=None):
         train_and_test(classifier, args.data_file, args.test_file, data_cleaner)
     else: 
         invoke_classifier(classifier, args.data_file, args.average,
-                          args.train_test_f1, data_cleaner)
+                          args.train_test_f1, data_cleaner, args.wordlist)
     # TODO: Option to generate visuals
 
 if __name__ == '__main__':
