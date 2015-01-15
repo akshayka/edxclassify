@@ -5,15 +5,11 @@ from edx import Edx
 
 class EdxQuestion(Edx):
     def __init__(self,
-                 collapse_numbers=False,
-                 latex=False,
-                 url=False,
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
-        super(EdxQuestion, self).__init__(True, collapse_numbers, latex,
-                                           url,
-                                           extract_noun_phrases,
-                                           first_sentence_weight)
+        super(EdxQuestion, self).__init__(True,
+                                          extract_noun_phrases,
+                                          first_sentence_weight)
         self.name = 'EdxQuestion ' + self.name
 
     def labels(self):

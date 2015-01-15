@@ -6,13 +6,9 @@ from edx import Edx
 class EdxSentiment(Edx):
     def __init__(self,
                  binary=False,
-                 collapse_numbers=False,
-                 latex=False,
-                 url=False,
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
-        super(EdxSentiment, self).__init__(binary, collapse_numbers, latex,
-                                           url,
+        super(EdxSentiment, self).__init__(binary,
                                            extract_noun_phrases,
                                            first_sentence_weight)
         self.name = 'EdxSentiment ' + self.name

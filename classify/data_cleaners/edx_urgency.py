@@ -6,15 +6,11 @@ from edx import Edx
 class EdxUrgency(Edx):
     def __init__(self,
                  binary=False,
-                 collapse_numbers=False,
-                 latex=False,
-                 url=False,
                  extract_noun_phrases=False,
                  first_sentence_weight=1):
-        super(EdxUrgency, self).__init__(binary, collapse_numbers, latex,
-                                           url,
-                                           extract_noun_phrases,
-                                           first_sentence_weight)
+        super(EdxUrgency, self).__init__(binary,
+                                         extract_noun_phrases,
+                                         first_sentence_weight)
         self.name = 'EdxUrgency ' + self.name
 
     def labels(self):
