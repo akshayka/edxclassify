@@ -5,7 +5,7 @@ import pickle
 from tabulate import tabulate
 
 
-def tabulate_f1_summary(cv_results_tr, cv_results_tst, labels):
+def tabulate_f1_cv_summary(cv_results_tr, cv_results_tst, labels):
     headers = ['Label', 'Train: F1', 'Test: F1']
     avgs = []
     for label in labels:
@@ -22,7 +22,7 @@ def tabulate_f1_summary(cv_results_tr, cv_results_tst, labels):
     print tabulate(avgs, headers, tablefmt='grid')
 
 
-def tabulate_results(cv_results, average, labels):
+def tabulate_full_cv_summary(cv_results, average, labels):
     header = ['fold']
     for label in labels:
         label_str = str(label)
@@ -50,8 +50,8 @@ def tabulate_results(cv_results, average, labels):
     print tabulate(results, header, tablefmt='grid')
 
 
-def invoke_classifier(classifier, data_filename,
-                      average, train_test_only, data_cleaner, wordlist):
+def cross_validation(classifier, data_filename,
+                     average, train_test_only, data_cleaner, wordlist):
     results = []
     labels = data_cleaner.labels()
     with open(data_filename, 'rb') as infile:
@@ -60,7 +60,6 @@ def invoke_classifier(classifier, data_filename,
         # perhaps don't take them in ingest_dataset
         dataset = pickle.load(infile)
         X, y =  zip(*data_cleaner.process_records(dataset))
-        # TODO: Nothing done with relevant feautres here
         cv_results_train, cv_results_test, relevant_features = \
             classifier.cross_validate(X, y, labels)
 
@@ -69,14 +68,13 @@ def invoke_classifier(classifier, data_filename,
           'data_cleaner %s' % (data_filename, classifier.name, dcname)
     
     if train_test_only:
-        tabulate_f1_summary(cv_results_train, cv_results_test, labels)
+        tabulate_f1_cv_summary(cv_results_train, cv_results_test, labels)
     else:
         print 'Results: Making predictions on the training set.'
-        tabulate_results(cv_results_train, average, labels)
+        tabulate_full_cv_results(cv_results_train, average, labels)
         print 'Results: Making predictions on the test set.'
-        tabulate_results(cv_results_test, average, labels)
+        tabulate_full_cv_results(cv_results_test, average, labels)
 
-    # TODO: Capture this information in a meaningful way
     if wordlist is not None:
         for key in relevant_features:
             with open(wordlist + key + '.txt', 'wb') as csvfile:
@@ -89,15 +87,17 @@ def invoke_classifier(classifier, data_filename,
                 csvfile.write(','.join([f.encode('utf-8') for f in feature_map
                                            if feature_map[f] >= num_folds / 2]))
 
-def train_and_test(clf, data_file, test_file, data_cleaner):
-    # Train on the data_file
+def test_specified_partition(clf, data_file, test_file, data_cleaner):
     train_metrics = []
-    test_metrics = []
     with open(data_file, 'rb') as infile:
         training_data = pickle.load(infile)
         X, y =  zip(*data_cleaner.process_records(training_data))
         clf.train(X, y)
+        # element 0 contains predictions made by the classifier
+        # element 1 contains the metrics
         train_metrics.extend(clf.test(X, y)[1])
+
+    test_metrics = []
     with open(test_file, 'rb') as testfile:
         test_data = pickle.load(testfile)
         X, y =  zip(*data_cleaner.process_records(test_data))
@@ -112,14 +112,14 @@ def train_and_test(clf, data_file, test_file, data_cleaner):
 
     train_record = []
     test_record = []
-    print 'training error: ' + str(train_metrics)
     for i in range(len(data_cleaner.labels())):
         for j in range(3):
             # The first index is over precision, recall, f1; the second is over labels
             train_record.append(train_metrics[j][i])
             test_record.append(test_metrics[j][i])
-    print tabulate([train_record], header, tablefmt='grid')
 
+    print 'training error: ' + str(train_metrics)
+    print tabulate([train_record], header, tablefmt='grid')
     print 'test error: ' + str(test_metrics)
     print tabulate([test_record], header, tablefmt='grid')
 
@@ -128,10 +128,6 @@ def main(args=None):
                                      'train, test folds generated using '
                                      'ingest_datasets.py')
     # Required arguments
-    parser.add_argument('classifier', type=str,
-                        help='apply a particular classifier to the data; see '
-                        'classifier_factory.py for a list of supported '
-                        'classifiers')
     parser.add_argument('data_file', type=str,
                         help='data file that adheres to the feature '
                              'specification laid out in feature_spec.py')
@@ -139,6 +135,10 @@ def main(args=None):
                         help='apply a DataCleaner to the data ingested by '
                              'ingest_datasets.py; see data_cleaner_factory.py '
                              'for a list of supported cleaners.')
+    parser.add_argument('classifier', type=str,
+                        help='apply a particular classifier to the data; see '
+                        'classifier_factory.py for a list of supported '
+                        'classifiers')
 
     # Classification parameters
     parser.add_argument('-b', '--binary', action='store_true',
@@ -167,8 +167,6 @@ def main(args=None):
     # TODO: Include an option that enables scaling and normalizing features
 
     # Feature selection
-    parser.add_argument('-c', '--custom_stop_words', action='store_true',
-                        help='use the custom stop word list')
     parser.add_argument('-kb', '--k_best', type=int, default=0,
                         help='use chi-square feature reduction to select '
                              'the k best features')
@@ -201,7 +199,6 @@ def main(args=None):
                                  text_only=args.text_only,
                                  no_text=args.no_text,
                                  tfidf=args.tfidf,
-                                 custom_stop_words=args.custom_stop_words,
                                  penalty=args.penalty)
     data_cleaner = make_data_cleaner(dc=args.data_cleaner,
                                      binary=args.binary,
@@ -209,10 +206,11 @@ def main(args=None):
                                      first_sentence_weight=args.first_sentence)
 
     if args.test_file is not None:
-        train_and_test(classifier, args.data_file, args.test_file, data_cleaner)
+        test_specified_partition(classifier, args.data_file,
+                                 args.test_file, data_cleaner)
     else: 
-        invoke_classifier(classifier, args.data_file, args.average,
-                          args.train_test_f1, data_cleaner, args.wordlist)
+        cross_validation(classifier, args.data_file, args.average,
+                          args.f1_avg, data_cleaner, args.wordlist)
     # TODO: Option to generate visuals
 
 if __name__ == '__main__':

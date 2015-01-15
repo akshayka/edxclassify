@@ -19,7 +19,6 @@ class LinSVC(SklearnCLF):
                  text_only=False,
                  no_text=False,
                  tfidf=False,
-                 custom_stop_words=False,
                  C=1.0,
                  reduce_features=False,
                  k_best_features=0):
@@ -27,7 +26,6 @@ class LinSVC(SklearnCLF):
                                      text_only=text_only,
                                      no_text=no_text,
                                      tfidf=tfidf,
-                                     custom_stop_words=custom_stop_words,
                                      reduce_features=reduce_features,
                                      k_best_features=k_best_features)
         self.binary_counts = True

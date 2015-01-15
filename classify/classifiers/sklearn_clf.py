@@ -30,7 +30,6 @@ class SklearnCLF(Classifier):
                  text_only=False,
                  no_text=False,
                  tfidf=False,
-                 custom_stop_words=False,
                  reduce_features=False,
                  k_best_features=0,
                  use_dict_vectorizer=True):
@@ -38,7 +37,6 @@ class SklearnCLF(Classifier):
         self.text_only = text_only
         self.no_text = no_text
         self.tfidf = tfidf
-        self.custom_stop_words = custom_stop_words
         self.reduce_features = reduce_features
         self.k_best_features = k_best_features
         self.binary_counts = False
@@ -49,8 +47,6 @@ class SklearnCLF(Classifier):
             opts = opts + 'text_only '
         if self.tfidf:
             opts = opts + 'tfidf '
-        if self.custom_stop_words:
-            opts = opts + 'custom_stop_words '
         if self.reduce_features:
             opts = opts + 'reduce_features '
         if self.k_best_features:
@@ -59,18 +55,14 @@ class SklearnCLF(Classifier):
 
 
     def make_clf(self, clf):
-        stop_words='english'
-        if self.custom_stop_words:
-           stop_words=CUSTOM_STOP_WORDS
-
         counter = None
         if self.tfidf:
             counter = TfidfVectorizer(token_pattern=self.token_pattern,
-                                      stop_words=stop_words,
+                                      stop_words=CUSTOM_STOP_WORDS,
                                       binary=self.binary_counts)
         else:
             counter = CountVectorizer(token_pattern=self.token_pattern,
-                                      stop_words=stop_words,
+                                      stop_words=CUSTOM_STOP_WORDS,
                                       binary=self.binary_counts)
         features = []
         if not self.no_text:

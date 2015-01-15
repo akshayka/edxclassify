@@ -19,14 +19,12 @@ class NaiveBayes(SklearnCLF):
                  text_only=False,
                  no_text=False,
                  tfidf=False,
-                 custom_stop_words=False,
                  reduce_features=False,
                  k_best_features=0):
         super(NaiveBayes, self).__init__(token_pattern=token_pattern,
                                          text_only=text_only,
                                          no_text=no_text,
                                          tfidf=tfidf,
-                                         custom_stop_words=custom_stop_words,
                                          reduce_features=reduce_features,
                                          k_best_features=k_best_features)
         self.name = 'NaiveBayes ' + self.name
