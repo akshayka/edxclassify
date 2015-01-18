@@ -77,9 +77,9 @@ def cross_validation(classifier, data_filename,
         tabulate_f1_cv_summary(cv_results_train, cv_results_test, labels)
     else:
         print 'Results: Making predictions on the training set.'
-        tabulate_full_cv_results(cv_results_train, average, labels)
+        tabulate_full_cv_summary(cv_results_train, average, labels)
         print 'Results: Making predictions on the test set.'
-        tabulate_full_cv_results(cv_results_test, average, labels)
+        tabulate_full_cv_summary(cv_results_test, average, labels)
 
     if wordlist is not None:
         for key in relevant_features:
