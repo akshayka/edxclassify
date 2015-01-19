@@ -6,9 +6,8 @@ discover insights into the dynamics of these courses is three-fold; we wish to:
 
 1. better understand the educational and learning process,
 2. improve the educational environment for MOOC learners, and
-3. empower instructors by letting them put their fingers on the pulses of their
-   courses and by providing them with a suite of tools that lighten the burden
-   of teaching large scale classes.
+3. empower instructors by equipping them with a suite of tools designed to
+   ease the burden of teaching large-scale classes.
 
 In particular, the project mines MOOC discussion forums. We focus
 our efforts on the [Stanford MOOC-Posts
