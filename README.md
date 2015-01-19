@@ -10,6 +10,5 @@ discover insights into the dynamics of these courses is three-fold; we wish to:
    ease the burden of teaching large-scale classes.
 
 We focus our efforts on the [Stanford MOOC-Posts
-dataset](http://datastage.stanford.edu/StanfordMoocPosts/ "MOOC-Posts"), which
-was created for this project. The dataset is now publicly available to the research
-community.
+dataset](http://datastage.stanford.edu/StanfordMoocPosts/ "MOOC-Posts"), a
+publicly available dataset that was created to enable the MOOC Mining Project.
