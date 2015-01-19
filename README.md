@@ -12,5 +12,5 @@ discover insights into the dynamics of these courses is three-fold; we wish to:
 In particular, the project mines MOOC discussion forums. We focus
 our efforts on the [Stanford MOOC-Posts
 dataset](http://datastage.stanford.edu/StanfordMoocPosts/ "MOOC-Posts"), which
-was created for this project; the dataset is now publicly available to the research
+was created for this project. The dataset is now publicly available to the research
 community.
