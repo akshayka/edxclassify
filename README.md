@@ -9,8 +9,7 @@ discover insights into the dynamics of these courses is three-fold; we wish to:
 3. empower instructors by equipping them with a suite of tools designed to
    ease the burden of teaching large-scale classes.
 
-In particular, the project mines MOOC discussion forums. We focus
-our efforts on the [Stanford MOOC-Posts
+We focus our efforts on the [Stanford MOOC-Posts
 dataset](http://datastage.stanford.edu/StanfordMoocPosts/ "MOOC-Posts"), which
 was created for this project. The dataset is now publicly available to the research
 community.
