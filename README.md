@@ -1,1 +1,1 @@
-# edX: Forum Post Classification #
+# Mining MOOC Discussion Forums #
