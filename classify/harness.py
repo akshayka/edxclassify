@@ -156,6 +156,9 @@ def main(args=None):
                         help='regularization constant')
 
     # Feature generation
+    parser.add_argument('-c', '--chained', action='store_true',
+                        help='pipe the output of other classifiers into the '
+                        'input of this one')
     parser.add_argument('-fs', '--first_sentence', type=int, default=1,
                         help='upweight each post\'s first sentence')
     parser.add_argument('-no_txt', '--no_text', action='store_true',
@@ -201,6 +204,7 @@ def main(args=None):
         return
 
     classifier = SklearnCLF(clf_name=args.classifier,
+                            column=args.data_cleaner,
                             token_pattern_idx=args.token_pattern_idx,
                             text_only=args.text_only,
                             no_text=args.no_text,
@@ -208,7 +212,7 @@ def main(args=None):
                             reduce_features=args.reduce_features,
                             k_best_features=args.k_best,
                             penalty=args.penalty,
-                            chained=False)
+                            chained=args.chained)
     data_cleaner = make_data_cleaner(dc=args.data_cleaner,
                                      binary=args.binary,
                                      extract_noun_phrases=args.noun_phrases,

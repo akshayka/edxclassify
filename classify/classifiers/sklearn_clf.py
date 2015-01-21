@@ -32,6 +32,7 @@ class SklearnCLF(Classifier):
     supported_classifiers = 'naive_bayes\nlogistic\nlin_svc'
 
     def __init__(self, clf_name='',
+                 column='', 
                  token_pattern_idx=5,
                  text_only=False,
                  no_text=False,
@@ -44,7 +45,10 @@ class SklearnCLF(Classifier):
         if token_pattern_idx >= len(CUSTOM_TOKEN_PATTERNS):
             raise NotImplementedError('Token pattern %d not implemented'
                                       % token_pattern_idx)
+        self.clf_name = clf_name.lower()
+        self.column = column
         self.token_pattern = CUSTOM_TOKEN_PATTERNS[token_pattern_idx]
+        self.token_pattern_idx = token_pattern_idx
         self.text_only = text_only
         self.no_text = no_text
         self.tfidf = tfidf
@@ -52,7 +56,12 @@ class SklearnCLF(Classifier):
         self.k_best_features = k_best_features
         self.penalty = penalty
         self.chained = chained
-        self.clf_name = clf_name.lower()
+
+        if self.chained:
+            self.chain_args = [self.clf_name, '', self.token_pattern_idx,
+                              self.text_only, self.no_text, self.tfidf,
+                              self.reduce_features, self.k_best_features,
+                              self.penalty, False]
 
         # TODO: Understand the mathematical implications for
         # each of these options
@@ -71,19 +80,32 @@ class SklearnCLF(Classifier):
         self.name = self.clf_name + opts
 
         if self.clf_name == 'naive_bayes':
-            self.make_clf(MultinomialNB())
+            self._make_clf(MultinomialNB())
         elif self.clf_name == 'logistic':
             self.binary_counts = True
-            self.make_clf(LogisticRegression(C=self.penalty))
+            self._make_clf(LogisticRegression(C=self.penalty))
         elif self.clf_name == 'lin_svc':
             self.binary_counts = True
             self.normalize = True
-            self.make_clf(LinearSVC(C=self.penalty))
+            self._make_clf(LinearSVC(C=self.penalty))
         else:
             raise NotImplementedError('Classifier %s not supported; choose from:\n'
                                       '%s' % (self.clf_name, self.supported_classifiers))
 
-    def make_clf(self, clf):
+    def _make_chained(self, column):
+        if self.column != column:
+            chain = ChainedClassifier(
+                clf=SklearnCLF(*self.chain_args),
+                column=column,
+            )
+            return [(column, Pipeline([
+                        (column + '_guess', chain),
+                        ('dict_vect', DictVectorizer()),
+                    ]))]
+        else:
+            return []
+
+    def _make_clf(self, clf):
         counter = None
         if self.tfidf:
             counter = TfidfVectorizer(token_pattern=self.token_pattern,
@@ -146,29 +168,12 @@ class SklearnCLF(Classifier):
                 ]
 
         if self.chained:
-            # NB: It's vital that 'chained' be False for every
-            # classifier we create here in order to prevent an infinite
-            # recursion of sorts.
-            self.question_chain = ChainedClassifier(
-                clf=SklearnCLF(self.clf_name,
-                    token_pattern_idx=self.token_pattern_idx,
-                    text_only=self.text_only,
-                    no_text=self.no_text,
-                    tfidf=self.tfidf,
-                    reduce_feautres=self.reduce_features,
-                    k_best_features=self.k_best_features,
-                    penalty=self.penalty,
-                    chained=False),
-                column='question'
-            )
-
-            features =\
-                features + [
-                    ('question', Pipeline([
-                        ('question_guess', self.question_chain),
-                        ('dict_vect', DictVectorizer()),
-                    ])),
-                ]
+            features = features + self._make_chained('question')
+            features = features + self._make_chained('answer')
+            features = features + self._make_chained('opinion')
+            features = features + self._make_chained('sentiment')
+            features = features + self._make_chained('urgency')
+            features = features + self._make_chained('confusion')
         pipeline = [FeatureUnion(features)]
 
         #if self.normalize:
