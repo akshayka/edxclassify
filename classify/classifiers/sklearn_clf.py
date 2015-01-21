@@ -8,11 +8,11 @@ Training, test data format:
 TODO: docs and docs and docs
 
 '''
-from abc import ABCMeta, abstractmethod
 from abstract_classifier import Classifier
 from custom_stop_words import CUSTOM_STOP_WORDS
-import classify.classifiers.clf_util as clf_util
-from classify.classifiers.feature_aggregator import *
+from classify.classifiers.clf_util import *
+from classify.classifiers.custom_token_patterns import CUSTOM_TOKEN_PATTERNS
+from classify.classifiers.feature_generation import *
 import numpy as np
 from sklearn import metrics
 from sklearn.feature_extraction import DictVectorizer
@@ -21,28 +21,45 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import RFECV
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import LinearSVC
 from sklearn.pipeline import FeatureUnion, Pipeline, make_union, make_pipeline
 from sklearn.preprocessing import Normalizer, StandardScaler
 
 
 class SklearnCLF(Classifier):
-    def __init__(self, token_pattern=r'(?u)\b\w\w+\b',
+    supported_classifiers = 'naive_bayes\nlogistic\nlin_svc'
+
+    def __init__(self, clf_name='',
+                 token_pattern_idx=5,
                  text_only=False,
                  no_text=False,
                  tfidf=False,
                  reduce_features=False,
                  k_best_features=0,
-                 use_dict_vectorizer=True):
-        self.token_pattern = token_pattern
+                 penalty=1.0,
+                 chained=False):
+        
+        if token_pattern_idx >= len(CUSTOM_TOKEN_PATTERNS):
+            raise NotImplementedError('Token pattern %d not implemented'
+                                      % token_pattern_idx)
+        self.token_pattern = CUSTOM_TOKEN_PATTERNS[token_pattern_idx]
         self.text_only = text_only
         self.no_text = no_text
         self.tfidf = tfidf
         self.reduce_features = reduce_features
         self.k_best_features = k_best_features
+        self.penalty = penalty
+        self.chained = chained
+        self.clf_name = clf_name.lower()
+
+        # TODO: Understand the mathematical implications for
+        # each of these options
         self.binary_counts = False
         self.normalize = False
 
-        opts = 'token:' + token_pattern + ' '
+        opts = 'token:' + self.token_pattern + ' '
         if self.text_only:
             opts = opts + 'text_only '
         if self.tfidf:
@@ -51,8 +68,20 @@ class SklearnCLF(Classifier):
             opts = opts + 'reduce_features '
         if self.k_best_features:
             opts = opts + 'k_best_features '
-        self.name = opts
+        self.name = self.clf_name + opts
 
+        if self.clf_name == 'naive_bayes':
+            self.make_clf(MultinomialNB())
+        elif self.clf_name == 'logistic':
+            self.binary_counts = True
+            self.make_clf(LogisticRegression(C=self.penalty))
+        elif self.clf_name == 'lin_svc':
+            self.binary_counts = True
+            self.normalize = True
+            self.make_clf(LinearSVC(C=self.penalty))
+        else:
+            raise NotImplementedError('Classifier %s not supported; choose from:\n'
+                                      '%s' % (self.clf_name, self.supported_classifiers))
 
     def make_clf(self, clf):
         counter = None
@@ -78,44 +107,70 @@ class SklearnCLF(Classifier):
                 features + [
                     ('up_counts', Pipeline([
                         ('selector', FeatureExtractor('up_count')),
-                        ('curate', FeatureCurator('up_count', clf_util.to_int)),
+                        ('curate', FeatureCurator('up_count', to_int)),
                         ('dict_vect', DictVectorizer()),
                     ])),
                     ('anonymous', Pipeline([
                         ('selector', FeatureExtractor('anonymous')),
                         ('curate', FeatureCurator('anonymous',
-                                    clf_util.is_anonymous)),
+                                    is_anonymous)),
                         ('dict_vect', DictVectorizer()),
                     ])),
                     ('anonymous_to_peers', Pipeline([
                         ('selector', FeatureExtractor('anonymous_to_peers')),
                         ('curate', FeatureCurator('anonymous_to_peers',
-                                    clf_util.is_anonymous)),
+                                    is_anonymous)),
                         ('dict_vect', DictVectorizer()),
                     ])),
                     ('post_type', Pipeline([
                         ('selector', FeatureExtractor('post_type')),
                         ('curate', FeatureCurator('post_type',
-                                    clf_util.is_comment_thread)),
+                                    is_comment_thread)),
                         ('dict_vect', DictVectorizer()),
                     ])),
                     ('reads', Pipeline([
                         ('selector', FeatureExtractor('reads')),
-                        ('curate', FeatureCurator('reads', clf_util.to_int)),
+                        ('curate', FeatureCurator('reads', to_int)),
                         ('dict_vect', DictVectorizer()),
                     ])),
                     ('cum_attempts', Pipeline([
                         ('selector', FeatureExtractor('cum_attempts')),
-                        ('curate', FeatureCurator('cum_attemtps', clf_util.to_int)),
+                        ('curate', FeatureCurator('cum_attemtps', to_int)),
                         ('dict_vect', DictVectorizer()),
                     ])),
                     ('cum_grade', Pipeline([
                         ('selector', FeatureExtractor('cum_grade')),
-                        ('curate', FeatureCurator('cum_grade', clf_util.to_float)),
+                        ('curate', FeatureCurator('cum_grade', to_float)),
+                        ('dict_vect', DictVectorizer()),
+                    ])),
+                ]
+
+        if self.chained:
+            # NB: It's vital that 'chained' be False for every
+            # classifier we create here in order to prevent an infinite
+            # recursion of sorts.
+            self.question_chain = ChainedClassifier(
+                clf=SklearnCLF(self.clf_name,
+                    token_pattern_idx=self.token_pattern_idx,
+                    text_only=self.text_only,
+                    no_text=self.no_text,
+                    tfidf=self.tfidf,
+                    reduce_feautres=self.reduce_features,
+                    k_best_features=self.k_best_features,
+                    penalty=self.penalty,
+                    chained=False),
+                column='question'
+            )
+
+            features =\
+                features + [
+                    ('question', Pipeline([
+                        ('question_guess', self.question_chain),
                         ('dict_vect', DictVectorizer()),
                     ])),
                 ]
         pipeline = [FeatureUnion(features)]
+
         #if self.normalize:
         #    pipeline = pipeline + [StandardScaler(with_mean=False)]
         if self.k_best_features > 0:
@@ -127,19 +182,19 @@ class SklearnCLF(Classifier):
         self.clf = make_pipeline(*pipeline)
 
 
-    @abstractmethod
     def train(self, X, y):
-        pass
+        self.clf.fit(X, y)
 
 
-    def test(self, X, y):
+    def test(self, X, y=None):
         predictions = self.clf.predict(X)
-        p = metrics.precision_score(y, predictions, average=None)
-        r = metrics.recall_score(y, predictions, average=None)
-        f = metrics.f1_score(y, predictions, average=None)
-        return (predictions, [p, r, f])
+        if y is not None:
+            p = metrics.precision_score(y, predictions, average=None)
+            r = metrics.recall_score(y, predictions, average=None)
+            f = metrics.f1_score(y, predictions, average=None)
+            return (predictions, [p, r, f])
+        else:
+            return predictions
 
-
-    @abstractmethod
     def cross_validate(self, X, y, labels):
-        pass
+        return sklearn_cv(self.clf, X, y, labels)

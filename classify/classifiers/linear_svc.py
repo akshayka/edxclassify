@@ -32,12 +32,11 @@ class LinSVC(SklearnCLF):
         self.C = C
         self.normalize = True
         self.name = 'LinearSVC ' + self.name
+        self.make_clf(LinearSVC(C=self.C))
 
 
     def train(self, X, y):
-        self.make_clf(LinearSVC(C=self.C))
         self.clf.fit(X, y)
 
     def cross_validate(self, X, y, labels):
-        self.make_clf(LinearSVC(C=self.C))
         return clf_util.sklearn_cv(self.clf, X, y, labels)

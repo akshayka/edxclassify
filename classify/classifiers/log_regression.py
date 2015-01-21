@@ -31,13 +31,12 @@ class LogRegression(SklearnCLF):
         self.binary_counts = True
         self.C = C
         self.name = 'LogisticRegression ' + self.name
+        self.make_clf(LogisticRegression(C=self.C))
 
 
     def train(self, X, y):
-        self.make_clf(LogisticRegression(C=self.C))
         self.clf.fit(X, y)
 
 
     def cross_validate(self, X, y, labels):
-        self.make_clf(LogisticRegression(C=self.C))
         return clf_util.sklearn_cv(self.clf, X, y, labels)

@@ -45,6 +45,7 @@ class Edx(DataCleaner):
                 self.first_sentence_weight)
         return document
 
+    # Idempotent
 	@abstractmethod
 	def process_records(self, records):
 		pass

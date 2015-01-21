@@ -102,21 +102,3 @@ def sklearn_cv(clf, X, y, str_labels):
 
     return [precision_train, recall_train, f1_train],\
            [precision_test, recall_test, f1_test], relevant_features
-
-def to_int(value):
-    if value == '':
-        return 0
-    return int(value)
-
-def to_float(value):
-    if value == '':
-        return 0
-    return 1 if float(value) > 0.94 else 0
-
-def is_anonymous(value):
-    return 1 if value.lower() == 'true' else 0
-
-def is_comment_thread(value):
-    return 1 if value.lower() == 'commentthread' else 0
-
-# TODO: We might want to discretize the grades and number of attempts

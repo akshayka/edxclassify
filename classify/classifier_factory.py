@@ -22,32 +22,17 @@ def make_classifier(clf, reduce_features=False, k_best=0, token_pattern_idx=0,
                                   % token_pattern_idx)
 
     clf = clf.lower()
-    if clf == 'naive_bayes':
-        return NaiveBayes(
-                      token_pattern=CUSTOM_TOKEN_PATTERNS[token_pattern_idx],
-                      text_only=text_only,
-                      no_text=no_text,
-                      tfidf=tfidf,
-                      reduce_features=reduce_features,
-                      k_best_features=k_best)
-    elif clf == 'logistic':
-        return LogRegression(
-                token_pattern=CUSTOM_TOKEN_PATTERNS[token_pattern_idx],
-                text_only=text_only,
-                no_text=no_text,
-                tfidf=tfidf,
-                C=penalty,
-                reduce_features=reduce_features,
-                k_best_features=k_best)
-    elif clf == 'lin_svc':
-        return LinSVC(
-                token_pattern=CUSTOM_TOKEN_PATTERNS[token_pattern_idx],
-                text_only=text_only,
-                no_text=no_text,
-                tfidf=tfidf,
-                C=penalty,
-                reduce_features=reduce_features,
-                k_best_features=k_best)
-    else:
+    # This class is trivial, currently; it will only be useful if
+    # a custom, non-sklearn classifier is rolled
+    return SklearnCLF(
+                  clf, 
+                  token_pattern=CUSTOM_TOKEN_PATTERNS[token_pattern_idx],
+                  text_only=text_only,
+                  no_text=no_text,
+                  tfidf=tfidf,
+                  C=penalty,
+                  reduce_features=reduce_features,
+                  k_best_features=k_best)
+
         raise NotImplementedError('Classifier %s not supported; choose from:\n'
                                   '%s' % (clf, supported_classifiers))

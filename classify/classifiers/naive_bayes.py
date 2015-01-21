@@ -28,13 +28,12 @@ class NaiveBayes(SklearnCLF):
                                          reduce_features=reduce_features,
                                          k_best_features=k_best_features)
         self.name = 'NaiveBayes ' + self.name
+        self.make_clf(MultinomialNB())
 
     
     def train(self, X, y):
-        self.make_clf(MultinomialNB())
         self.clf.fit(X, y)
 
 
     def cross_validate(self, X, y, labels):
-        self.make_clf(MultinomialNB())
         return clf_util.sklearn_cv(self.clf, X, y, labels)

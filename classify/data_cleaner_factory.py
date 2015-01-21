@@ -42,4 +42,4 @@ def make_data_cleaner(dc, binary=False,
                          first_sentence_weight=first_sentence_weight)
     else:
         raise NotImplementedError('DataCleaner %s not supported; choose from:'
-                                  '%s' (dc, supported_data_cleaners))
+                                  '%s' % (dc, supported_data_cleaners))

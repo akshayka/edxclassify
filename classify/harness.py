@@ -1,5 +1,5 @@
 import argparse
-from classifier_factory import make_classifier
+from classify.classifiers.sklearn_clf import SklearnCLF
 from data_cleaner_factory import make_data_cleaner
 import pickle
 from tabulate import tabulate
@@ -200,14 +200,15 @@ def main(args=None):
         print 'no_text and text_only cannot both be set!'
         return
 
-    classifier = make_classifier(clf=args.classifier,
-                                 reduce_features=args.reduce_features,
-                                 k_best=args.k_best,
-                                 token_pattern_idx=args.token_pattern_idx,
-                                 text_only=args.text_only,
-                                 no_text=args.no_text,
-                                 tfidf=args.tfidf,
-                                 penalty=args.penalty)
+    classifier = SklearnCLF(clf_name=args.classifier,
+                            token_pattern_idx=args.token_pattern_idx,
+                            text_only=args.text_only,
+                            no_text=args.no_text,
+                            tfidf=args.tfidf,
+                            reduce_features=args.reduce_features,
+                            k_best_features=args.k_best,
+                            penalty=args.penalty,
+                            chained=False)
     data_cleaner = make_data_cleaner(dc=args.data_cleaner,
                                      binary=args.binary,
                                      extract_noun_phrases=args.noun_phrases,
