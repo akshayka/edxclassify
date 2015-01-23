@@ -9,7 +9,6 @@ TODO: docs and docs and docs
 
 '''
 from abstract_classifier import Classifier
-from custom_stop_words import CUSTOM_STOP_WORDS
 from classify.classifiers.clf_util import *
 from classify.classifiers.custom_token_patterns import CUSTOM_TOKEN_PATTERNS
 from classify.classifiers.feature_generation import *
@@ -26,6 +25,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from sklearn.pipeline import FeatureUnion, Pipeline, make_union, make_pipeline
 from sklearn.preprocessing import Normalizer, StandardScaler
+from word_lists import CUSTOM_STOP_WORDS
 
 
 class SklearnCLF(Classifier):

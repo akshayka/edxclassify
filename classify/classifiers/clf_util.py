@@ -65,6 +65,7 @@ def sklearn_cv(clf, X, y, str_labels):
         relevant_features['informative'] = []
 
     for train_indices, test_indices in skf:
+        print 'cross_validating ...'
         # Partition the dataset, as per the fold partitioning.
         X_train, X_test = X[train_indices], X[test_indices]
         y_train, y_test = y[train_indices], y[test_indices]

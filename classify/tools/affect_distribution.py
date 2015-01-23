@@ -12,8 +12,12 @@ import sys
 def post_fractions(values):
     post_counts = sorted(values)
     total_count = sum(post_counts)
-    post_fractions = [100 * float(c) / total_count for c in post_counts[-10:]]
-    return post_fractions
+    post_fractions = [100 * float(c) / total_count for c in post_counts[-20:]]
+    post_fractions = ['%.2f%%' % f for f in post_fractions]
+    return str(post_fractions)
+
+def percent_posts(values, total):
+    return '%.2f%%' % (sum(values) / total * 100)
 
 print sys.argv[1]
 file_paths = [f for f in glob.glob(sys.argv[1]) if os.path.isfile(f)]
@@ -61,43 +65,44 @@ for path in file_paths:
         # number of persons in dictionary
         # percentage of posts accounted for by top 10 posters
         # percentage of affect posts accounted for by top 10 posters
+        total = float(sum(posts.values()))
         print '------- Course: %s --------' % os.path.basename(path)
-        print '\tTotal posts: %d' % sum(posts.values())
+        print '\tTotal posts: %d' % total
         print '\tDistinct posters: %d' % len(posts)
-        print '\t  ' + str(post_fractions(posts.values()))
-        print '\tSentiment'
-        print '\t  Negative: %d' % sum(sentiment[0].values())
-        print '\t  ' + str(post_fractions(sentiment[0].values()))
-        print '\t  Neutral: %d' % sum(sentiment[1].values())
-        print '\t  ' + str(post_fractions(sentiment[1].values()))
-        print '\t  Positive: %d' % sum(sentiment[2].values())
-        print '\t  ' + str(post_fractions(sentiment[2].values()))
+        print '\t  ' + post_fractions(posts.values())
+        print '\tSentiment:'
+        print '\t  Negative: ' + percent_posts(sentiment[0].values(), total)
+        print '\t  ' + post_fractions(sentiment[0].values())
+        print '\t  Neutral: ' + percent_posts(sentiment[1].values(), total)
+        print '\t  ' + post_fractions(sentiment[1].values())
+        print '\t  Positive: ' + percent_posts(sentiment[2].values(), total)
+        print '\t  ' + post_fractions(sentiment[2].values())
         print '\tConfusion'
-        print '\t  Knowledgeable: %d' % sum(confusion[0].values())
-        print '\t  ' + str(post_fractions(confusion[0].values()))
-        print '\t  Neutral: %d' % sum(confusion[1].values())
-        print '\t  ' + str(post_fractions(confusion[1].values()))
-        print '\t  Confused: %d' % sum(confusion[2].values())
-        print '\t  ' + str(post_fractions(confusion[2].values()))
+        print '\t  Knowledgeable: ' + percent_posts(confusion[0].values(), total)
+        print '\t  ' + post_fractions(confusion[0].values())
+        print '\t  Neutral: ' + percent_posts(confusion[1].values(), total)
+        print '\t  ' + post_fractions(confusion[1].values())
+        print '\t  Confused: ' + percent_posts(confusion[2].values(), total)
+        print '\t  ' + post_fractions(confusion[2].values())
         print '\tUrgency'
-        print '\t  Non-urgent: %d' % sum(urgency[0].values())
-        print '\t  ' + str(post_fractions(urgency[0].values()))
-        print '\t  Semi-urgent: %d' % sum(urgency[1].values())
-        print '\t  ' + str(post_fractions(urgency[1].values()))
-        print '\t  Urgent: %d' % sum(urgency[2].values())
-        print '\t  ' + str(post_fractions(urgency[2].values()))
+        print '\t  Non-urgent: ' + percent_posts(urgency[0].values(), total)
+        print '\t  ' + post_fractions(urgency[0].values())
+        print '\t  Semi-urgent: ' + percent_posts(urgency[1].values(), total)
+        print '\t  ' + post_fractions(urgency[1].values())
+        print '\t  Urgent: ' + percent_posts(urgency[2].values(), total)
+        print '\t  ' + post_fractions(urgency[2].values())
         print '\tOpinion'
-        print '\t  Fact: %d' % sum(opinion[0].values())
-        print '\t  ' + str(post_fractions(opinion[0].values()))
-        print '\t  Opinion: %d' % sum(opinion[1].values())
-        print '\t  ' + str(post_fractions(opinion[1].values()))
+        print '\t  Fact: ' + percent_posts(opinion[0].values(), total)
+        print '\t  ' + post_fractions(opinion[0].values())
+        print '\t  Opinion: ' + percent_posts(opinion[1].values(), total)
+        print '\t  ' + post_fractions(opinion[1].values())
         print '\tAnswer'
-        print '\t  Not Answer: %d' % sum(answer[0].values())
-        print '\t  ' + str(post_fractions(answer[0].values()))
-        print '\t  Answer: %d' % sum(answer[1].values())
-        print '\t  ' + str(post_fractions(answer[1].values()))
+        print '\t  Not Answer: ' + percent_posts(answer[0].values(), total)
+        print '\t  ' + post_fractions(answer[0].values())
+        print '\t  Answer: ' + percent_posts(answer[1].values(), total)
+        print '\t  ' + post_fractions(answer[1].values())
         print '\tQuestion'
-        print '\t  Not Question: %d' % sum(question[0].values())
-        print '\t  ' + str(post_fractions(question[0].values()))
-        print '\t  Question: %d' % sum(question[1].values())
-        print '\t  ' + str(post_fractions(question[1].values()))
+        print '\t  Not Question: ' + percent_posts(question[0].values(), total)
+        print '\t  ' + post_fractions(question[0].values())
+        print '\t  Question: ' + percent_posts(question[1].values(), total)
+        print '\t  ' + post_fractions(question[1].values())
