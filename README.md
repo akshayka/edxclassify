@@ -12,3 +12,9 @@ discover insights into the dynamics of these courses is three-fold; we wish to:
 We focus our efforts on the [Stanford MOOC-Posts
 Dataset](http://datastage.stanford.edu/StanfordMoocPosts/ "MOOC-Posts"), a
 publicly available corpus that was created to enable the MOOC Mining Project.
+
+Dependencies:
+* scikit-learn
+* NumPy
+* tabular
+* SKLL

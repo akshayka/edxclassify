@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from abstract_data_cleaner import DataCleaner
-from chunk_parser import ChunkParser
+from classify.chunk_parser import ChunkParser
 import dc_util
 from nltk.corpus import conll2000
 from classify.feature_spec import FEATURE_COLUMNS

@@ -17,7 +17,7 @@ from sklearn import metrics
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_selection import RFECV
+from sklearn.feature_selection import RFE
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.linear_model import LogisticRegression
@@ -25,6 +25,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from sklearn.pipeline import FeatureUnion, Pipeline, make_union, make_pipeline
 from sklearn.preprocessing import Normalizer, StandardScaler
+import skll
 from word_lists import CUSTOM_STOP_WORDS
 
 
@@ -181,7 +182,7 @@ class SklearnCLF(Classifier):
         if self.k_best_features > 0:
             pipeline = pipeline + [SelectKBest(chi2, k=self.k_best_features)]
         if self.reduce_features:
-            pipeline = pipeline + [RFECV(clf, step=1, cv=2)]
+            pipeline = pipeline + [RFE(clf)]
         else:
             pipeline = pipeline + [clf]
         self.clf = make_pipeline(*pipeline)
@@ -197,7 +198,8 @@ class SklearnCLF(Classifier):
             p = metrics.precision_score(y, predictions, average=None)
             r = metrics.recall_score(y, predictions, average=None)
             f = metrics.f1_score(y, predictions, average=None)
-            return (predictions, [p, r, f])
+            K = skll.metrics.kappa(y, predictions)
+            return (predictions, [p, r, f, K])
         else:
             return predictions
 

@@ -22,7 +22,6 @@ def make_f1_table(results, output_file):
     sys.stdout = stdout_save
 
 
-
 def make_word_cloud(command, data_path, output_file):
     harness_args = [data_path, "edx_urgency"]
     harness_args = harness_args + command.split(' ')

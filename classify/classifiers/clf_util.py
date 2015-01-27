@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.cross_validation import StratifiedKFold
 from sklearn import metrics
+import skll
 
 
 def extract_feature_names(feature_union):
@@ -29,13 +30,17 @@ def sklearn_cv(clf, X, y, str_labels):
 
     Returns
     -------
-    train_error_metrics: A list that itself contains 10 lists, one for each
-                    fold, describing training error.
-                    Element i is a list [p, r, f], where
-                        p is a tuple whose jth element is the precision for
-                        label j,
-                        r is a tuple whose jth element is the recall for label j,
-                        and f is a tuple whose jth element is the f1 for label j.
+    train_error_metrics: A list that itself contains four lists, p, r, f, K,
+                        each with length 10 (corresponding to the number of
+                        folds):
+                            Element i in p is a list whose jth element is the
+                            precision for class j in the ith fold;
+                            Element i in r is a list whose jth element is the
+                            recall for class j in the ith fold;
+                            Element i in f is a list whose jth element is the
+                            f1 for class j in the ith fold; and
+                            Element i in K is the Kappa Coefficient for the
+                            ith fold.
     test_error_metrics: Like train_error_metrics, but for the test_set_error.
     relevant_features: A dictionary describing informative features.
                     In particular, if clf is a multiclass classifier,
@@ -52,9 +57,11 @@ def sklearn_cv(clf, X, y, str_labels):
     precision_train = []
     recall_train = []
     f1_train = []
+    kappa_train = [] 
     precision_test = []
     recall_test = []
     f1_test = []
+    kappa_test = [] 
     relevant_features = {}
     num_top = 600
     
@@ -87,19 +94,22 @@ def sklearn_cv(clf, X, y, str_labels):
                     top = np.argsort(classifier.coef_[i])[-num_top:]
                     relevant_features[label].append(feature_names[top])
 
-        # Predict labels for the training set.
-        y_pred = clf.predict(X_test)
-        precision_test.append(metrics.precision_score(y_test, y_pred,
-            average=None))
-        recall_test.append(metrics.recall_score(y_test, y_pred, average=None))
-        f1_test.append(metrics.f1_score(y_test, y_pred, average=None))
-
-        # Predict labels for the test set.
+        # Predict labels for the train set.
         y_pred = clf.predict(X_train)
         precision_train.append(metrics.precision_score(y_train, y_pred,
             average=None))
         recall_train.append(metrics.recall_score(y_train, y_pred, average=None))
         f1_train.append(metrics.f1_score(y_train, y_pred, average=None))
+        kappa_train.append(skll.metrics.kappa(y_train, y_pred))
 
-    return [precision_train, recall_train, f1_train],\
-           [precision_test, recall_test, f1_test], relevant_features
+        # Predict labels for the test set.
+        y_pred = clf.predict(X_test)
+        precision_test.append(metrics.precision_score(y_test, y_pred,
+            average=None))
+        recall_test.append(metrics.recall_score(y_test, y_pred, average=None))
+        f1_test.append(metrics.f1_score(y_test, y_pred, average=None))
+        kappa_test.append(skll.metrics.kappa(y_test, y_pred))
+
+    return [precision_train, recall_train, f1_train, kappa_train],\
+            [precision_test, recall_test, f1_test, kappa_test],\
+            relevant_features

@@ -17,7 +17,7 @@ def tabulate_f1_cv_summary(cv_results_tr, cv_results_tst, labels):
     for label in labels:
         avgs = avgs + [[0, 0]]
     fold = 1
-    for f_tr, f_tst in zip(cv_results_tr[2], cv_results_tst[2]):
+    for f_tr, f_tst, in zip(cv_results_tr[2], cv_results_tst[2]):
         for i in range(len(labels)):
             avgs[i][0] = avgs[i][0] + f_tr[i]
             avgs[i][1] = avgs[i][1] + f_tst[i]
@@ -35,13 +35,18 @@ def tabulate_full_cv_summary(cv_results, average, labels):
         header.append(label_str + ': precision')
         header.append(label_str + ': recall')
         header.append(label_str + ': f1')
+    header.append('kappa')
     results = []
-    avgs = [0] * len(labels) * 3
+
+    # Subtract one to account for the 'fold' column
+    avgs = [0] * (len(header) - 1)
     fold = 1
-    for p, r, f in zip(cv_results[0], cv_results[1], cv_results[2]):
+    for p, r, f, K in zip(cv_results[0], cv_results[1], cv_results[2],
+                        cv_results[3]):
         entry = [str(fold)]
         for i in range(len(labels)):
             entry = entry + [p[i], r[i], f[i]]
+        entry.append(K)
         if not average:
             results.append(entry)
         for i in range(len(avgs) / 3):
@@ -49,6 +54,7 @@ def tabulate_full_cv_summary(cv_results, average, labels):
             avgs[a_i] = avgs[a_i] + p[i]
             avgs[a_i+1] = avgs[a_i+1] + r[i]
             avgs[a_i+2] = avgs[a_i+2] + f[i]
+        avgs[-1] = avgs[-1] + K
         fold = fold + 1
     avgs = [avg / (fold - 1) for avg in avgs]
     avgs = ['avg'] + avgs
@@ -116,6 +122,7 @@ def test_specified_partition(clf, data_file, test_file, data_cleaner):
         header.append(label_str + ': precision')
         header.append(label_str + ': recall')
         header.append(label_str + ': f1')
+    header.append('kappa')
 
     train_record = []
     test_record = []
@@ -124,10 +131,10 @@ def test_specified_partition(clf, data_file, test_file, data_cleaner):
             # The first index is over precision, recall, f1; the second is over labels
             train_record.append(train_metrics[j][i])
             test_record.append(test_metrics[j][i])
+    train_record.append(train_metrics[3])
+    test_record.append(test_metrics[3])
 
-    print 'training error: ' + str(train_metrics)
     print tabulate([train_record], header, tablefmt='grid')
-    print 'test error: ' + str(test_metrics)
     print tabulate([test_record], header, tablefmt='grid')
 
 
