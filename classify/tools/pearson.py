@@ -2,7 +2,7 @@ import argparse
 from classify.feature_spec import FEATURE_COLUMNS
 import cPickle
 import csv
-import skll
+import scipy.stats
 from tabulate import tabulate
 
 parser = argparse.ArgumentParser(description='compute pearson\'s corellation '
@@ -25,7 +25,7 @@ for target in variables:
     for var in variables:
         var_values = [float(record[FEATURE_COLUMNS[var]]) for\
                         record in goldfile]
-        entry.append(skll.metrics.pearson(var_values, target_values))
+        entry.append(tuple(scipy.stats.pearsonr(var_values, target_values)))
     entries.append(entry)
 print tabulate(entries, header, tablefmt='grid')
 
