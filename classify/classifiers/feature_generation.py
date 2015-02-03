@@ -1,7 +1,9 @@
 from classify.feature_spec import FEATURE_COLUMNS
 from classify.data_cleaners.dc_util import compress_likert
+from classify.classifiers.word_lists import *
 import re
-from classify.classifiers.word_lists import NEGATIVE_WORDS
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
 
 def to_int(value, aux=None):
     if value == '':
@@ -19,6 +21,15 @@ def is_anonymous(value, aux=None):
 def is_comment_thread(value, aux=None):
     return 1 if value.lower() == 'commentthread' else 0
 
+def count_question_marks(document, aux=None):
+    count = 0
+    for c in document:
+        if c == '?':
+            count = count + 1
+    return count
+
+# TODO: How do these play with logistic regression?
+# TODO: Idea -- feature for sentiment ~ 1 iff #pos > #neg
 def count_negative_words(document, token_patrn):
     words = re.findall(token_patrn, document)
     count = 0
@@ -26,6 +37,34 @@ def count_negative_words(document, token_patrn):
         if w in NEGATIVE_WORDS:
             count = count + 1
     return count
+
+def count_urgent_words(document, token_patrn):
+    words = re.findall(token_patrn, document)
+    count = 0
+    for w in words:
+        if w in URGENT_WORDS:
+            return 1
+    return 0
+
+def count_opinion_words(document, token_patrn):
+    words = re.findall(token_patrn, document)
+    count = 0
+    for w in words:
+        if w in OPINION_WORDS:
+            count = count + 1
+    return count
+
+def count_nouns(document, aux=None):
+    tagged_words = []
+    for s in sent_tokenize(document.decode('utf-8')):
+        tagged_words.extend(nltk.pos_tag(word_tokenize(s)))
+    count = 0
+    for word, tag in tagged_words:
+        if tag == 'NN':
+            count = count + 1
+    return count
+
+# TODO: We might want to discretize the grades and number of attempts
 
 # TODO: We might want to discretize the grades and number of attempts
 class FeatureExtractor:

@@ -26,7 +26,7 @@ from sklearn.svm import LinearSVC
 from sklearn.pipeline import FeatureUnion, Pipeline, make_union, make_pipeline
 from sklearn.preprocessing import Normalizer, StandardScaler
 import skll
-from word_lists import CUSTOM_STOP_WORDS
+from word_lists import *
 
 
 class SklearnCLF(Classifier):
@@ -126,6 +126,8 @@ class SklearnCLF(Classifier):
             ]
 
         if not self.text_only:
+            # TODO: Decide on a final list of features
+            # + do ablative analysis
             features = \
                 features + [
                     ('up_counts', Pipeline([
@@ -156,11 +158,6 @@ class SklearnCLF(Classifier):
                         ('curate', FeatureCurator('reads', to_int)),
                         ('dict_vect', DictVectorizer()),
                     ])),
-                    ('cum_attempts', Pipeline([
-                        ('selector', FeatureExtractor('cum_attempts')),
-                        ('curate', FeatureCurator('cum_attemtps', to_int)),
-                        ('dict_vect', DictVectorizer()),
-                    ])),
                     ('cum_grade', Pipeline([
                         ('selector', FeatureExtractor('cum_grade')),
                         ('curate', FeatureCurator('cum_grade', to_float)),
@@ -168,11 +165,50 @@ class SklearnCLF(Classifier):
                     ])),
                 ]
 
+            # Affect specific features
+            if self.column == 'sentiment':
+                features =\
+                     features + [
+                        ('negative_words', Pipeline([
+                            ('selector', FeatureExtractor('text')),
+                            ('curate', FeatureCurator('negative_count',
+                                count_negative_words,
+                                CUSTOM_TOKEN_PATTERNS[self.token_pattern_idx])),
+                            ('dict_vect', DictVectorizer()),
+                        ])),
+                    ]
+            # TODO: Is this discrimination advisable?
+            if self.column == 'confusion' or\
+                self.column == 'urgency' or\
+                self.column == 'answer':
+                features =\
+                    features + [
+                        ('#?', Pipeline([
+                            ('selector', FeatureExtractor('text')),
+                            ('curate', FeatureCurator('question_mark_count',
+                                count_question_marks)),
+                            ('dict_vect', DictVectorizer()),
+                        ])),
+                    ]
+            if self.column == 'urgency':
+                features =\
+                    features + [
+                        ('#urgent', Pipeline([
+                            ('selector', FeatureExtractor('text')),
+                            ('curate', FeatureCurator('urgent_count',
+                                count_urgent_words,
+                                CUSTOM_TOKEN_PATTERNS[self.token_pattern_idx])),
+                            ('dict_vect', DictVectorizer()),
+                        ])),
+                    ]
+             # TODO: Count urgent words
+                
+        # TODO: More intelligent selection of chains based on correlations
         if self.chained:
             features = features + self._make_chained('question')
             features = features + self._make_chained('answer')
-            features = features + self._make_chained('opinion')
-            features = features + self._make_chained('sentiment')
+            #features = features + self._make_chained('opinion')
+            #features = features + self._make_chained('sentiment')
             features = features + self._make_chained('urgency')
             features = features + self._make_chained('confusion')
         pipeline = [FeatureUnion(features)]
