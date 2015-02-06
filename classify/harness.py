@@ -66,38 +66,34 @@ def cross_validation(classifier, data_filename,
                      average, train_test_only, data_cleaner, wordlist):
     results = []
     labels = data_cleaner.labels()
-    with open(data_filename, 'rb') as infile:
-        # Slice off headers
-        # TODO: Headers aren't getting used anywhere,
-        # perhaps don't take them in ingest_dataset
-        dataset = pickle.load(infile)
-        X, y =  zip(*data_cleaner.process_records(dataset))
-        cv_results_train, cv_results_test, relevant_features = \
-            classifier.cross_validate(X, y, labels)
-
-    dcname = data_cleaner.name
-    print 'Classification results for file %s ...;\nusing classifier %s and ' \
-          'data_cleaner %s' % (data_filename, classifier.name, dcname)
-    
-    if train_test_only:
-        tabulate_f1_cv_summary(cv_results_train, cv_results_test, labels)
-    else:
-        print 'Results: Making predictions on the training set.'
-        tabulate_full_cv_summary(cv_results_train, average, labels)
-        print 'Results: Making predictions on the test set.'
-        tabulate_full_cv_summary(cv_results_test, average, labels)
+    infile = open(data_filename, 'rb')
+    # Slice off headers
+    # TODO: Headers aren't getting used anywhere,
+    # perhaps don't take them in ingest_dataset
+    dataset = pickle.load(infile)
+    infile.close()
+    X, y =  zip(*data_cleaner.process_records(dataset))
 
     if wordlist is not None:
+        relevant_features = classifier.relevant_features(X, y, labels)
         for key in relevant_features:
-            with open(wordlist + key + '.txt', 'wb') as csvfile:
-                feature_lists = relevant_features[key]
-                num_folds = len(feature_lists)
-                feature_map = {}
-                for l in feature_lists:
-                    for f in l:
-                        feature_map[f] = feature_map.get(f, 0) + 1
-                csvfile.write(','.join([f.encode('utf-8') for f in feature_map
-                                           if feature_map[f] >= num_folds / 2]))
+            with open(wordlist + key + '.txt', 'wb') as outfile:
+                features = relevant_features[key]
+                outfile.write('\n'.join([f.encode('utf-8') for f in features]))
+    else:
+        cv_results_train, cv_results_test, relevant_features = \
+            classifier.cross_validate(X, y)
+        dcname = data_cleaner.name
+        print 'Classification results for file %s ...;\nusing classifier %s and ' \
+              'data_cleaner %s' % (data_filename, classifier.name, dcname)
+        
+        if train_test_only:
+            tabulate_f1_cv_summary(cv_results_train, cv_results_test, labels)
+        else:
+            print 'Results: Making predictions on the training set.'
+            tabulate_full_cv_summary(cv_results_train, average, labels)
+            print 'Results: Making predictions on the test set.'
+            tabulate_full_cv_summary(cv_results_test, average, labels)
 
 
 def test_specified_partition(clf, data_file, test_file, data_cleaner):

@@ -84,7 +84,7 @@ class SklearnCLF(Classifier):
             self._make_clf(MultinomialNB())
         elif self.clf_name == 'logistic':
             self.binary_counts = True
-            self._make_clf(LogisticRegression(C=self.penalty))
+            self._make_clf(LogisticRegression(C=self.penalty, penalty='l2'))
         elif self.clf_name == 'lin_svc':
             self.binary_counts = True
             self.normalize = True
@@ -180,6 +180,7 @@ class SklearnCLF(Classifier):
             # TODO: Is this discrimination advisable?
             if self.column == 'confusion' or\
                 self.column == 'urgency' or\
+                self.column == 'question' or\
                 self.column == 'answer':
                 features =\
                     features + [
@@ -190,6 +191,7 @@ class SklearnCLF(Classifier):
                             ('dict_vect', DictVectorizer()),
                         ])),
                     ]
+             # TODO: Count urgent words?
             if self.column == 'urgency':
                 features =\
                     features + [
@@ -201,14 +203,13 @@ class SklearnCLF(Classifier):
                             ('dict_vect', DictVectorizer()),
                         ])),
                     ]
-             # TODO: Count urgent words
                 
         # TODO: More intelligent selection of chains based on correlations
         if self.chained:
             features = features + self._make_chained('question')
             features = features + self._make_chained('answer')
-            #features = features + self._make_chained('opinion')
-            #features = features + self._make_chained('sentiment')
+            features = features + self._make_chained('opinion')
+            features = features + self._make_chained('sentiment')
             features = features + self._make_chained('urgency')
             features = features + self._make_chained('confusion')
         pipeline = [FeatureUnion(features)]
@@ -239,5 +240,46 @@ class SklearnCLF(Classifier):
         else:
             return predictions
 
-    def cross_validate(self, X, y, labels):
-        return sklearn_cv(self.clf, X, y, labels)
+    def cross_validate(self, X, y):
+        return sklearn_cv(self.clf, X, y)
+
+
+    """
+    Retrieve most relevant features
+    parameters:
+    ----------
+    X          - a list of feature vectors
+    y          - a list of labels, with y[i] the label for X[i]
+    labels     - a list of string identifiers, one for each label
+    num_top    - number of features to retrieve
+
+    returns:
+    -------
+    relevant_features: A dictionary describing informative features.
+                    In particular, if clf is a multiclass classifier,
+                    relevant_features maps each string label to a list
+                    containing the 600 features weighted most highly by the
+                    classifier's decision function(s).
+                    If clf is a binary class, then a dictionary mapping
+                    the word 'informative' to the list of num_top features weighted
+                    most highly by the classifier's decision function.
+    """
+    def relevant_features(self, X, y, labels, num_top=600):
+        relevant_features = {}
+        self.clf.fit(X, y)
+
+        # A bit of a hack -- we index into the pipeline in order to
+        # retrieve the actual estimator.
+        classifier = self.clf.steps[-1][-1]
+        feature_names = extract_feature_names(self.clf.steps[0][-1])
+        if feature_names is not None and hasattr(classifier, 'coef_'):
+            if len(labels) == 2:
+                top = np.argsort(
+                        classifier.coef_[0])[::-1][:num_top]
+                relevant_features['informative'] = feature_names[top]
+            else:
+                for i, label in enumerate(labels):
+                    top = np.argsort(classifier.coef_[i])[::-1][:num_top]
+                    relevant_features[label] = feature_names[top]
+        return relevant_features
+    

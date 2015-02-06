@@ -1,5 +1,4 @@
 from classify.feature_spec import FEATURE_COLUMNS
-from classify.data_cleaners.dc_util import compress_likert
 from classify.classifiers.word_lists import *
 import re
 import nltk
@@ -102,6 +101,13 @@ class ChainedClassifier:
         self.y_chain = None
 
     def fit(self, X, y=None):
+        # Note that the extracted values will be in 
+        # { 1.0 + 0.5x | x <= 12 } for non-binary variables (confusion,
+        # sentiment, urgency), {0, 1} otherwise. Moreover, each of these values will
+        # be strings -- scikit deals with that just fine. However, oddly enough,
+        # converting these values to floats noticeably affects the performance
+        # of the combining function. I'm unsure as to whether that's a bug in
+        # scikit learn, or one on my end.
         self.y_chain = [record[FEATURE_COLUMNS[self.column]] for record in X]
         self.clf.train(X, self.y_chain)
 

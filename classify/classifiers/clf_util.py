@@ -17,19 +17,18 @@ def extract_feature_names(feature_union):
     return np.asarray(feature_names)
 
 
-def sklearn_cv(clf, X, y, str_labels):
+def sklearn_cv(clf, X, y):
     """Evaluate training and test set error using stratified K-fold
     cross validation.
 
-    Parameters:
+    parameters:
     ----------
     clf        - a scikit-learn pipelined estimator.
     X          - a list of feature vectors
     y          - a list of labels, with y[i] the label for X[i]
-    str_labels - a list of string identifiers, one for each label
 
-    Returns
-    -------
+    returns:
+    --------
     train_error_metrics: A list that itself contains four lists, p, r, f, K,
                         each with length 10 (corresponding to the number of
                         folds):
@@ -42,14 +41,6 @@ def sklearn_cv(clf, X, y, str_labels):
                             Element i in K is the Kappa Coefficient for the
                             ith fold.
     test_error_metrics: Like train_error_metrics, but for the test_set_error.
-    relevant_features: A dictionary describing informative features.
-                    In particular, if clf is a multiclass classifier,
-                    relevant_features maps each string label to a list
-                    containing the 600 features weighted most highly by the
-                    classifier's decision function(s).
-                    If clf is a binary class, then a dictionary mapping
-                    the word 'informative' to the list of 600 features weighted
-                    most highly by the classifier's decision function.
     """
 
     X, y = np.array(X), np.array(y)
@@ -62,15 +53,7 @@ def sklearn_cv(clf, X, y, str_labels):
     recall_test = []
     f1_test = []
     kappa_test = [] 
-    relevant_features = {}
-    num_top = 600
     
-    if len(str_labels) > 2:
-        for label in str_labels:
-            relevant_features[label] = []
-    else:
-        relevant_features['informative'] = []
-
     for train_indices, test_indices in skf:
         print 'cross_validating ...'
         # Partition the dataset, as per the fold partitioning.
@@ -80,19 +63,6 @@ def sklearn_cv(clf, X, y, str_labels):
         # Train the classifier and
         # extract the most highly weighted features.
         clf.fit(X_train, y_train)
-        feature_names = extract_feature_names(clf.steps[0][-1])
-
-        # A bit of a hack -- we index into the pipeline in order to
-        # retrieve the actual estimator.
-        classifier = clf.steps[-1][-1]
-        if feature_names is not None and hasattr(classifier, 'coef_'):
-            if len(str_labels) == 2:
-                relevant_features['informative'] =\
-                    np.argsort(classifier.coef_[0])[-num_top:]
-            else:
-                for i, label in enumerate(str_labels):
-                    top = np.argsort(classifier.coef_[i])[-num_top:]
-                    relevant_features[label].append(feature_names[top])
 
         # Predict labels for the train set.
         y_pred = clf.predict(X_train)
@@ -111,5 +81,4 @@ def sklearn_cv(clf, X, y, str_labels):
         kappa_test.append(skll.metrics.kappa(y_test, y_pred))
 
     return [precision_train, recall_train, f1_train, kappa_train],\
-            [precision_test, recall_test, f1_test, kappa_test],\
-            relevant_features
+            [precision_test, recall_test, f1_test, kappa_test]
