@@ -81,7 +81,7 @@ def cross_validation(classifier, data_filename,
                 features = relevant_features[key]
                 outfile.write('\n'.join([f.encode('utf-8') for f in features]))
     else:
-        cv_results_train, cv_results_test, relevant_features = \
+        cv_results_train, cv_results_test =\
             classifier.cross_validate(X, y)
         dcname = data_cleaner.name
         print 'Classification results for file %s ...;\nusing classifier %s and ' \

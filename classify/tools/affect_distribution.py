@@ -16,9 +16,6 @@ def post_fractions(posts):
     for i in range(len(top_posters)):
         output.append((top_posters[i][0][:3],
                     '%.2f%%' % (100 * float(top_posters[i][1]) / total_count)))
-                        
-    #post_fractions = [100 * float(c) / total_count for c in post_counts[-20:]]
-    #post_fractions = ['%.2f%%' % f for f in post_fractions]
     return str(output)
 
 def percent_posts(posts, total):

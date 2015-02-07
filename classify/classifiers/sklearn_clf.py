@@ -272,14 +272,18 @@ class SklearnCLF(Classifier):
         # retrieve the actual estimator.
         classifier = self.clf.steps[-1][-1]
         feature_names = extract_feature_names(self.clf.steps[0][-1])
+
+        # Another hack -- if it's a binary problem, then len(coef_) == 1
+        if len(labels) == 2:
+            labels = ['informative']
+
         if feature_names is not None and hasattr(classifier, 'coef_'):
-            if len(labels) == 2:
-                top = np.argsort(
-                        classifier.coef_[0])[::-1][:num_top]
-                relevant_features['informative'] = feature_names[top]
-            else:
-                for i, label in enumerate(labels):
-                    top = np.argsort(classifier.coef_[i])[::-1][:num_top]
-                    relevant_features[label] = feature_names[top]
+            for i, label in enumerate(labels):
+                top = np.argsort(classifier.coef_[i])[::-1][:num_top]
+                coefs = classifier.coef_[i][top]
+                for t, c in zip(top, coefs):
+                    relevant_features.setdefault(label,
+                        []).append(feature_names[t] + ' : ' + ('%.2f' % c))
+
         return relevant_features
     
