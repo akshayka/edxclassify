@@ -3,14 +3,14 @@ import re
 
 
 def compress_likert(score, binary=False, bin_threshold=4):
-    score = int(float(score))
+    score = float(score)
     if binary:
         if score <= bin_threshold:
             return 0
         else:
             return 1
 
-    if score <= 3:
+    if score < 4:
         return 0
     elif score == 4:
         return 1

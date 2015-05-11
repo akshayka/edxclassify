@@ -67,9 +67,6 @@ def cross_validation(classifier, data_filename,
     results = []
     labels = data_cleaner.labels()
     infile = open(data_filename, 'rb')
-    # Slice off headers
-    # TODO: Headers aren't getting used anywhere,
-    # perhaps don't take them in ingest_dataset
     dataset = pickle.load(infile)
     infile.close()
     X, y =  zip(*data_cleaner.process_records(dataset))

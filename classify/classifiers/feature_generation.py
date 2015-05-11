@@ -1,5 +1,6 @@
 from classify.feature_spec import FEATURE_COLUMNS
 from classify.classifiers.word_lists import *
+from classify.data_cleaners.dc_util import compress_likert
 import re
 import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -64,8 +65,6 @@ def count_nouns(document, aux=None):
     return count
 
 # TODO: We might want to discretize the grades and number of attempts
-
-# TODO: We might want to discretize the grades and number of attempts
 class FeatureExtractor:
     def __init__(self, feature_name):
         self.feature_name = feature_name
@@ -102,13 +101,19 @@ class ChainedClassifier:
 
     def fit(self, X, y=None):
         # Note that the extracted values will be in 
-        # { 1.0 + 0.5x | x <= 12 } for non-binary variables (confusion,
-        # sentiment, urgency), {0, 1} otherwise. Moreover, each of these values will
-        # be strings -- scikit deals with that just fine. However, oddly enough,
-        # converting these values to floats noticeably affects the performance
-        # of the combining function. I'm unsure as to whether that's a bug in
-        # scikit learn, or one on my end.
-        self.y_chain = [record[FEATURE_COLUMNS[self.column]] for record in X]
+        # [0, 2] for non-binary variables (confusion,
+        # sentiment, urgency), {0, 1} otherwise.
+        if self.column == 'confusion' or\
+            self.column == 'sentiment' or\
+            self.column == 'urgency':
+            self.y_chain = [compress_likert(
+                                record[FEATURE_COLUMNS[self.column]],
+                                    binary=False)\
+                            for record in X]
+        else:
+            self.y_chain = [int(record[FEATURE_COLUMNS[self.column]])\
+                            for record in X]
+
         self.clf.train(X, self.y_chain)
 
     def transform(self, X, y=None):

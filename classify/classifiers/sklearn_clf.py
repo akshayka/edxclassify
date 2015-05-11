@@ -12,6 +12,8 @@ from abstract_classifier import Classifier
 from classify.classifiers.clf_util import *
 from classify.classifiers.custom_token_patterns import CUSTOM_TOKEN_PATTERNS
 from classify.classifiers.feature_generation import *
+
+import math
 import numpy as np
 from sklearn import metrics
 from sklearn.feature_extraction import DictVectorizer
@@ -26,6 +28,7 @@ from sklearn.svm import LinearSVC
 from sklearn.pipeline import FeatureUnion, Pipeline, make_union, make_pipeline
 from sklearn.preprocessing import Normalizer, StandardScaler
 import skll
+
 from word_lists import *
 
 
@@ -126,8 +129,6 @@ class SklearnCLF(Classifier):
             ]
 
         if not self.text_only:
-            # TODO: Decide on a final list of features
-            # + do ablative analysis
             features = \
                 features + [
                     ('up_counts', Pipeline([
@@ -206,6 +207,7 @@ class SklearnCLF(Classifier):
                 
         # TODO: More intelligent selection of chains based on correlations
         if self.chained:
+            # NB: Features only grows if self.column != <param-for-make_chained>
             features = features + self._make_chained('question')
             features = features + self._make_chained('answer')
             features = features + self._make_chained('opinion')
@@ -283,7 +285,7 @@ class SklearnCLF(Classifier):
                 coefs = classifier.coef_[i][top]
                 for t, c in zip(top, coefs):
                     relevant_features.setdefault(label,
-                        []).append(feature_names[t] + ' : ' + ('%.2f' % c))
+                        []).append(feature_names[t] + ' : ' + ('%.2f' %
+                                    math.exp(c)))
 
         return relevant_features
-    
