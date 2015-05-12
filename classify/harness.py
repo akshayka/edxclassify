@@ -1,6 +1,7 @@
 import argparse
 from classify.classifiers.sklearn_clf import SklearnCLF
 from data_cleaner_factory import make_data_cleaner
+from sklearn.externals import joblib
 import pickle
 from tabulate import tabulate
 
@@ -62,14 +63,17 @@ def tabulate_full_cv_summary(cv_results, average, labels):
     print tabulate(results, header, tablefmt='grid')
 
 
-def cross_validation(classifier, data_filename,
-                     average, train_test_only, data_cleaner, wordlist):
-    results = []
-    labels = data_cleaner.labels()
+def examples_labels(data_filename, data_cleaner):
     infile = open(data_filename, 'rb')
     dataset = pickle.load(infile)
     infile.close()
     X, y =  zip(*data_cleaner.process_records(dataset))
+    return X, y
+
+def cross_validation(classifier, data_filename, X, y,
+                     average, train_test_only, data_cleaner, wordlist):
+    results = []
+    labels = data_cleaner.labels()
 
     if wordlist is not None:
         relevant_features = classifier.relevant_features(X, y, labels)
@@ -93,15 +97,12 @@ def cross_validation(classifier, data_filename,
             tabulate_full_cv_summary(cv_results_test, average, labels)
 
 
-def test_specified_partition(clf, data_file, test_file, data_cleaner):
+def test_specified_partition(clf, X, y, test_file, data_cleaner):
     train_metrics = []
-    with open(data_file, 'rb') as infile:
-        training_data = pickle.load(infile)
-        X, y =  zip(*data_cleaner.process_records(training_data))
-        clf.train(X, y)
-        # element 0 contains predictions made by the classifier
-        # element 1 contains the metrics
-        train_metrics.extend(clf.test(X, y)[1])
+    clf.train(X, y)
+    # element 0 contains predictions made by the classifier
+    # element 1 contains the metrics
+    train_metrics.extend(clf.test(X, y)[1])
 
     test_metrics = []
     with open(test_file, 'rb') as testfile:
@@ -197,6 +198,10 @@ def main(args=None):
                         help='prefix of files into which word lists should be '\
                              'dumped.')
 
+    # Persistence
+    parser.add_argument('-sv', '--save', type=str,
+                        help='train a classifer and persist it to disk.')
+
     args = parser.parse_args(args)
 
     if args.no_text and args.text_only:
@@ -217,13 +222,19 @@ def main(args=None):
                                      binary=args.binary,
                                      extract_noun_phrases=args.noun_phrases,
                                      first_sentence_weight=args.first_sentence)
+    X, y = examples_labels(args.data_file, data_cleaner)
 
-    if args.test_file is not None:
-        test_specified_partition(classifier, args.data_file,
+    if args.save is not None:
+        classifier.train(X, y)
+        joblib.dump((data_cleaner, classifier), args.save)
+    elif args.test_file is not None:
+        test_specified_partition(classifier, X, y,
                                  args.test_file, data_cleaner)
     else: 
-        cross_validation(classifier, args.data_file, args.average,
-                          args.f1_avg, data_cleaner, args.wordlist)
+        cross_validation(classifier, args.data_file,
+                         X, y,
+                         args.average, args.f1_avg,
+                         data_cleaner, args.wordlist)
     # TODO: Option to generate visuals
 
 if __name__ == '__main__':

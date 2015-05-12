@@ -29,3 +29,7 @@ class EdxConfusion(Edx):
                 dc_util.compress_likert(record[self.columns['confusion']],
                                         self.binary, 4))
                 for record in records]
+
+    def process_records_without_labels(self, records):
+        return [ [self.process_doc(record[self.columns['text']])] +\
+                  record[1:] for record in records ]

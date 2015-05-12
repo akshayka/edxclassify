@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
-from abstract_data_cleaner import DataCleaner
+from classify.data_cleaners.abstract_data_cleaner import DataCleaner
 from classify.chunk_parser import ChunkParser
-import dc_util
+import classify.data_cleaners.dc_util as dc_util
 from nltk.corpus import conll2000
 from classify.feature_spec import FEATURE_COLUMNS
 

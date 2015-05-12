@@ -8,7 +8,7 @@ Training, test data format:
 TODO: docs and docs and docs
 
 '''
-from abstract_classifier import Classifier
+from classify.classifiers.abstract_classifier import Classifier
 from classify.classifiers.clf_util import *
 from classify.classifiers.custom_token_patterns import CUSTOM_TOKEN_PATTERNS
 from classify.classifiers.feature_generation import *
@@ -29,7 +29,7 @@ from sklearn.pipeline import FeatureUnion, Pipeline, make_union, make_pipeline
 from sklearn.preprocessing import Normalizer, StandardScaler
 import skll
 
-from word_lists import *
+from classify.classifiers.word_lists import *
 
 
 class SklearnCLF(Classifier):

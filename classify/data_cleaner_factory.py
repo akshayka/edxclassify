@@ -5,12 +5,12 @@ OUTPUT: subclass instance of DataCleaner
 
 '''
 
-from data_cleaners.edx_confusion import EdxConfusion
-from data_cleaners.edx_sentiment import EdxSentiment
-from data_cleaners.edx_urgency import EdxUrgency
-from data_cleaners.edx_answer import EdxAnswer
-from data_cleaners.edx_opinion import EdxOpinion
-from data_cleaners.edx_question import EdxQuestion
+from classify.data_cleaners.edx_confusion import EdxConfusion
+from classify.data_cleaners.edx_sentiment import EdxSentiment
+from classify.data_cleaners.edx_urgency import EdxUrgency
+from classify.data_cleaners.edx_answer import EdxAnswer
+from classify.data_cleaners.edx_opinion import EdxOpinion
+from classify.data_cleaners.edx_question import EdxQuestion
 
 
 supported_data_cleaners='\nconfusion\nsentiment\nurgency\n' \
