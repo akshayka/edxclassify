@@ -159,11 +159,8 @@ class SklearnCLF(Classifier):
                         ('curate', FeatureCurator('reads', to_int)),
                         ('dict_vect', DictVectorizer()),
                     ])),
-                    ('cum_grade', Pipeline([
-                        ('selector', FeatureExtractor('cum_grade')),
-                        ('curate', FeatureCurator('cum_grade', to_float)),
-                        ('dict_vect', DictVectorizer()),
-                    ])),
+                    # TODO: Use cum_grade?
+                    #       (curator --> to_float)
                 ]
 
             # Affect specific features

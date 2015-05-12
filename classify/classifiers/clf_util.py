@@ -1,7 +1,14 @@
 import numpy as np
 from sklearn.cross_validation import StratifiedKFold
 from sklearn import metrics
+from sklearn.externals import joblib
 import skll
+
+
+"""Load a joblib-dumped data_cleaner and trained classifier"""
+def load_clf(pkl_file):
+    data_cleaner, clf = joblib.load(pkl_file)
+    return data_cleaner, clf
 
 
 def extract_feature_names(feature_union):
