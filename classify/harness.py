@@ -176,7 +176,7 @@ def main(args=None):
                              'lexical features')
     parser.add_argument('-txt', '--text_only', action='store_true',
                         help='derive features exclusively from body text')
-    # TODO: Include an option that enables scaling and normalizing features
+    # TODO: Include an option that enables scaling and normalizing of features
 
     # Feature selection
     parser.add_argument('-kb', '--k_best', type=int, default=0,
