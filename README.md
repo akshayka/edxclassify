@@ -2,7 +2,8 @@
 
 The MOOC Mining Project is an ongoing data mining initiative directed towards
 the discussion forums of massively open online courses. Our motivation to
-discover insights into the dynamics of these courses is three-fold; we wish to:
+discover insights into the dynamics of these courses is three-fold. In
+particular, we wish to:
 
 1. better understand the educational and learning process,
 2. improve the educational environment for MOOC learners, and

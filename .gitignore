@@ -2,6 +2,7 @@
 *.swp
 *.txt
 data/*
+documents/*
 visual/*
 build/*
 gen_data*
