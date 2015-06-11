@@ -94,10 +94,11 @@ class FeatureCurator:
         return self.transform(X)
 
 class ChainedClassifier:
-    def __init__(self, clf, column):
+    def __init__(self, clf, column, guess):
         self.clf = clf
         self.column = column
         self.y_chain = None
+        self.guess = guess
 
     def fit(self, X, y=None):
         # Note that the extracted values will be in 
@@ -117,7 +118,7 @@ class ChainedClassifier:
         self.clf.train(X, self.y_chain)
 
     def transform(self, X, y=None):
-        if self.y_chain is not None:
+        if self.y_chain is not None and not self.guess:
             predictions = self.y_chain
             # This is critical -- it ensures
             # that we don't use the gold set values when

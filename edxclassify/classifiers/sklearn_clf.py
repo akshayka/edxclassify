@@ -44,7 +44,8 @@ class SklearnCLF(Classifier):
                  reduce_features=False,
                  k_best_features=0,
                  penalty=1.0,
-                 chained=False):
+                 chained=False,
+                 guess=False):
         
         if token_pattern_idx >= len(CUSTOM_TOKEN_PATTERNS):
             raise NotImplementedError('Token pattern %d not implemented'
@@ -60,12 +61,13 @@ class SklearnCLF(Classifier):
         self.k_best_features = k_best_features
         self.penalty = penalty
         self.chained = chained
+        self.guess = guess
 
         if self.chained:
             self.chain_args = [self.clf_name, '', self.token_pattern_idx,
                               self.text_only, self.no_text, self.tfidf,
                               self.reduce_features, self.k_best_features,
-                              self.penalty, False]
+                              self.penalty, False, False]
 
         # TODO: Understand the mathematical implications for
         # each of these options
@@ -101,6 +103,7 @@ class SklearnCLF(Classifier):
             chain = ChainedClassifier(
                 clf=SklearnCLF(*self.chain_args),
                 column=column,
+                guess=self.guess,
             )
             return [(column, Pipeline([
                         (column + '_guess', chain),

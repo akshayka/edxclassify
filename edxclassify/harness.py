@@ -159,7 +159,10 @@ def main(args=None):
     # Feature generation
     parser.add_argument('-c', '--chained', action='store_true',
                         help='pipe the output of other classifiers into the '
-                        'input of this one')
+                        'input of this one; train using ground truth')
+    parser.add_argument('-cg', '--chained_guess', action='store_true',
+                        help='pipe the output of other classifiers into the '
+                        'input of this one; train using guesses')
     parser.add_argument('-fs', '--first_sentence', type=int, default=1,
                         help='upweight each post\'s first sentence')
     parser.add_argument('-no_txt', '--no_text', action='store_true',
@@ -208,6 +211,9 @@ def main(args=None):
         print 'no_text and text_only cannot both be set!'
         return
 
+    if args.chained_guess:
+        args.chained = True
+
     classifier = SklearnCLF(clf_name=args.classifier,
                             column=args.data_cleaner,
                             token_pattern_idx=args.token_pattern_idx,
@@ -217,7 +223,8 @@ def main(args=None):
                             reduce_features=args.reduce_features,
                             k_best_features=args.k_best,
                             penalty=args.penalty,
-                            chained=args.chained)
+                            chained=args.chained,
+                            guess=args.chained_guess)
     data_cleaner = make_data_cleaner(dc=args.data_cleaner,
                                      binary=args.binary,
                                      extract_noun_phrases=args.noun_phrases,
