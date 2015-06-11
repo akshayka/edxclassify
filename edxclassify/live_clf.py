@@ -77,7 +77,6 @@ DEFAULT_CLF = frozenset([
     'confusion_medicine',
     'confusion_technical',
     'confusion_nontechnical',
-    'confusion_medicine_txt',
     'sentiment',
     'sentiment_stats',
     'sentiment_econ',
@@ -138,12 +137,9 @@ class LiveCLF:
         """ 
         self.name = clf_key
         if clf_key in DEFAULT_CLF:
-            '''clf_key = pkg_resources.resource_string(
+            clf_key = pkg_resources.resource_filename(
                 'edxclassify', 'saved_clf' + '/' +
-                    clf_key + '/' + clf_key + '.pkl')'''
-            clf_key =\
-                'edxclassify/saved_clf' + '/' +\
-                    clf_key + '/' + clf_key + '.pkl'
+                    clf_key + '/' + clf_key + '.pkl')
         print clf_key
         dc, clf = clf_util.load_clf(clf_key)
         self.dc = dc

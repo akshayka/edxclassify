@@ -67,7 +67,8 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests*', 'data*']),
+    packages=find_packages(exclude=['contrib', 'docs', 'tests*',
+                                    'data*', 'tools']),
 
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
@@ -91,9 +92,44 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'classifier': ['saved_clf/confusion_humanities/*',
-                       'saved_clf/confusion_medicine/*',
-                       'saved_clf/confusion_math/*']
+        'edxclassify': [
+                        'saved_clf/confusion/*',
+                        'saved_clf/confusion_stats/*',
+                        'saved_clf/confusion_econ/*',
+                        'saved_clf/confusion_medicine/*',
+                        'saved_clf/confusion_technical/*',
+                        'saved_clf/confusion_nontechnical/*',
+                        'saved_clf/sentiment/*',
+                        'saved_clf/sentiment_stats/*',
+                        'saved_clf/sentiment_econ/*',
+                        'saved_clf/sentiment_medicine/*',
+                        'saved_clf/sentiment_technical/*',
+                        'saved_clf/sentiment_nontechnical/*',
+                        'saved_clf/opinion/*',
+                        'saved_clf/opinion_stats/*',
+                        'saved_clf/opinion_econ/*',
+                        'saved_clf/opinion_medicine/*',
+                        'saved_clf/opinion_technical/*',
+                        'saved_clf/opinion_nontechnical/*',
+                        'saved_clf/answer/*',
+                        'saved_clf/answer_stats/*',
+                        'saved_clf/answer_econ/*',
+                        'saved_clf/answer_medicine/*',
+                        'saved_clf/answer_technical/*',
+                        'saved_clf/answer_nontechnical/*',
+                        'saved_clf/question/*',
+                        'saved_clf/question_stats/*',
+                        'saved_clf/question_econ/*',
+                        'saved_clf/question_medicine/*',
+                        'saved_clf/question_technical/*',
+                        'saved_clf/question_nontechnical/*',
+                        'saved_clf/urgency/*',
+                        'saved_clf/urgency_stats/*',
+                        'saved_clf/urgency_econ/*',
+                        'saved_clf/urgency_medicine/*',
+                        'saved_clf/urgency_technical/*',
+                        'saved_clf/urgency_nontechnical/*',
+                      ],
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
