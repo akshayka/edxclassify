@@ -17,6 +17,18 @@ supported_data_cleaners='\nconfusion\nsentiment\nurgency\n' \
 def make_data_cleaner(dc, binary=False,
                           extract_noun_phrases=False,
                           first_sentence_weight=1):
+    """
+    Create a data cleaner
+
+    parameters:
+    ----------
+    dc : String                 - the desired data cleaner
+    extract_noun_phrases : Bool - if true, use the chunk parser to
+                                  generate noun phrase features
+    first_sentence_weight : Int - replicate the first sentence of each post
+                                  first_sentence_weight number of times
+    """
+
     dc = dc.lower()
     if dc == 'confusion':
         return EdxConfusion(binary=binary,

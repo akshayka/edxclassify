@@ -1,0 +1,5 @@
+include *.rst LICENSE
+
+include saved_clf/confusion_humanities/*
+include saved_clf/confusion_math/*
+include saved_clf/confusion_medicine/*
