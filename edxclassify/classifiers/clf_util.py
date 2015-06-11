@@ -5,8 +5,8 @@ from sklearn.externals import joblib
 import skll
 
 
-"""Load a joblib-dumped data_cleaner and trained classifier"""
 def load_clf(pkl_file):
+    """Load a joblib-dumped data_cleaner and trained classifier"""
     data_cleaner, clf = joblib.load(pkl_file)
     return data_cleaner, clf
 

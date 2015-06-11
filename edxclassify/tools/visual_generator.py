@@ -1,5 +1,5 @@
-from classify.tools.configurations import *
-import classify.harness as harness
+from edxclassify.tools.configurations import *
+import edxclassify.harness as harness
 import numpy as np
 import sys
 import cPickle as pickle

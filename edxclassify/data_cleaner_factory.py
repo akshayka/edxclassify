@@ -4,13 +4,12 @@ INPUT: string --> data cleaner
 OUTPUT: subclass instance of DataCleaner
 
 '''
-
-from classify.data_cleaners.edx_confusion import EdxConfusion
-from classify.data_cleaners.edx_sentiment import EdxSentiment
-from classify.data_cleaners.edx_urgency import EdxUrgency
-from classify.data_cleaners.edx_answer import EdxAnswer
-from classify.data_cleaners.edx_opinion import EdxOpinion
-from classify.data_cleaners.edx_question import EdxQuestion
+from edxclassify.data_cleaners.edx_confusion import EdxConfusion
+from edxclassify.data_cleaners.edx_sentiment import EdxSentiment
+from edxclassify.data_cleaners.edx_urgency import EdxUrgency
+from edxclassify.data_cleaners.edx_answer import EdxAnswer
+from edxclassify.data_cleaners.edx_opinion import EdxOpinion
+from edxclassify.data_cleaners.edx_question import EdxQuestion
 
 
 supported_data_cleaners='\nconfusion\nsentiment\nurgency\n' \

@@ -1,6 +1,6 @@
-from classify.feature_spec import FEATURE_COLUMNS
-from classify.classifiers.word_lists import *
-from classify.data_cleaners.dc_util import compress_likert
+from edxclassify.feature_spec import FEATURE_COLUMNS
+from edxclassify.classifiers.word_lists import *
+from edxclassify.data_cleaners.dc_util import compress_likert
 import re
 import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize

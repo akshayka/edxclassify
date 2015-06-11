@@ -1,5 +1,5 @@
 import argparse
-from classify.classifiers.sklearn_clf import SklearnCLF
+from edxclassify.classifiers.sklearn_clf import SklearnCLF
 from data_cleaner_factory import make_data_cleaner
 from sklearn.externals import joblib
 import pickle

@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractmethod
-from classify.data_cleaners.abstract_data_cleaner import DataCleaner
-from classify.chunk_parser import ChunkParser
-import classify.data_cleaners.dc_util as dc_util
+from edxclassify.data_cleaners.abstract_data_cleaner import DataCleaner
+from edxclassify.chunk_parser import ChunkParser
+import edxclassify.data_cleaners.dc_util as dc_util
 from nltk.corpus import conll2000
-from classify.feature_spec import FEATURE_COLUMNS
+from edxclassify.feature_spec import FEATURE_COLUMNS
 
 
 class Edx(DataCleaner):
@@ -44,6 +44,10 @@ class Edx(DataCleaner):
             document = dc_util.upweight_first_sentence(document,
                 self.first_sentence_weight)
         return document
+
+    def process_records_without_labels(self, records):
+        return [ [self.process_doc(record[self.columns['text']])] +\
+                  record[1:] for record in records ]
 
     # Idempotent
 	@abstractmethod
