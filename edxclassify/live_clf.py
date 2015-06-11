@@ -16,6 +16,18 @@ import edxclassify.classifiers.clf_util as clf_util
 from edxclassify.feature_spec import FEATURE_COLUMNS
 import pkg_resources
 
+EXAMPLE_FMT = {
+    'text': '',                 # (String) The body of the forum post
+    'post_type': 0,             # (String) Indicator in {CommentThread, Comment},
+                                #          CommentThread iff post started a thread
+    'anonymous': 0,             # (String) "False" iff not anonymous
+    'anonymous_to_peers': 0,    # (String) "False" iff not anonymous to peers
+    'up_count': 0,              # (Int)     Number of upvotes received by post
+    'reads': 0,                 # (Int)     Number of reads garnered by thread
+}
+
+EXAMPLE_KEYS = set(EXAMPLE_FMT.keys())
+
 DEFAULT_CLF = [
     'confusion',
     'confusion_stats',
@@ -87,6 +99,10 @@ class LiveCLF:
         data = []
         if self.name in DEFAULT_CLF:
             for e in examples:
+                ekeys = set(e.keys())
+                assert ekeys == EXAMPLE_KEYS,\
+                    'When using default a classifier, each example '\
+                    'must contain the exact keys found in EXAMPLE_FMT'
                 example_arr = [''] * len(FEATURE_COLUMNS)
                 for k in e.keys():
                     example_arr[FEATURE_COLUMNS[k]] = e[k]
