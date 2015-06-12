@@ -54,6 +54,7 @@ The MOOC-Posts Dataset is available to researchers,
 
 Installation:
 -------------
-Installation is a two-step process. First, install scikit-learn and its
+Installation is a two-step process. First, install
+`scikit-learn<http://scikit-learn.org/dev/install.html>`_ and its
 dependencies; make sure to install version 0.15.2 to ensure compatiblilty with
 skll. Then, simply run python setup.py install.
