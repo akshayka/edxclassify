@@ -21,12 +21,12 @@ three-fold. In particular, we wish to:
 For example, we could use a classifier that detects confusion in forum posts
 to help us target automated learning interventions in courses. We have built
 such a prototype; to learn more, please refer to our
-`paper <http://debugmind.com/youedu.pdf>`_, published in the eigth conference
+`paper <http://debugmind.com/youedu.pdf>`_, published in the eighth conference
 on Educational Data Mining.
 
 Included Classifiers
 ---------------------
-The abstractions in edxclassify are general enought to be applicable
+The abstractions in edxclassify are general enough to be applicable
 to most classification tasks. The repository does come packaged
 with a set of classifiers that were trained to detect affect in Stanford's
 MOOC discussion forums. Since Stanford's courses are powered by edX, these
@@ -39,7 +39,7 @@ on subsets of the `Stanford MOOC-Posts
 Dataset <http://datastage.stanford.edu/StanfordMoocPosts/>`_,
 a collection of 30,000 human-tagged forum posts, originating from a
 variety of courses. Classifiers to detect all six of the core variables
-in the MOOC-Posts Dataset -- confusion, urgency, sentiment, quesiton,
+in the MOOC-Posts Dataset -- confusion, urgency, sentiment, question,
 answer, and opinion -- are included in this repository. The class
 ``edxclassify.live_clf.LiveCLF`` provides an interface to them; see the module
 ``edxclassify.live_clf`` for further documentation.
@@ -59,6 +59,6 @@ Installation
 -------------
 Installation is a two-step process. First, install
 `scikit-learn <http://scikit-learn.org/dev/install.html>`_ and its
-dependencies; make sure to install version 0.15.2 to ensure compatiblilty with
+dependencies; make sure to install version 0.15.2 to ensure compatibility with
 skll. Then, simply run pip install edxclassify. (Or, if installing from source,
 python setup.py install).
