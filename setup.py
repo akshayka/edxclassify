@@ -37,7 +37,7 @@ setup(
     author_email='akshayka@cs.stanford.edu, shanel@stanford.edu',
 
     # Choose your license
-    license='BSD',
+    license='GNU General Public License v2',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -52,7 +52,7 @@ setup(
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
 
         # Pick your license as you wish (should match "license" above)
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)'
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
