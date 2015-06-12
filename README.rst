@@ -1,4 +1,5 @@
-** edxclassify: Classifying MOOC Discussion Forums **
+edxclassify: Classifying MOOC Discussion Forums
+===============================================
 
 The edxclassify package contains a classification suite built to
 detect learner affect and behavior in the discussion forums of Massive
