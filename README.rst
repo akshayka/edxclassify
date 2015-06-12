@@ -8,7 +8,7 @@ at Stanford and was designed to enable the discovery of insights into
 forums attached to Stanford's `online course
 offerings <https://lagunita.stanford.edu/>`_.
 
-Research and Motivation:
+Research and Motivation
 ------------------------
 Our motivation to discover insights into the dynamics of these courses is
 three-fold. In particular, we wish to:
@@ -24,7 +24,7 @@ such a prototype; to learn more, please refer to our
 `paper <http://debugmind.com/youedu.pdf>`_, published in the eigth conference
 on Educational Data Mining.
 
-Included Classifiers:
+Included Classifiers
 ---------------------
 The abstractions in edxclassify are general enought to be applicable
 to most classification tasks. The repository does come packaged
@@ -44,18 +44,18 @@ answer, and opinion -- are included in this repository. The class
 ``edxclassify.live_clf.LiveCLF`` provides an interface to them; see the module
 ``edxclassify.live_clf`` for further documentation.
 
-Running Experiments:
+Running Experiments
 -------------------
 ``edxclassify.harness`` is a driver that facilitates the training and testing of
 and experimentation with classifiers. After installation, it can be invoked
 with the command ``clfharness``.
 
-Data:
+Data
 ----
 The MOOC-Posts Dataset is available to researchers,
 `upon request <http://datastage.stanford.edu/StanfordMoocPosts/>`_.
 
-Installation:
+Installation
 -------------
 Installation is a two-step process. First, install
 `scikit-learn <http://scikit-learn.org/dev/install.html>`_ and its
