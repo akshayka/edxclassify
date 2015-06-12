@@ -1,5 +1,5 @@
-edxclassify: Classifying MOOC Discussion Forums
-===============================================
+Classifying MOOC Discussion Forums
+==================================
 
 The edxclassify package contains a classification suite built to
 detect learner affect and behavior in the discussion forums of Massive
@@ -21,7 +21,7 @@ three-fold. In particular, we wish to:
 For example, we could use a classifier that detects confusion in forum posts
 to help us target automated learning interventions in courses. We have built
 such a prototype; to learn more, please refer to our
-`paper<http://debugmind.com/youedu.pdf>`_, published in the eigth conference
+`paper <http://debugmind.com/youedu.pdf>`_, published in the eigth conference
 on Educational Data Mining.
 
 Included Classifiers:
@@ -34,7 +34,7 @@ classifiers should be compatible with any edX MOOC; they should also be
 compatible with other flavors of MOOCs, as their feature space is not
 tightly coupled with the particulars of edX. These classifiers were trained
 on subsets of the `Stanford MOOC-Posts
-Dataset<http://datastage.stanford.edu/StanfordMoocPosts/>`_,
+Dataset <http://datastage.stanford.edu/StanfordMoocPosts/>`_,
 a collection of 30,000 human-tagged forum posts, originating from a
 variety of courses. Classifiers to detect all six of the core variables
 in the MOOC-Posts Dataset -- confusion, urgency, sentiment, quesiton,
@@ -51,11 +51,12 @@ with the command ``clfharness``.
 Data:
 ----
 The MOOC-Posts Dataset is available to researchers,
-`upon request<http://datastage.stanford.edu/StanfordMoocPosts/>`_.
+`upon request <http://datastage.stanford.edu/StanfordMoocPosts/>`_.
 
 Installation:
 -------------
 Installation is a two-step process. First, install
-`scikit-learn<http://scikit-learn.org/dev/install.html>`_ and its
+`scikit-learn <http://scikit-learn.org/dev/install.html>`_ and its
 dependencies; make sure to install version 0.15.2 to ensure compatiblilty with
-skll. Then, simply run python setup.py install.
+skll. Then, simply run pip install edxclassify. (Or, if installing from source,
+python setup.py install).
