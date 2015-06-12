@@ -32,7 +32,9 @@ with a set of classifiers that were trained to detect affect in Stanford's
 MOOC discussion forums. Since Stanford's courses are powered by edX, these
 classifiers should be compatible with any edX MOOC; they should also be
 compatible with other flavors of MOOCs, as their feature space is not
-tightly coupled with the particulars of edX. These classifiers were trained
+tightly coupled with the particulars of edX.
+
+These classifiers were trained
 on subsets of the `Stanford MOOC-Posts
 Dataset <http://datastage.stanford.edu/StanfordMoocPosts/>`_,
 a collection of 30,000 human-tagged forum posts, originating from a
