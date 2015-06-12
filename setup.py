@@ -74,7 +74,9 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    # TODO Anything else? sklearn instructions ...
+    # sci-kit should be installed before running this installation
+    # tabular is only needed if edxclassify.harness is used
+    #  (in other words, tabular is not needed for edxclassify.live_clf)
     install_requires=[
         'nltk',
         'tabular',
