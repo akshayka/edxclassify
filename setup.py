@@ -17,7 +17,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='edx-classify',
+    name='edxclassify',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -94,7 +94,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'edx-classify': [
+        'edxclassify': [
                         'saved_clf/confusion/*',
                         'saved_clf/confusion_stats/*',
                         'saved_clf/confusion_econ/*',
