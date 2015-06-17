@@ -70,6 +70,9 @@ Installation
 Installation can proceed in two ways: from source or from pip. Note that
 when installing from pip, only a subset of the pre-trained classifiers found
 in this repository will be included, due to size constraints imposed by pypi.
+In particular, the pypi version only includes classifiers for confusion,
+whereas the source version includes classifiers for all six MOOC-Posts
+variables.
 
 Regardless of whether you install from source or from pip, begin by installing
 `scikit-learn <http://scikit-learn.org/dev/install.html>`_ and its
