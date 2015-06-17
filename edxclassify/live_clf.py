@@ -74,12 +74,6 @@ DEFAULT_CLF = frozenset([
     of 0.27.
     """
 
-    'confusion',
-    'confusion_stats',
-    'confusion_econ',
-    'confusion_medicine',
-    'confusion_humanities',
-    'confusion_math',
     'confusion_technical',
     'confusion_nontechnical',
 ])

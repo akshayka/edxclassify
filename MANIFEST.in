@@ -1,9 +1,3 @@
 include *.rst LICENSE
-include edxclassify/saved_clf/confusion/*
-include edxclassify/saved_clf/confusion_stats/*
-include edxclassify/saved_clf/confusion_econ/*
-include edxclassify/saved_clf/confusion_medicine/*
-include edxclassify/saved_clf/confusion_humanities/*
-include edxclassify/saved_clf/confusion_math/*
 include edxclassify/saved_clf/confusion_technical/*
 include edxclassify/saved_clf/confusion_nontechnical/*
