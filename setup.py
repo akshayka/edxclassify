@@ -95,12 +95,6 @@ setup(
     # have to be included in MANIFEST.in as well.
     package_data={
         'edxclassify': [
-                        'saved_clf/confusion/*',
-                        'saved_clf/confusion_stats/*',
-                        'saved_clf/confusion_econ/*',
-                        'saved_clf/confusion_medicine/*',
-                        'saved_clf/confusion_humanities/*',
-                        'saved_clf/confusion_math/*',
                         'saved_clf/confusion_technical/*',
                         'saved_clf/confusion_nontechnical/*',
                       ],
