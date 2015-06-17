@@ -67,8 +67,14 @@ akshayka ~at~ cs.stanford.edu with subject line
 
 Installation
 -------------
-Installation is a two-step process. First, install
+Installation can proceed in two ways: from source or from pip. Note that
+when installing from pip, only a subset of the pre-trained classifiers found
+in this repository will be included, due to size constraints imposed by pypi.
+
+Regardless of whether you install from source or from pip, begin by installing
 `scikit-learn <http://scikit-learn.org/dev/install.html>`_ and its
 dependencies; make sure to install version 0.15.2 to ensure compatibility with
-skll. Then, simply run pip install edxclassify. (Or, if installing from source,
-python setup.py install).
+skll.
+
+If installing from source, clone this repository and simply run
+``python setup.py install``. Otherwise, run ``pip install edxclassify``.
