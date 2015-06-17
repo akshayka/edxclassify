@@ -66,11 +66,14 @@ DEFAULT_CLF = frozenset([
     trained on a gold set containing the entirety of the MOOCPosts Dataset.
     Those with the suffix _stats correspond to classifiers trained on the four
     statistics courses; those with _econ correspond to classifiers trained on
-    the two economics courses; etc.
+    the two economics courses; those with _technical correspond to classifiers
+    trained on technical courses (i.e., STEM); etc.
 
-    Each classifier was built using a binary logistic regression model, supplemented
-    by subclassifiers (-c in harness), with l2-regularization of 0.27.
+    Each classifier was built using a binary logistic regression model,
+    supplemented by subclassifiers (-c in harness), with l2-regularization
+    of 0.27.
     """
+
     'confusion',
     'confusion_stats',
     'confusion_econ',

@@ -1,5 +1,4 @@
 include *.rst LICENSE
-
 include edxclassify/saved_clf/confusion/*
 include edxclassify/saved_clf/confusion_stats/*
 include edxclassify/saved_clf/confusion_econ/*

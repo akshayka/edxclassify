@@ -44,6 +44,7 @@ answer, and opinion -- are included in this repository. The class
 ``edxclassify.live_clf.LiveCLF`` provides an interface to them; see the module
 ``edxclassify.live_clf`` for further documentation.
 
+
 Running Experiments
 -------------------
 ``edxclassify.harness`` is a driver that facilitates the training and testing of
@@ -54,6 +55,15 @@ Data
 ----
 The MOOC-Posts Dataset is available to researchers,
 `upon request <http://datastage.stanford.edu/StanfordMoocPosts/>`_.
+
+Much of the included code in edxclassify was designed for data formatted
+as per ``edxclassify.feature_spec``; in particular, the harness takes
+data files each containing a pickled list of examples, each example a list
+with features in the positions specified in ``edxclassify.feature_spec``.
+If you would like access to these data files, first request access to the
+MOOC-Posts Dataset. When your request is approved, send an email to
+akshayka ~at~ cs.stanford.edu with subject line
+"edxclassify: request for data files".
 
 Installation
 -------------

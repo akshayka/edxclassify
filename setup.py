@@ -17,12 +17,12 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='edxclassify',
+    name='edx-classify',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.2.0a1',
+    version='0.10.a3',
 
     description='A machine learning workflow, with classifiers to detect\
                 affect in MOOC discussion forums.',
@@ -52,7 +52,7 @@ setup(
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
 
         # Pick your license as you wish (should match "license" above)
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)'
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
@@ -94,7 +94,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'edxclassify': [
+        'edx-classify': [
                         'saved_clf/confusion/*',
                         'saved_clf/confusion_stats/*',
                         'saved_clf/confusion_econ/*',
