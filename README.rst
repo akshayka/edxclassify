@@ -3,7 +3,7 @@ Classifying MOOC Discussion Forums
 
 The edxclassify package contains a classification suite built to
 detect learner affect and behavior in the discussion forums of Massive
-Open Online Courses (MOOCs). It is a result of a year's worth of research
+Open Online Courses (MOOCs). It is the result of a year's worth of research
 at Stanford and was designed to enable the discovery of insights into
 forums attached to Stanford's `online course
 offerings <https://lagunita.stanford.edu/>`_.
